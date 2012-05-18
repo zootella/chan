@@ -23,7 +23,7 @@ import org.zootella.time.Egg;
 import org.zootella.time.Now;
 import org.zootella.time.Duration;
 
-/** A Here figures out what our IP address is once and right now. */
+/** A CenterTask figures out what our IP address is once and right now. */
 public class CenterTask extends Close {
 	
 	// Make
@@ -63,12 +63,10 @@ public class CenterTask extends Close {
 
 	// Result
 	
-	public Result<Ip> result() {
-		return new Result<Ip>(internet().ip, new Duration(egg.start), exception);//TODO use whenClosed() here
+	public Result<IpPort> result() {
+		return new Result<IpPort>(internet, new Duration(egg.start), exception);//TODO use whenClosed() here
 	}
-	//TODO just use above
-	public IpPort internet() { check(exception, internet); return internet; }
-	public Now age() { return egg.start; }
+
 	private ProgramException exception;
 	private IpPort internet;
 

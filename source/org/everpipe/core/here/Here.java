@@ -57,7 +57,7 @@ public class Here extends Close {
 			}
 
 			if (done(centerTask)) {
-				centerIp = centerTask.result();
+				centerIpPort = centerTask.result();
 				centerTask = null;
 				model.changed();
 			}
@@ -78,7 +78,7 @@ public class Here extends Close {
 	public Result<Ip>      natIp()    { return natIp; }
 	public Result<Map>     mapTcp()   { return mapTcp; }
 	public Result<Map>     mapUdp()   { return mapUdp; }
-	public Result<Ip>      centerIp() { return centerIp; }
+	public Result<IpPort>  centerIpPort() { return centerIpPort; }
 	
 	private Result<Ip> lanIp;
 	private Result<Port> bindPort;
@@ -86,7 +86,7 @@ public class Here extends Close {
 	private Result<Ip> natIp;
 	private Result<Map> mapTcp;
 	private Result<Map> mapUdp;
-	private Result<Ip> centerIp;
+	private Result<IpPort> centerIpPort;
 	
 	// refresh
 	public void refreshLan() {
@@ -130,7 +130,7 @@ public class Here extends Close {
 		public String natIp()    { return describe(Here.this.natIp()); }
 		public String mapTcp()   { return describe(Here.this.mapTcp()); }
 		public String mapUdp()   { return describe(Here.this.mapUdp()); }
-		public String centerIp() { return describe(Here.this.centerIp()); }
+		public String centerIp() { return describe(Here.this.centerIpPort()); }
 
 		public String lanIpTime()    { return describeTime(Here.this.lanIp()); }
 		public String bindPortTime() { return describeTime(Here.this.bindPort()); }
@@ -138,7 +138,7 @@ public class Here extends Close {
 		public String natIpTime()    { return describeTime(Here.this.natIp()); }
 		public String mapTcpTime()   { return describeTime(Here.this.mapTcp()); }
 		public String mapUdpTime()   { return describeTime(Here.this.mapUdp()); }
-		public String centerIpTime() { return describeTime(Here.this.centerIp()); }
+		public String centerIpTime() { return describeTime(Here.this.centerIpPort()); }
 
 		public String lanIpError()    { return describeError(Here.this.lanIp()); }
 		public String bindPortError() { return describeError(Here.this.bindPort()); }
@@ -146,6 +146,6 @@ public class Here extends Close {
 		public String natIpError()    { return describeError(Here.this.natIp()); }
 		public String mapTcpError()   { return describeError(Here.this.mapTcp()); }
 		public String mapUdpError()   { return describeError(Here.this.mapUdp()); }
-		public String centerIpError() { return describeError(Here.this.centerIp()); }
+		public String centerIpError() { return describeError(Here.this.centerIpPort()); }
 	}
 }
