@@ -35,7 +35,7 @@ public class Flow extends Close {
 	/** The list's destination for the data it finishes processing, null if our last Valve consumes data, call go() after taking. */
 	public Bin out;
 
-	/** Stop the data flowing through this ValveList. */
+	/** Stop the data flowing through this Flow. */
 	public void close() {
 		if (already()) return;
 		for (Valve valve : list)
@@ -64,7 +64,7 @@ public class Flow extends Close {
 			valve.start();
 	}
 
-	/** true if this ValveList is empty of data. */
+	/** true if this Flow is empty of data. */
 	public boolean isEmpty() {
 		if (in != null && in.hasData())   return false; // Not empty
 		for (Valve valve: list)

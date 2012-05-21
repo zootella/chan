@@ -1,9 +1,13 @@
 package org.everpipe.core.here;
 
+import org.zootella.encrypt.hash.HashValve;
+import org.zootella.file.ReadValve;
 import org.zootella.state.Close;
 import org.zootella.state.Model;
 import org.zootella.state.Receive;
 import org.zootella.state.Update;
+import org.zootella.valve.Flow;
+import org.zootella.valve.Valve;
 
 public class HashCore extends Close {
 
@@ -11,9 +15,25 @@ public class HashCore extends Close {
 		update = new Update(new MyReceive());
 		model = new MyModel();
 		
+		
+		
+		readValve = new ReadValve(update, file, range);
+		hashValve = new HashValve(update, range);
+		
+		flow = new Flow(update, false, false);
+		flow.list.add(readValve);
+		
+		
+		
+		
+		
 	}
 	
 	private final Update update;
+	
+	private final Flow flow;
+	private final ReadValve readValve;
+	private final HashValve hashValve;
 
 	/*
 	private CenterTask centerTask;
@@ -54,7 +74,7 @@ public class HashCore extends Close {
 	public final MyModel model;
 	public class MyModel extends Model {
 		
-		public String status1() { return status1; }
+		public String status1() { return path; }
 		public String status2() { return status2; }
 		public String status3() { return status3; }
 		

@@ -20,7 +20,7 @@ public class UploadValve extends Close implements Valve {
 		in = Bin.medium();
 	}
 	
-	/** The Update for the ValveList we're in. */
+	/** The Update for the Flow we're in. */
 	private final Update update;
 	/** The socket we upload to. */
 	private final Socket socket;

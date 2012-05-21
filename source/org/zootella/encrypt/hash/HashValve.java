@@ -19,7 +19,7 @@ public class HashValve extends Close implements Valve {
 		in = Bin.medium();
 	}
 	
-	/** The Update for the ValveList we're in. */
+	/** The Update for the Flow we're in. */
 	private final Update update;
 	/** The Hash that hashes the data. */
 	public final Hash hash;

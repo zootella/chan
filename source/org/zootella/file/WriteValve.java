@@ -20,7 +20,7 @@ public class WriteValve extends Close implements Valve {
 		in = Bin.medium();
 	}
 	
-	/** The Update for the ValveList we're in. */
+	/** The Update for the Flow we're in. */
 	private final Update update;
 	/** The open File we write to. */
 	private final File file;

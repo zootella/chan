@@ -20,7 +20,7 @@ public class ReadValve extends Close implements Valve {
 		out = Bin.medium();
 	}
 	
-	/** The Update for the ValveList we're in. */
+	/** The Update for the Flow we're in. */
 	private final Update update;
 	/** The File we read from. */
 	private final File file;

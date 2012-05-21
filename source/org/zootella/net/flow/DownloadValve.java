@@ -20,7 +20,7 @@ public class DownloadValve extends Close implements Valve {
 		out = Bin.medium();
 	}
 	
-	/** The Update for the ValveList we're in. */
+	/** The Update for the Flow we're in. */
 	private final Update update;
 	/** The socket we download from. */
 	private final Socket socket;
