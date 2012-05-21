@@ -1,5 +1,6 @@
 package org.everpipe.core;
 
+import org.everpipe.core.here.HashCore;
 import org.everpipe.core.here.Here;
 import org.everpipe.core.here.HereOld;
 import org.everpipe.main.Program;
@@ -31,6 +32,7 @@ public class Core extends Close {
 		accept = new Accept(port);
 		packets = new Packets(port);
 		here = new Here(packets, port);
+		hash = new HashCore();
 	}
 
 	private final Program program;
@@ -40,6 +42,7 @@ public class Core extends Close {
 
 	private final Port port;
 	public final Here here;
+	public final HashCore hash;
 	
 	
 	@Override public void close() {
@@ -49,6 +52,7 @@ public class Core extends Close {
 		close(accept);
 		close(packets);
 		close(here);
+		close(hash);
 	}
 	
 	

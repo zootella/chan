@@ -29,6 +29,7 @@ public class ToolPanel {
 		snippetAction = new SnippetAction();
 		preferencesAction = new PreferencesAction();
 		informationAction = new InformationAction();
+		hashAction = new HashAction();
 		aboutAction = new AboutAction();
 		
 		menu = new JPopupMenu();
@@ -36,6 +37,7 @@ public class ToolPanel {
 			menu.add(new JMenuItem(snippetAction));
 		menu.add(new JMenuItem(preferencesAction));
 		menu.add(new JMenuItem(informationAction));
+		menu.add(new JMenuItem(hashAction));
 		menu.add(new JMenuItem(aboutAction));
 		menu.addSeparator();
 		menu.add(new JMenuItem(user.exitAction));
@@ -140,6 +142,18 @@ public class ToolPanel {
 			try {
 
 				program.user.info.frame.setVisible(true);
+				
+			} catch (Throwable t) { Mistake.stop(t); }
+		}
+	}
+
+	private final HashAction hashAction;
+	private class HashAction extends AbstractAction {
+		public HashAction() { super("Hash"); }
+		public void actionPerformed(ActionEvent a) {
+			try {
+
+				program.user.hash.frame.setVisible(true);
 				
 			} catch (Throwable t) { Mistake.stop(t); }
 		}

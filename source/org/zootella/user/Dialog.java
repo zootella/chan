@@ -1,5 +1,7 @@
 package org.zootella.user;
 
+import java.awt.Component;
+
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -31,11 +33,11 @@ public class Dialog {
 	// -------- Standard dialog boxes --------
 	
 	/** Show the user the Open box to choose a file on the disk, and put the path in dialog's field. */
-	public static void chooseFile(JDialog dialog, JTextField field) { choose(dialog, field, JFileChooser.FILES_ONLY); }
+	public static void chooseFile(Component dialog, JTextField field) { choose(dialog, field, JFileChooser.FILES_ONLY); }
 	/** Show the user the Open box to choose a folder on the disk, and put the path in dialog's field. */
-	public static void chooseFolder(JDialog dialog, JTextField field) { choose(dialog, field, JFileChooser.DIRECTORIES_ONLY); }
+	public static void chooseFolder(Component dialog, JTextField field) { choose(dialog, field, JFileChooser.DIRECTORIES_ONLY); }
 	/** Show the user the Open box to choose a file or folder on the disk, and put the path in dialog's field. */
-	public static void chooseFileOrFolder(JDialog dialog, JTextField field) { choose(dialog, field, JFileChooser.FILES_AND_DIRECTORIES); }
+	public static void chooseFileOrFolder(Component dialog, JTextField field) { choose(dialog, field, JFileChooser.FILES_AND_DIRECTORIES); }
 
 	/**
 	 * Show the user the Open box to choose a file or folder on the disk, and put the path in dialog's field.
@@ -44,7 +46,7 @@ public class Dialog {
 	 * @param field  The JTextField to fill with the path text the user chooses
 	 * @param mode   Limit the choice to only files or only folders
 	 */
-	public static void choose(JDialog dialog, JTextField field, int mode) {
+	public static void choose(Component dialog, JTextField field, int mode) {
 			
 		// Make a Swing JFileChooser object
 		JFileChooser chooser = new JFileChooser();

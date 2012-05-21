@@ -25,6 +25,7 @@ public class User extends Close {
 
 		main = new MainFrame(this);
 		info = new InfoFrame(this);
+		hash = new HashFrame(this);
 
 		if (!Desktop.isMac()) // On Mac, we've already got the icon on the dock
 			icon = new CornerIcon(Main.name, Face.image(Guide.icon), restoreAction, exitAction);
@@ -36,6 +37,7 @@ public class User extends Close {
 	public final Skin skin;
 	public final MainFrame main;
 	public final InfoFrame info;
+	public final HashFrame hash;
 	public CornerIcon icon;
 	
 	@Override public void close() {
@@ -43,6 +45,7 @@ public class User extends Close {
 		
 		close(main);
 		close(info);
+		close(hash);
 		close(icon);
 	}
 
