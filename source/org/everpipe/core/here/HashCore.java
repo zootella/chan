@@ -15,13 +15,13 @@ public class HashCore extends Close {
 		update = new Update(new MyReceive());
 		model = new MyModel();
 		
-		
-		
+		/*
 		readValve = new ReadValve(update, file, range);
 		hashValve = new HashValve(update, range);
 		
 		flow = new Flow(update, false, false);
 		flow.list.add(readValve);
+		*/
 		
 		
 		
@@ -31,9 +31,13 @@ public class HashCore extends Close {
 	
 	private final Update update;
 	
+	private HashFile hashFile;
+	
+	/*
 	private final Flow flow;
 	private final ReadValve readValve;
 	private final HashValve hashValve;
+	*/
 
 	/*
 	private CenterTask centerTask;
@@ -41,6 +45,7 @@ public class HashCore extends Close {
 
 	@Override public void close() {
 		if (already()) return;
+		close(hashFile);
 		close(model);
 	}
 	
@@ -64,8 +69,17 @@ public class HashCore extends Close {
 	}
 	public void start() {
 		
+		if (hashFile != null) close(hashFile);
+
+		hashFile = new HashFile(update, path);
+		
+		
+		
 	}
 	public void stop() {
+		
+	}
+	public void reset() {
 		
 	}
 	

@@ -9,6 +9,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import org.everpipe.core.here.HashCore;
+import org.everpipe.core.here.HashFile;
 import org.everpipe.main.Program;
 import org.zootella.process.Mistake;
 import org.zootella.state.Close;
@@ -27,7 +29,7 @@ public class HashFrame extends Close {
 
 	public HashFrame(User user) {
 		program = user.program;
-
+		
 		panel = new Panel();
 		panel.border();
 		
@@ -83,6 +85,7 @@ public class HashFrame extends Close {
 			try {
 
 				Dialog.chooseFile(frame, path);
+				program.core.hash.open(path.getText());
 
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
@@ -93,7 +96,9 @@ public class HashFrame extends Close {
 		public StartAction() { super("Start"); } // Specify the button text
 		public void actionPerformed(ActionEvent a) {
 			try {
-
+				
+				program.core.hash.start();
+				
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
 	}
@@ -103,6 +108,8 @@ public class HashFrame extends Close {
 		public StopAction() { super("Stop"); } // Specify the button text
 		public void actionPerformed(ActionEvent a) {
 			try {
+				
+				program.core.hash.stop();
 
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
@@ -113,6 +120,8 @@ public class HashFrame extends Close {
 		public ResetAction() { super("Reset"); } // Specify the button text
 		public void actionPerformed(ActionEvent a) {
 			try {
+				
+				program.core.hash.reset();
 
 			} catch (Throwable t) { Mistake.stop(t); }
 		}

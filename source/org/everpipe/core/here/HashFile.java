@@ -18,17 +18,17 @@ import org.zootella.valve.Valve;
 
 public class HashFile extends Close {
 
-	public HashFile(Update up, Path path) {
+	public HashFile(Update up, String path) {
 		this.up = up;
 		update = new Update(new MyReceive());
-		
-		openTask = new OpenTask(update, new Open(path, null, Open.read));
+
+		update.send(); //TODO this is necessary, right?
 	}
 	
 	private final Update up;
 	private final Update update;
-	private final OpenTask openTask;
 
+	private OpenTask openTask;
 	private File file;
 	private ReadValve readValve;
 	private HashValve hashValve;
@@ -53,6 +53,8 @@ public class HashFile extends Close {
 			try {
 				
 				//open the file
+				if (openTask == null)
+					openTask = new OpenTask(update, new Open(new Path(path), null, Open.read));
 				if (done(openTask) && file == null)
 					file = openTask.result();
 				
