@@ -33,7 +33,7 @@ public class HashFile extends Close {
 	private ReadValve readValve;
 	private HashValve hashValve;
 	private Flow flow;
-	private Exception exception;
+	private ProgramException exception;
 
 	/*
 	private CenterTask centerTask;
@@ -44,6 +44,8 @@ public class HashFile extends Close {
 		close(openTask);
 		close(flow); // Closes the valves in the list
 		close(file);
+		
+		up.send();
 	}
 	
 
@@ -53,14 +55,14 @@ public class HashFile extends Close {
 			try {
 				
 				//open the file
-				if (openTask == null)
+				if (no(openTask))
 					openTask = new OpenTask(update, new Open(new Path(path), null, Open.read));
-				if (done(openTask) && file == null)
+				if (done(openTask) && no(file))
 					file = openTask.result();
 				
-				if (file != null && flow == null) {
+				if (is(file) && no(flow)) {
 					
-					Range range = new Range(0, file.size());
+					Range range = new Range(0, file.size());//TODO test that a 0 byte file passes through this correctly, it should
 					
 					//hash it
 					readValve = new ReadValve(update, file, range);
@@ -71,31 +73,12 @@ public class HashFile extends Close {
 					flow.list.add(hashValve);
 				}
 				
-				if (flow != null && !flow.closed() && !flow.isEmpty())
+				if (is(flow))
 					flow.move();
 				
-				if (flow != null && !flow.closed() && flow.isEmpty()) {
-					close(flow);
-					
-					
-				}
-					
+				up.send();//TODO this is cheap, you should only send one when you know something has changed
 				
 			} catch (ProgramException e) { exception = e; close(HashFile.this); up.send(); }
-				
-				
-
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
 		}
 	}
 	
@@ -124,6 +107,9 @@ public class HashFile extends Close {
 	}
 	public Data hash() {
 		return Data.empty();
+	}
+	public ProgramException exception() {
+		return exception;
 	}
 	//also time started, speed now, throw the exception that caused us to stop, and so on
 	

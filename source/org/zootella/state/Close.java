@@ -80,9 +80,11 @@ public abstract class Close {
 	public static boolean no(Close c) { return c == null; }
 	/** true if c exists. */
 	public static boolean is(Close c) { return c != null; }
+	/** true if c exists and is not yet closed. */
+//	public static boolean going(Close c) { return c != null && !c.closed(); } //TODO choose a better name for this one, or all four of them
 	/** true if c exists and is closed. */
 	public static boolean done(Close c) { return c != null && c.closed(); }
-	
+
 	// See
 	private static final Set<Close> list = new HashSet<Close>();
 	private static synchronized void add(Close c) { list.add(c); }
