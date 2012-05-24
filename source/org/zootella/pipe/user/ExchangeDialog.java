@@ -15,9 +15,9 @@ import org.zootella.base.user.Screen;
 import org.zootella.base.user.panel.Cell;
 import org.zootella.base.user.panel.Panel;
 import org.zootella.base.user.widget.TextArea;
+import org.zootella.main.Main;
+import org.zootella.main.Program;
 import org.zootella.pipe.core.museum.Pipe;
-import org.zootella.pipe.main.Main;
-import org.zootella.pipe.main.Program;
 
 public class ExchangeDialog {
 	

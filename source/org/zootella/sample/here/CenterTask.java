@@ -1,4 +1,4 @@
-package org.zootella.pipe.core.here;
+package org.zootella.sample.here;
 
 import org.zootella.base.data.Number;
 import org.zootella.base.data.Outline;
@@ -21,7 +21,6 @@ import org.zootella.base.state.Update;
 import org.zootella.base.time.Duration;
 import org.zootella.base.time.Egg;
 import org.zootella.base.time.Now;
-import org.zootella.pipe.center.Center;
 
 /** A CenterTask figures out what our IP address is once and right now. */
 public class CenterTask extends Close {

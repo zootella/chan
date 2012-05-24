@@ -13,7 +13,7 @@ import org.zootella.base.state.Receive;
 import org.zootella.base.state.Update;
 import org.zootella.base.time.Ago;
 import org.zootella.base.time.Pulse;
-import org.zootella.pipe.main.Program;
+import org.zootella.main.Program;
 
 public class PipeConnect extends Close {
 	

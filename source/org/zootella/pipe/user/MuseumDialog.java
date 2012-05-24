@@ -9,10 +9,10 @@ import javax.swing.JPanel;
 import org.zootella.base.process.Mistake;
 import org.zootella.base.user.Screen;
 import org.zootella.base.user.skin.PlainButton;
+import org.zootella.main.Program;
 import org.zootella.pipe.core.museum.Pipe;
 import org.zootella.pipe.core.museum.ReceivePipe;
 import org.zootella.pipe.core.museum.SendPipe;
-import org.zootella.pipe.main.Program;
 
 public class MuseumDialog {
 	

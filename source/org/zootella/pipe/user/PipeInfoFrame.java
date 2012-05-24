@@ -9,8 +9,8 @@ import org.zootella.base.state.Close;
 import org.zootella.base.user.Screen;
 import org.zootella.base.user.panel.Cell;
 import org.zootella.base.user.panel.Panel;
+import org.zootella.main.Program;
 import org.zootella.pipe.core.museum.Pipe;
-import org.zootella.pipe.main.Program;
 
 public class PipeInfoFrame extends Close {
 	

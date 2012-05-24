@@ -16,9 +16,9 @@ import org.zootella.base.desktop.Desktop;
 import org.zootella.base.process.Mistake;
 import org.zootella.base.state.Close;
 import org.zootella.base.user.Screen;
+import org.zootella.main.Main;
+import org.zootella.main.Program;
 import org.zootella.pipe.core.museum.Pipe;
-import org.zootella.pipe.main.Main;
-import org.zootella.pipe.main.Program;
 
 /** The main window on the screen that lists the running pipes. */
 public class MainFrame extends Close {

@@ -1,4 +1,4 @@
-package org.zootella.pipe.user;
+package org.zootella.sample.hash;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -18,9 +18,9 @@ import org.zootella.base.user.Screen;
 import org.zootella.base.user.panel.Cell;
 import org.zootella.base.user.panel.Panel;
 import org.zootella.base.user.widget.TextLine;
-import org.zootella.pipe.core.here.HashCore;
-import org.zootella.pipe.core.here.HashFile;
-import org.zootella.pipe.main.Program;
+import org.zootella.main.Program;
+import org.zootella.pipe.user.Guide;
+import org.zootella.pipe.user.User;
 
 /** The Hash window that lets the user hash a file and shows progress. */
 public class HashFrame extends Close {

@@ -1,4 +1,4 @@
-package org.zootella.pipe.core;
+package org.zootella.main;
 
 import org.zootella.base.data.Data;
 import org.zootella.base.exception.DataException;
@@ -7,10 +7,10 @@ import org.zootella.base.net.name.Port;
 import org.zootella.base.net.packet.Packets;
 import org.zootella.base.process.Mistake;
 import org.zootella.base.state.Close;
-import org.zootella.pipe.core.here.HashCore;
-import org.zootella.pipe.core.here.Here;
-import org.zootella.pipe.core.here.HereOld;
-import org.zootella.pipe.main.Program;
+import org.zootella.pipe.core.Pipes;
+import org.zootella.sample.hash.HashCore;
+import org.zootella.sample.here.Here;
+import org.zootella.sample.here.HereOld;
 
 /** The core program beneath the window that does everything. */
 public class Core extends Close {

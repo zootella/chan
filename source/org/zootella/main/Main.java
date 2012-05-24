@@ -1,4 +1,4 @@
-package org.zootella.pipe.main;
+package org.zootella.main;
 
 import javax.swing.SwingUtilities;
 

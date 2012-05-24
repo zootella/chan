@@ -17,7 +17,7 @@ import org.zootella.base.user.Screen;
 import org.zootella.base.user.panel.Cell;
 import org.zootella.base.user.panel.Panel;
 import org.zootella.base.user.widget.TextLine;
-import org.zootella.pipe.main.Program;
+import org.zootella.main.Program;
 
 /** The Info window that shows advanced statistics and diagnostic information. */
 public class InfoFrame extends Close {

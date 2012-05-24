@@ -1,4 +1,4 @@
-package org.zootella.pipe.main;
+package org.zootella.main;
 
 import org.zootella.base.data.Data;
 import org.zootella.base.state.Close;

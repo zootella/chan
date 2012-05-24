@@ -1,4 +1,4 @@
-package org.zootella.pipe.center;
+package org.zootella.sample.here;
 
 import javax.swing.SwingUtilities;
 

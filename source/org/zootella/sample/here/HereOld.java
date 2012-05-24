@@ -1,4 +1,4 @@
-package org.zootella.pipe.core.here;
+package org.zootella.sample.here;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

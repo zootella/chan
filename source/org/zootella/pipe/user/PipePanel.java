@@ -8,8 +8,8 @@ import javax.swing.JPanel;
 
 import org.zootella.base.process.Mistake;
 import org.zootella.base.user.skin.PlainButton;
+import org.zootella.main.Program;
 import org.zootella.pipe.core.museum.Pipe;
-import org.zootella.pipe.main.Program;
 
 /** A Status panel shows a pipe to the user. */
 public class PipePanel {

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.zootella.base.state.Close;
+import org.zootella.main.Program;
 import org.zootella.pipe.core.museum.Pipe;
-import org.zootella.pipe.main.Program;
 import org.zootella.pipe.user.ExchangeDialog;
 import org.zootella.pipe.user.FolderDialog;
 import org.zootella.pipe.user.MuseumDialog;

@@ -11,9 +11,9 @@ import javax.swing.JPopupMenu;
 import org.zootella.base.process.Mistake;
 import org.zootella.base.user.skin.PlainButton;
 import org.zootella.base.user.widget.Grip;
-import org.zootella.pipe.main.Main;
-import org.zootella.pipe.main.Program;
-import org.zootella.pipe.main.Snippet;
+import org.zootella.main.Main;
+import org.zootella.main.Program;
+import org.zootella.main.Snippet;
 
 /** The toolbar at the top of the main window. */
 public class ToolPanel {

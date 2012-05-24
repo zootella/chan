@@ -1,4 +1,4 @@
-package org.zootella.pipe.core.here;
+package org.zootella.sample.hash;
 
 import org.zootella.base.data.Data;
 import org.zootella.base.encrypt.hash.HashValve;

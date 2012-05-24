@@ -15,8 +15,8 @@ import org.zootella.base.process.Mistake;
 import org.zootella.base.state.Close;
 import org.zootella.base.state.Receive;
 import org.zootella.base.state.Update;
-import org.zootella.pipe.main.Main;
-import org.zootella.pipe.main.Program;
+import org.zootella.main.Main;
+import org.zootella.main.Program;
 import org.zootella.pipe.user.PipeInfoFrame;
 import org.zootella.pipe.user.PipePanel;
 
