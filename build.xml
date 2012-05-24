@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- Build Pipe -->
+<!-- Build the jar -->
 <project default="build">
 	<target name="build" description="Compile and package the source code into a jar">
 
@@ -49,7 +49,7 @@
 
 		<!-- Delete temporary folders to make everything again from scratch -->
 		<delete dir="ant"/>
-		<delete file="work/pipe.jar"/>
+		<delete file="work/zootella.jar"/>
 
 		<!-- Copy the tree of resource files so they'll also get bundled into the jar -->
 		<copy todir="ant">
@@ -88,7 +88,7 @@
 		filesonly = yes  Store only file entries
 		-->
 		<jar
-			jarfile="work/pipe.jar"
+			jarfile="work/zootella.jar"
 			basedir="ant"
 			filesonly="yes">
 
@@ -96,7 +96,7 @@
 			<manifest>
 
 				<!-- The class Java will run when the user double-clicks the jar -->
-				<attribute name="Main-Class" value="org.everpipe.main.Main"/>
+				<attribute name="Main-Class" value="org.zootella.main.Main"/>
 
 				<!-- The names of the .jar files the program will use when it runs, separated by spaces -->
 				<attribute name="Class-Path" value="${class.path.line}"/>
