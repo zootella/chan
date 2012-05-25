@@ -18,8 +18,8 @@ import org.zootella.base.user.Screen;
 import org.zootella.base.user.panel.Cell;
 import org.zootella.base.user.panel.Panel;
 import org.zootella.base.user.widget.TextLine;
+import org.zootella.main.Guide;
 import org.zootella.main.Program;
-import org.zootella.pipe.user.Guide;
 import org.zootella.pipe.user.User;
 
 /** The Hash window that lets the user hash a file and shows progress. */

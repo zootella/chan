@@ -1,4 +1,4 @@
-package org.zootella.pipe.user;
+package org.zootella.sample.here;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -17,7 +17,9 @@ import org.zootella.base.user.Screen;
 import org.zootella.base.user.panel.Cell;
 import org.zootella.base.user.panel.Panel;
 import org.zootella.base.user.widget.TextLine;
+import org.zootella.main.Guide;
 import org.zootella.main.Program;
+import org.zootella.pipe.user.User;
 
 /** The Info window that shows advanced statistics and diagnostic information. */
 public class InfoFrame extends Close {

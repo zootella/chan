@@ -1,4 +1,4 @@
-package org.zootella.pipe.user;
+package org.zootella.main;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -11,9 +11,7 @@ import javax.swing.JPopupMenu;
 import org.zootella.base.process.Mistake;
 import org.zootella.base.user.skin.PlainButton;
 import org.zootella.base.user.widget.Grip;
-import org.zootella.main.Main;
-import org.zootella.main.Program;
-import org.zootella.main.Snippet;
+import org.zootella.pipe.user.User;
 
 /** The toolbar at the top of the main window. */
 public class ToolPanel {

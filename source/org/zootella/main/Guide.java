@@ -1,4 +1,4 @@
-package org.zootella.pipe.user;
+package org.zootella.main;
 
 import java.awt.Dimension;
 import java.awt.Font;

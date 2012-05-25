@@ -10,9 +10,12 @@ import org.zootella.base.state.Close;
 import org.zootella.base.user.CornerIcon;
 import org.zootella.base.user.Face;
 import org.zootella.base.user.skin.Skin;
+import org.zootella.main.Guide;
 import org.zootella.main.Main;
+import org.zootella.main.MainFrame;
 import org.zootella.main.Program;
 import org.zootella.sample.hash.HashFrame;
+import org.zootella.sample.here.InfoFrame;
 
 public class User extends Close {
 
