@@ -1,4 +1,4 @@
-package org.zootella.pipe.core.museum;
+package org.zootella.sample.connect;
 
 import org.zootella.base.data.Data;
 import org.zootella.base.data.Outline;

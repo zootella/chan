@@ -4,7 +4,6 @@ import org.zootella.base.process.Mistake;
 import org.zootella.base.state.Close;
 import org.zootella.base.store.Store;
 import org.zootella.base.user.Face;
-import org.zootella.pipe.user.User;
 
 public class Program extends Close {
 	

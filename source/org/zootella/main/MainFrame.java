@@ -16,8 +16,6 @@ import org.zootella.base.desktop.Desktop;
 import org.zootella.base.process.Mistake;
 import org.zootella.base.state.Close;
 import org.zootella.base.user.Screen;
-import org.zootella.pipe.core.museum.Pipe;
-import org.zootella.pipe.user.User;
 
 /** The main window on the screen that lists the running pipes. */
 public class MainFrame extends Close {
@@ -55,7 +53,7 @@ public class MainFrame extends Close {
 
 	public void fill() {
 
-		Dimension d = new Dimension(Guide.pipeWidth, Guide.toolHeight + (program.core.pipes.pipes.size() * Guide.pipeHeight));
+		Dimension d = new Dimension(Guide.pipeWidth, Guide.toolHeight);
 		
 		panel.setSize(d);
 		frame.setSize(d);
@@ -63,12 +61,14 @@ public class MainFrame extends Close {
 		panel.removeAll();
 		panel.add(tool.panel);
 		int y = Guide.toolHeight;
+		/*
 		for (Pipe pipe : program.core.pipes.pipes) {
 			JPanel p = pipe.userPanel().panel;
 			p.setLocation(0, y);
 			panel.add(p);
 			y += Guide.pipeHeight;
 		}
+		*/
 	}
 
 	public final Program program;

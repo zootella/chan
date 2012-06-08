@@ -20,7 +20,7 @@ import org.zootella.base.user.panel.Panel;
 import org.zootella.base.user.widget.TextLine;
 import org.zootella.main.Guide;
 import org.zootella.main.Program;
-import org.zootella.pipe.user.User;
+import org.zootella.main.User;
 
 /** The Hash window that lets the user hash a file and shows progress. */
 public class HashFrame extends Close {

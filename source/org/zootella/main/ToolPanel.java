@@ -11,7 +11,6 @@ import javax.swing.JPopupMenu;
 import org.zootella.base.process.Mistake;
 import org.zootella.base.user.skin.PlainButton;
 import org.zootella.base.user.widget.Grip;
-import org.zootella.pipe.user.User;
 
 /** The toolbar at the top of the main window. */
 public class ToolPanel {
@@ -91,8 +90,6 @@ public class ToolPanel {
 		public void actionPerformed(ActionEvent a) {
 			try {
 
-				program.core.pipes.make();
-				
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
 	}
