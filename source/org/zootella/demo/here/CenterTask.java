@@ -21,6 +21,7 @@ import org.zootella.base.state.Update;
 import org.zootella.base.time.Duration;
 import org.zootella.base.time.Egg;
 import org.zootella.base.time.Now;
+import org.zootella.center.Center;
 
 /** A CenterTask figures out what our IP address is once and right now. */
 public class CenterTask extends Close {

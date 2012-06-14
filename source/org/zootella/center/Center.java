@@ -1,4 +1,4 @@
-package org.zootella.demo.here;
+package org.zootella.center;
 
 import javax.swing.SwingUtilities;
 
