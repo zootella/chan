@@ -10,7 +10,6 @@ import java.awt.event.WindowEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JMenuItem;
 
 import net.roydesign.mac.MRJAdapter;
 
@@ -31,19 +30,26 @@ public class Window extends Close {
 		program = user.program;
 		
 		snippetAction = new SnippetAction();
-		preferencesAction = new PreferencesAction();
-		informationAction = new InformationAction();
+		browserAction = new BrowserAction();
+		connectAction = new ConnectAction();
 		hashAction = new HashAction();
-		aboutAction = new AboutAction();
+		hereAction = new HereAction();
+		spinAction = new SpinAction();
+		trackerAction = new TrackerAction();
+		
+		Panel buttons = Panel.row();
+		buttons.add(Cell.wrap(new JButton(snippetAction)));
+		buttons.add(Cell.wrap(new JButton(browserAction)));
+		buttons.add(Cell.wrap(new JButton(connectAction)));
+		buttons.add(Cell.wrap(new JButton(hashAction)));
+		buttons.add(Cell.wrap(new JButton(hereAction)));
+		buttons.add(Cell.wrap(new JButton(spinAction)));
+		buttons.add(Cell.wrap(new JButton(trackerAction)));
+		buttons.add(Cell.wrap(new JButton(user.exitAction)));
 		
 		panel = new Panel();
 		panel.border();
-		panel.place(0, 0, 1, 1, 0, 0, 0, 0, Cell.wrap(new JButton(snippetAction)).lowerLeft());
-		panel.place(1, 0, 1, 1, 0, 1, 0, 0, Cell.wrap(new JButton(preferencesAction)).lowerLeft());
-		panel.place(2, 0, 1, 1, 0, 1, 0, 0, Cell.wrap(new JButton(informationAction)).lowerLeft());
-		panel.place(3, 0, 1, 1, 0, 1, 0, 0, Cell.wrap(new JButton(hashAction)).lowerLeft());
-		panel.place(4, 0, 1, 1, 0, 1, 0, 0, Cell.wrap(new JButton(aboutAction)).lowerLeft());
-		panel.place(5, 0, 1, 1, 0, 1, 0, 0, Cell.wrap(new JButton(user.exitAction)).lowerLeft().grow());
+		panel.place(0, 0, 1, 1, 0, 0, 0, 0, Cell.wrap(buttons.panel).lowerLeft().grow());
 
 		frame = new JFrame();
 		frame.addWindowListener(new MyWindowListener()); // Find out when the user closes the window from the taskbar
@@ -59,8 +65,8 @@ public class Window extends Close {
 
 	public final Program program;
 
-	public final Panel panel;
 	public final JFrame frame;
+	public final Panel panel;
 
 	@Override public void close() {
 		if (already()) return;
@@ -69,76 +75,71 @@ public class Window extends Close {
 		frame.dispose(); // Dispose the frame so the process can close
 	}
 
-	
-	
-	
-
-
 	private final SnippetAction snippetAction;
 	private class SnippetAction extends AbstractAction {
 		public SnippetAction() { super("Snippet"); }
 		public void actionPerformed(ActionEvent a) {
 			try {
-
 				Snippet.snippet(program);
-
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
 	}
-
-	private final PreferencesAction preferencesAction;
-	private class PreferencesAction extends AbstractAction {
-		public PreferencesAction() { super("Preferences"); }
+	
+	// Demos
+	
+	private final BrowserAction browserAction;
+	private class BrowserAction extends AbstractAction {
+		public BrowserAction() { super("Browser"); }
 		public void actionPerformed(ActionEvent a) {
 			try {
-				
-				System.out.println("preferences action");
-
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
 	}
-
-	private final InformationAction informationAction;
-	private class InformationAction extends AbstractAction {
-		public InformationAction() { super("Information"); }
+	private final ConnectAction connectAction;
+	private class ConnectAction extends AbstractAction {
+		public ConnectAction() { super("Connect"); }
 		public void actionPerformed(ActionEvent a) {
 			try {
-
-				program.user.info.frame.setVisible(true);
-				
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
 	}
-
 	private final HashAction hashAction;
 	private class HashAction extends AbstractAction {
 		public HashAction() { super("Hash"); }
 		public void actionPerformed(ActionEvent a) {
 			try {
-				
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
 	}
-
-	private final AboutAction aboutAction;
-	private class AboutAction extends AbstractAction {
-		public AboutAction() { super("About"); }
+	private final HereAction hereAction;
+	private class HereAction extends AbstractAction {
+		public HereAction() { super("Here"); }
 		public void actionPerformed(ActionEvent a) {
 			try {
 				
-				System.out.println("about action");
+				program.user.here.frame.setVisible(true);
 				
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
 	}
+	private final SpinAction spinAction;
+	private class SpinAction extends AbstractAction {
+		public SpinAction() { super("Spin"); }
+		public void actionPerformed(ActionEvent a) {
+			try {
+			} catch (Throwable t) { Mistake.stop(t); }
+		}
+	}
+	private final TrackerAction trackerAction;
+	private class TrackerAction extends AbstractAction {
+		public TrackerAction() { super("Tracker"); }
+		public void actionPerformed(ActionEvent a) {
+			try {
+			} catch (Throwable t) { Mistake.stop(t); }
+		}
+	}
 	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 	/** On Windows, the user right-clicked the taskbar button and clicked "X Close" or keyed Alt+F4. */
