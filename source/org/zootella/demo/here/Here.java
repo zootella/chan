@@ -1,4 +1,4 @@
-package org.zootella.sample.here;
+package org.zootella.demo.here;
 
 import org.zootella.base.data.Outline;
 import org.zootella.base.net.name.Ip;

@@ -1,4 +1,4 @@
-package org.zootella.sample.hash;
+package org.zootella.demo.hash;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -26,9 +26,11 @@ import org.zootella.main.User;
 public class HashFrame extends Close {
 	
 	private final Program program;
+	private final HashCore core;
 
-	public HashFrame(User user) {
+	public HashFrame(User user, HashCore core) {
 		program = user.program;
+		this.core = core;
 		
 		panel = new Panel();
 		panel.border();
@@ -52,7 +54,7 @@ public class HashFrame extends Close {
 		
 		
 		// Make our inner View object and connect the Model below to it
-		program.core.hash.model.add(view); // When the Model below changes, it will call our view.refresh() method
+		core.model.add(view); // When the Model below changes, it will call our view.refresh() method
 		view.refresh();//TODO why not put view.refresh() inside add(view)
 
 		frame = new JFrame();
@@ -85,7 +87,7 @@ public class HashFrame extends Close {
 			try {
 
 				Dialog.chooseFile(frame, path);
-				program.core.hash.open(path.getText());
+				core.open(path.getText());
 
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
@@ -97,7 +99,7 @@ public class HashFrame extends Close {
 		public void actionPerformed(ActionEvent a) {
 			try {
 				
-				program.core.hash.start();
+				core.start();
 				
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
@@ -109,7 +111,7 @@ public class HashFrame extends Close {
 		public void actionPerformed(ActionEvent a) {
 			try {
 				
-				program.core.hash.stop();
+				core.stop();
 
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
@@ -121,7 +123,7 @@ public class HashFrame extends Close {
 		public void actionPerformed(ActionEvent a) {
 			try {
 				
-				program.core.hash.reset();
+				core.reset();
 
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
@@ -136,9 +138,9 @@ public class HashFrame extends Close {
 		// The Model beneath changed, we need to update what we show the user
 		public void refresh() {
 			
-			Refresh.text(status1.area, program.core.hash.model.status1());
-			Refresh.text(status2.area, program.core.hash.model.status2());
-			Refresh.text(status3.area, program.core.hash.model.status3());
+			Refresh.text(status1.area, core.model.status1());
+			Refresh.text(status2.area, core.model.status2());
+			Refresh.text(status3.area, core.model.status3());
 		}
 
 		// The Model beneath closed, take this View off the screen

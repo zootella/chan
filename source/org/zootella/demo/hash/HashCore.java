@@ -1,4 +1,4 @@
-package org.zootella.sample.hash;
+package org.zootella.demo.hash;
 
 import org.zootella.base.encrypt.hash.HashValve;
 import org.zootella.base.file.ReadValve;

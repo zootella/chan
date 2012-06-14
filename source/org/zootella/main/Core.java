@@ -7,8 +7,7 @@ import org.zootella.base.net.name.Port;
 import org.zootella.base.net.packet.Packets;
 import org.zootella.base.process.Mistake;
 import org.zootella.base.state.Close;
-import org.zootella.sample.hash.HashCore;
-import org.zootella.sample.here.Here;
+import org.zootella.demo.here.Here;
 
 /** The core program beneath the window that does everything. */
 public class Core extends Close {
@@ -29,7 +28,6 @@ public class Core extends Close {
 		accept = new Accept(port);
 		packets = new Packets(port);
 		here = new Here(packets, port);
-		hash = new HashCore();
 	}
 
 	private final Program program;
@@ -38,8 +36,6 @@ public class Core extends Close {
 
 	private final Port port;
 	public final Here here;
-	public final HashCore hash;
-	
 	
 	@Override public void close() {
 		if (already()) return;
@@ -47,12 +43,5 @@ public class Core extends Close {
 		close(accept);
 		close(packets);
 		close(here);
-		close(hash);
 	}
-	
-	
-
-	
-	
-
 }

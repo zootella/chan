@@ -1,4 +1,4 @@
-package org.zootella.sample.connect;
+package org.zootella.demo.connect;
 
 import org.zootella.base.data.Data;
 import org.zootella.base.data.Outline;

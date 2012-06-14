@@ -13,11 +13,11 @@ import org.zootella.base.user.skin.PlainButton;
 import org.zootella.base.user.widget.Grip;
 
 /** The toolbar at the top of the main window. */
-public class ToolPanel {
+public class Toolbar {
 	
 	// Object
 	
-	public ToolPanel(User user, MainFrame main) {
+	public Toolbar(User user, Window main) {
 		this.program = main.program;
 
 		closeAction = new CloseAction();
@@ -148,7 +148,6 @@ public class ToolPanel {
 		public void actionPerformed(ActionEvent a) {
 			try {
 
-				program.user.hash.frame.setVisible(true);
 				
 			} catch (Throwable t) { Mistake.stop(t); }
 		}

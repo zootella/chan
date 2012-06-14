@@ -18,23 +18,25 @@ import org.zootella.base.state.Close;
 import org.zootella.base.user.Screen;
 
 /** The main window on the screen that lists the running pipes. */
-public class MainFrame extends Close {
+public class Window extends Close {
 
 	// Object
 
 	/** Make the program's main window on the screen. */
-	public MainFrame(User user) {
+	public Window(User user) {
 		program = user.program;
 
 		frame = new JFrame();
+		/*
 		frame.setUndecorated(true);
 		frame.setResizable(false);
+		*/
 		frame.setLayout(null);
 		
 		panel = new JPanel();
 		panel.setLayout(null);
 
-		tool = new ToolPanel(user, this);
+		tool = new Toolbar(user, this);
 		tool.panel.setLocation(0, 0);
 
 		fill();
@@ -60,15 +62,6 @@ public class MainFrame extends Close {
 
 		panel.removeAll();
 		panel.add(tool.panel);
-		int y = Guide.toolHeight;
-		/*
-		for (Pipe pipe : program.core.pipes.pipes) {
-			JPanel p = pipe.userPanel().panel;
-			p.setLocation(0, y);
-			panel.add(p);
-			y += Guide.pipeHeight;
-		}
-		*/
 	}
 
 	public final Program program;
@@ -76,7 +69,7 @@ public class MainFrame extends Close {
 	public final JFrame frame;
 	public final JPanel panel;
 	
-	public final ToolPanel tool;
+	public final Toolbar tool;
 
 	@Override public void close() {
 		if (already()) return;

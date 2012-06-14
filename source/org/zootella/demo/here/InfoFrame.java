@@ -1,4 +1,4 @@
-package org.zootella.sample.here;
+package org.zootella.demo.here;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
