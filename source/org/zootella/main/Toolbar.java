@@ -30,13 +30,11 @@ public class Toolbar {
 		aboutAction = new AboutAction();
 		
 		menu = new JPopupMenu();
-		if (!Main.release)
-			menu.add(new JMenuItem(snippetAction));
+		menu.add(new JMenuItem(snippetAction));
 		menu.add(new JMenuItem(preferencesAction));
 		menu.add(new JMenuItem(informationAction));
 		menu.add(new JMenuItem(hashAction));
 		menu.add(new JMenuItem(aboutAction));
-		menu.addSeparator();
 		menu.add(new JMenuItem(user.exitAction));
 		
 		PlainButton closeButton = new PlainButton(closeAction, user.skin, Guide.skinToolClose, Guide.toolClose, Guide.ink);
