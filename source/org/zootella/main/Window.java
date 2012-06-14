@@ -27,10 +27,8 @@ public class Window extends Close {
 		program = user.program;
 
 		frame = new JFrame();
-		/*
 		frame.setUndecorated(true);
 		frame.setResizable(false);
-		*/
 		frame.setLayout(null);
 		
 		panel = new JPanel();

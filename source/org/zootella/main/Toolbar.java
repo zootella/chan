@@ -147,7 +147,6 @@ public class Toolbar {
 		public HashAction() { super("Hash"); }
 		public void actionPerformed(ActionEvent a) {
 			try {
-
 				
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
