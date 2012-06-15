@@ -107,14 +107,14 @@ public class Packets extends Close {
 
 	/** Add o to the list of objects this Packets object shows the packets it receives. */
 	public void add(PacketReceive o) {
-		open();
+		open(); // If this object is closed, we can't let it change, throw an exception
 		if (!receivers.contains(o))
 			receivers.add(o);
 	}
 	
 	/** Remove o from the list of objects this Packets object bothers with arrived packets. */
 	public void remove(PacketReceive o) {
-		open();
+		if (closed()) return; // If this object is closed, we can't let it change, do nothing
 		receivers.remove(o);
 	}
 }

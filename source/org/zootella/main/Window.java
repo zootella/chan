@@ -36,6 +36,12 @@ public class Window extends Close {
 		hereAction = new HereAction();
 		spinAction = new SpinAction();
 		trackerAction = new TrackerAction();
+
+		//TODO code more of these and then enable their buttons
+		browserAction.setEnabled(false);
+		connectAction.setEnabled(false);
+		spinAction.setEnabled(false);
+		trackerAction.setEnabled(false);
 		
 		Panel buttons = Panel.row();
 		buttons.add(Cell.wrap(new JButton(snippetAction)));
@@ -59,7 +65,7 @@ public class Window extends Close {
 		}
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource(Guide.icon)));
 		frame.setTitle(Main.name);
-		frame.setBounds(Screen.positionSize(new Dimension(600, 130)));
+		frame.setBounds(Screen.positionSize(new Dimension(670, 130)));
 		frame.setContentPane(panel.panel);
 	}
 

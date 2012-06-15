@@ -12,11 +12,11 @@ public class Main {
 	public static final boolean release = false;
 	
 	/** The name of this program. */
-	public static final String name = "Pipe";
+	public static final String name = "Chan";
 	/** Text that describes the version of this program. */
-	public static final String version = "2009 May 19";
+	public static final String version = "2012 Jun 15";
 	/** Text prefix for exchange codes. */
-	public static final String flag = "PIPE";
+	public static final String flag = "CHAN";
 	
 	// Main
 
