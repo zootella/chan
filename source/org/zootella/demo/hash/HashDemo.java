@@ -2,6 +2,8 @@ package org.zootella.demo.hash;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -11,26 +13,17 @@ import javax.swing.JTextField;
 
 import org.zootella.base.process.Mistake;
 import org.zootella.base.state.Close;
-import org.zootella.base.state.View;
 import org.zootella.base.user.Dialog;
-import org.zootella.base.user.Refresh;
 import org.zootella.base.user.Screen;
 import org.zootella.base.user.panel.Cell;
 import org.zootella.base.user.panel.Panel;
 import org.zootella.base.user.widget.TextLine;
 import org.zootella.main.Guide;
-import org.zootella.main.Program;
-import org.zootella.main.User;
 
 /** The Hash window that lets the user hash a file and shows progress. */
-public class HashFrame extends Close {
+public class HashDemo extends Close {
 	
-	private final Program program;
-	private final HashCore core;
-
-	public HashFrame(User user, HashCore core) {
-		program = user.program;
-		this.core = core;
+	public HashDemo() {
 		
 		panel = new Panel();
 		panel.border();
@@ -53,16 +46,16 @@ public class HashFrame extends Close {
 		panel.place(1, 4, 1, 1, 0, 0, 0, 0, Cell.wrap(toolbar.panel).lowerLeft().grow());
 		
 		
-		// Make our inner View object and connect the Model below to it
-		core.model.add(view); // When the Model below changes, it will call our view.refresh() method
-		view.refresh();//TODO why not put view.refresh() inside add(view)
 
 		frame = new JFrame();
+		frame.addWindowListener(new MyWindowListener()); // Find out when the user closes the window from the taskbar
 		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource(Guide.icon)));
 		frame.setTitle("Hash");
 		frame.setBounds(Screen.positionSize(Guide.sizeHashFrame));
 		frame.setContentPane(panel.panel);
+		
+		frame.setVisible(true);
 	}
 	
 	public final JFrame frame;
@@ -80,6 +73,17 @@ public class HashFrame extends Close {
 		frame.dispose(); // Dispose the frame so the process can close
 	}
 
+	
+	/** The user closed the window with the corner X, or by right-clicking the taskbar button. */
+	private class MyWindowListener extends WindowAdapter {
+		public void windowClosing(WindowEvent w) {
+			try {
+				close(HashDemo.this);
+			} catch (Throwable t) { Mistake.stop(t); }
+		}
+	}
+	
+	
 	private final OpenAction openAction = new OpenAction();
 	private class OpenAction extends AbstractAction {
 		public OpenAction() { super("Open..."); } // Specify the button text
@@ -87,7 +91,6 @@ public class HashFrame extends Close {
 			try {
 
 				Dialog.chooseFile(frame, path);
-				core.open(path.getText());
 
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
@@ -99,8 +102,6 @@ public class HashFrame extends Close {
 		public void actionPerformed(ActionEvent a) {
 			try {
 				
-				core.start();
-				
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
 	}
@@ -111,8 +112,6 @@ public class HashFrame extends Close {
 		public void actionPerformed(ActionEvent a) {
 			try {
 				
-				core.stop();
-
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
 	}
@@ -123,27 +122,7 @@ public class HashFrame extends Close {
 		public void actionPerformed(ActionEvent a) {
 			try {
 				
-				core.reset();
-
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
-	}
-
-	// View
-
-	// When our Model underneath changes, it calls these methods
-	private final View view = new MyView();
-	private class MyView implements View {
-
-		// The Model beneath changed, we need to update what we show the user
-		public void refresh() {
-			
-			Refresh.text(status1.area, core.model.status1());
-			Refresh.text(status2.area, core.model.status2());
-			Refresh.text(status3.area, core.model.status3());
-		}
-
-		// The Model beneath closed, take this View off the screen
-		public void vanish() { close(HashFrame.this); }
 	}
 }

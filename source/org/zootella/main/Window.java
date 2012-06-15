@@ -19,6 +19,7 @@ import org.zootella.base.state.Close;
 import org.zootella.base.user.Screen;
 import org.zootella.base.user.panel.Cell;
 import org.zootella.base.user.panel.Panel;
+import org.zootella.demo.hash.HashDemo;
 
 /** The main window on the screen that lists the running pipes. */
 public class Window extends Close {
@@ -114,6 +115,9 @@ public class Window extends Close {
 		public HashAction() { super("Hash"); }
 		public void actionPerformed(ActionEvent a) {
 			try {
+				
+				new HashDemo();
+				
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
 	}
