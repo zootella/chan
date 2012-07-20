@@ -36,6 +36,14 @@ public class Encode {
 	/** Turn data into text like "hello--", striking out non-ASCII bytes with hyphens. */
 	public static String strike(Data d) { StringBuffer b = new StringBuffer(); strike(b, d); return b.toString(); }
 
+	
+	/** Turn data into text using base 16, and put text characters in quotes, --The quote " character\r\n-- becomes --"The quote "22" character"0d0a-- */
+	public static String quote(Data d) { StringBuffer b = new StringBuffer(); Quote.encode(b, d); return b.toString(); }
+	/** Turn quoted text back into the data it was made from. */
+	public static Data unquote(String s) { Bay bay = new Bay(); Quote.decode(bay, s); return bay.data(); }
+	
+	
+	
 	// Base 16, 32, and 62
 
 	/** Turn data into text using base 16, each byte will become 2 characters, "00" through "ff". */
@@ -227,8 +235,8 @@ public class Encode {
 					b.append(']');
 				}
 			}
-			
-			// d is mostly data bytes
+
+		// d is mostly data bytes
 		} else {
 			b.append('['); // Encode it all into a single block in square braces
 			toBase16(b, d);
