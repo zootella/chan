@@ -42,7 +42,6 @@ public class EncodeTest {
 	
 	
 	
-	
 	@Test public void testQuote() throws Exception {
 
 		

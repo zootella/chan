@@ -98,7 +98,7 @@ public class Quote {
 			if (split1.found) {
 				
 				TextSplit split2 = Text.split(split1.after, "\"");
-				if (!split2.found) throw new DataException();
+				if (!split2.found) throw new DataException(); // Must have closing quote
 				
 				bay.add(split2.before);
 				s = split2.after;
