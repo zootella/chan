@@ -8,12 +8,12 @@ import org.zootella.base.exception.ProgramException;
 import org.zootella.base.net.flow.SocketBay;
 import org.zootella.base.net.name.IpPort;
 import org.zootella.base.process.Mistake;
-import org.zootella.base.state.Close;
+import org.zootella.base.state.OldClose;
 import org.zootella.base.state.Receive;
 import org.zootella.base.state.Update;
 import org.zootella.base.time.Egg;
 
-public class Connect extends Close {
+public class Connect extends OldClose {
 	
 	/** Make a new TCP socket connection to ipPort, say hello and get hash response, in 4 seconds or less. */
 	public Connect(Update up, IpPort ipPort, Data hello, Data hash) {

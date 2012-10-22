@@ -4,11 +4,11 @@ package org.zootella.base.file;
 import org.zootella.base.data.Bin;
 import org.zootella.base.size.Meter;
 import org.zootella.base.size.Range;
-import org.zootella.base.state.Close;
+import org.zootella.base.state.OldClose;
 import org.zootella.base.state.Update;
 import org.zootella.base.valve.Valve;
 
-public class WriteValve extends Close implements Valve {
+public class WriteValve extends OldClose implements Valve {
 	
 	// Make
 	

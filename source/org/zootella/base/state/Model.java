@@ -5,10 +5,10 @@ import java.util.Set;
 
 import org.zootella.base.exception.ProgramException;
 import org.zootella.base.time.Delay;
-import org.zootella.base.time.Pulse;
+import org.zootella.base.time.OldPulse;
 
 /** An object has a Model that extends this class to keep View objects above up to date. */
-public abstract class Model extends Close {
+public abstract class Model extends OldClose {
 
 	// Core
 
@@ -64,9 +64,9 @@ public abstract class Model extends Close {
 	/** If this Model has something guaranteed to change in time, like an age, have it pulse views above. */
 	public void pulse() {
 		if (pulse == null)
-			pulse = new Pulse(new MyReceive());
+			pulse = new OldPulse(new MyReceive());
 	}
-	private Pulse pulse;//TODO confirm nobody's using this and get rid of it
+	private OldPulse pulse;//TODO confirm nobody's using this and get rid of it
 	
 	
 	

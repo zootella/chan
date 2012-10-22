@@ -13,7 +13,7 @@ import org.zootella.base.net.packet.PacketReceive;
 import org.zootella.base.net.packet.Packets;
 import org.zootella.base.net.web.DomainTask;
 import org.zootella.base.process.Mistake;
-import org.zootella.base.state.Close;
+import org.zootella.base.state.OldClose;
 import org.zootella.base.state.Once;
 import org.zootella.base.state.Receive;
 import org.zootella.base.state.Result;
@@ -24,7 +24,7 @@ import org.zootella.base.time.Now;
 import org.zootella.center.Center;
 
 /** A CenterTask figures out what our IP address is once and right now. */
-public class CenterTask extends Close {
+public class CenterTask extends OldClose {
 	
 	// Make
 	

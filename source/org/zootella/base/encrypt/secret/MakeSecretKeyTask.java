@@ -1,12 +1,12 @@
 package org.zootella.base.encrypt.secret;
 
 import org.zootella.base.exception.ProgramException;
-import org.zootella.base.state.Close;
+import org.zootella.base.state.OldClose;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
 import org.zootella.base.state.Update;
 
-public class MakeSecretKeyTask extends Close {
+public class MakeSecretKeyTask extends OldClose {
 
 	public MakeSecretKeyTask(Update up) {
 		this.up = up; // We'll tell update when we're done

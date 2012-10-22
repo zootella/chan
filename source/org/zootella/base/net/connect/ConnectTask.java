@@ -7,13 +7,13 @@ import org.zootella.base.exception.NetException;
 import org.zootella.base.exception.ProgramException;
 import org.zootella.base.net.name.IpPort;
 import org.zootella.base.net.socket.Socket;
-import org.zootella.base.state.Close;
+import org.zootella.base.state.OldClose;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
 import org.zootella.base.state.Update;
 import org.zootella.base.time.Now;
 
-public class ConnectTask extends Close {
+public class ConnectTask extends OldClose {
 	
 	// Make
 

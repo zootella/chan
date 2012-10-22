@@ -4,13 +4,13 @@ import org.zootella.base.data.Bin;
 import org.zootella.base.exception.ProgramException;
 import org.zootella.base.size.Range;
 import org.zootella.base.size.move.Move;
-import org.zootella.base.state.Close;
+import org.zootella.base.state.OldClose;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
 import org.zootella.base.state.Update;
 import org.zootella.base.time.Now;
 
-public class HashTask extends Close {
+public class HashTask extends OldClose {
 
 	/** SHA1 hash and clear bin's data with the given Hash object, don't look at hash or bin until this is closed. */
 	public HashTask(Update up, Hash hash, Bin bin, Range range) {

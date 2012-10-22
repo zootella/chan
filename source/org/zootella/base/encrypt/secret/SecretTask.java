@@ -5,12 +5,12 @@ import javax.crypto.Cipher;
 import org.zootella.base.data.Bin;
 import org.zootella.base.exception.ProgramException;
 import org.zootella.base.size.move.Move;
-import org.zootella.base.state.Close;
+import org.zootella.base.state.OldClose;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
 import org.zootella.base.state.Update;
 
-public class SecretTask extends Close {
+public class SecretTask extends OldClose {
 
 	public SecretTask(Update up, Cipher cipher, int mode, Bin source, Bin destination) {
 		this.up = up; // We'll tell update when we're done

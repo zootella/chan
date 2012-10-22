@@ -2,12 +2,12 @@ package org.zootella.base.encrypt.sign;
 
 import org.zootella.base.data.Data;
 import org.zootella.base.exception.ProgramException;
-import org.zootella.base.state.Close;
+import org.zootella.base.state.OldClose;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
 import org.zootella.base.state.Update;
 
-public class SignTask extends Close {
+public class SignTask extends OldClose {
 
 	public SignTask(Update up, Data data, SignKey key) {
 		this.up = up; // We'll tell update when we're done

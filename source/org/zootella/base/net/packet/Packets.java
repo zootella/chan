@@ -8,12 +8,12 @@ import org.zootella.base.data.Data;
 import org.zootella.base.list.BinBin;
 import org.zootella.base.net.name.IpPort;
 import org.zootella.base.net.name.Port;
-import org.zootella.base.state.Close;
+import org.zootella.base.state.OldClose;
 import org.zootella.base.state.Receive;
 import org.zootella.base.state.Update;
 
 /** The program's Packets object listens on a port to send and receive UDP packets. */
-public class Packets extends Close {
+public class Packets extends OldClose {
 
 	/** Make a new Packets object that listens on the given port number. */
 	public Packets(Port port) {

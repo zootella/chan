@@ -10,14 +10,14 @@ import org.zootella.base.net.upnp.task.AddTask;
 import org.zootella.base.net.upnp.task.IpTask;
 import org.zootella.base.net.upnp.task.StartTask;
 import org.zootella.base.process.Mistake;
-import org.zootella.base.state.Close;
+import org.zootella.base.state.OldClose;
 import org.zootella.base.state.Receive;
 import org.zootella.base.state.Result;
 import org.zootella.base.state.Update;
 import org.zootella.base.time.Egg;
 import org.zootella.base.time.Time;
 
-public class Router extends Close {
+public class Router extends OldClose {
 	
 	public Router(Update up, Map tcp, Map udp) {
 		this.up = up;

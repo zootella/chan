@@ -3,10 +3,10 @@ package org.zootella.base.list;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.zootella.base.state.Close;
+import org.zootella.base.state.OldClose;
 import org.zootella.base.time.Now;
 
-public class TwoBoots<T> extends Close {
+public class TwoBoots<T> extends OldClose {
 	
 	// Make
 
@@ -76,7 +76,7 @@ public class TwoBoots<T> extends Close {
 	/** If we're holding objects that extend Close, call close() on all of them in set. */
 	private void closeContents(Set<T> set) {
 		for (T t : set)
-			if (t instanceof Close)
-				close((Close)t);
+			if (t instanceof OldClose)
+				close((OldClose)t);
 	}
 }

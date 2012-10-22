@@ -1,34 +1,48 @@
 package org.zootella.base.state;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.zootella.base.exception.ProgramException;
 import org.zootella.base.process.Mistake;
-import org.zootella.base.time.Duration;
 import org.zootella.base.time.Now;
 
-/** Have your object extend Close so the program will notice if you forget to later call its close() method. */
+/** Have your object extend Close so the program will pulse it, and notice if you forget to later call its close() method. */
 public abstract class Close {
+	
+	// Override
+
+	/**
+	 * Your object that extends Close must have this method.
+	 * Close your objects inside, put away resources, and never change again.
+	 */
+	public abstract void close();
+
+	/**
+	 * Override this method, and the program will call it periodically.
+	 * Notice things inside your object that have changed or finished, and do the next steps to move forward.
+	 */
+	public void pulse() {}
+	
+	/**
+	 * Override this method, and the program will call it periodically.
+	 * Compose text and information for the user based on the new current state of things.
+	 */
+	public void pulseUser() {}
 
 	// Core
 
 	/**
-	 * Count that the program has made another new object that needs to be closed.
+	 * Keep track of a new object that needs to be closed.
 	 * This automatically runs before execution enters the constructor of an object that extends Close.
 	 */
 	public Close() {
-		whenMade = new Now();
-		programOpen++; // Count the program has one more object open, this new one that extends Close
-		add(this);
+		add(this); // Add this new object that extends Close to the program's list of open objects
 	}
 	
 	/** true once this object that extends Close has been closed, and promises to not change again. */
 	public boolean closed() { return objectClosed; }
 	private boolean objectClosed; // Private so objects that extend Close can't get to this
-
-	/** Close your objects inside, put away resources, and never change again. */
-	public abstract void close(); // Your object that extends Close must have this method
 
 	/**
 	 * Mark this object that extends Close as closed, and only do this once.
@@ -39,27 +53,21 @@ public abstract class Close {
 	public boolean already() {
 		if (objectClosed) return true; // We're already closed, return true to return from the close() method
 		objectClosed = true;           // Mark this object that extends Close as now permanently closed
-		whenClosed = new Duration(whenMade);
-		programOpen--;                 // Count the program has one fewer object it needs to close
-		remove(this);
 		return false;                  // Return false to run the contents of the close() method this first and only time
 	}
 
 	// Program
-	
-	/** The total number of objects the program has made that still need to be closed. */
-	private static volatile int programOpen; // volatile because a Task thread may make an object that extends Close
 
 	/** Before the program closes, make sure every object with a close() method had it run. */
 	public static int checkAll() {
-		print();
-		return programOpen;
+		check();
+		return listSize();
 	}
 	
 	// Check
 
 	/** Make sure this object isn't closed before doing something that would change it. */
-	public void open() { if (objectClosed) throw new IllegalStateException(); }
+	public void confirmOpen() { if (objectClosed) throw new IllegalStateException(); }
 
 	/** Make sure this object is closed, throw e if given, and make sure o exists. */
 	public void check(ProgramException e, Object o) {
@@ -81,29 +89,65 @@ public abstract class Close {
 	/** true if c exists. */
 	public static boolean is(Close c) { return c != null; }
 	/** true if c exists and is not yet closed. */
-//	public static boolean going(Close c) { return c != null && !c.closed(); } //TODO choose a better name for this one, or all four of them
+	public static boolean open(Close c) { return c != null && !c.closed(); }
 	/** true if c exists and is closed. */
 	public static boolean done(Close c) { return c != null && c.closed(); }
 
-	// See
-	private static final Set<Close> list = new HashSet<Close>();
+	// List
+
+	/** The program's list of objects that extend Close, and aren't closed yet. */
+	private static final List<Close> list = new ArrayList<Close>();
+	/** Add a new object to the end of the program's list. */
 	private static synchronized void add(Close c) { list.add(c); }
-	private static synchronized void remove(Close c) { list.remove(c); }
-	private static synchronized void print() {
-		if (list.size() != 0) {
-			System.out.print(list.size() + " objects open:\n");
+	/** Remove the object at index i from the program's list. */
+	private static synchronized void remove(int i) { list.remove(i); }
+	/** Print information about the objects still in the list, and return how many there are. */
+	private static synchronized int check() {
+		int size = list.size();
+		if (size != 0) {
+			System.out.print(size + " objects open:\n");
 			for (Close c : list)
 				System.out.print(c.toString() + "\n");
 		}
+		return size;
 	}
 	
-	// Time
-	public Now whenMade() { return whenMade; }
-	public Duration whenClosed() { open(); return whenClosed; }
-	private final Now whenMade;
-	private Duration whenClosed;
-	//TODO problem accessing whenClosed, remove it and just have public final Now birth
-	
+	// Pulse
+
+	/** How many objects that extend Close are in the program's list. */
+	private static synchronized int listSize() {
+		return list.size();
+	}
+
+	/** Remove closed objects from the program's list so it only contains objects that need to be closed. */
+	private static synchronized void listClear() {
+		for (int i = list.size() - 1; i >= 0; i--) {
+			Close c = list.get(i);
+			
+			if (c.closed()) list.remove(i);
+		}
+	}
+
+	/** Make a single pass from the end of the list to the start, calling pulse() on each object. */
+	private static synchronized void listPulse() {
+		for (int i = list.size() - 1; i >= 0; i--) {
+			Close c = list.get(i);
+			
+			if (!c.closed()) c.pulse();
+		}
+	}
+
+	/** Make a single pass from the end of the list to the start, calling pulseUser() on each object. */
+	private static synchronized void listPulseUser() {
+		for (int i = list.size() - 1; i >= 0; i--) {
+			Close c = list.get(i);
+			
+			if (!c.closed()) c.pulseUser();
+		}
+	}
+
 	// Log
+
+	/** Write out diagnostic text for the programmer. */
 	public static void log(String s) { System.out.println((new Now()).toString() + " " + s); }
 }

@@ -6,13 +6,13 @@ import java.util.Set;
 import org.zootella.base.list.TwoBoots;
 import org.zootella.base.net.flow.SocketBay;
 import org.zootella.base.net.name.Port;
-import org.zootella.base.state.Close;
+import org.zootella.base.state.OldClose;
 import org.zootella.base.state.Receive;
 import org.zootella.base.state.Update;
 import org.zootella.base.time.Time;
 
 /** The program's Accept object listens on a port to accept new incoming TCP socket connections. */
-public class Accept extends Close {
+public class Accept extends OldClose {
 	
 	public Accept(Port port) {
 		

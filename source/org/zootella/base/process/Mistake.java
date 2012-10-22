@@ -5,7 +5,7 @@ import java.io.StringWriter;
 
 import javax.swing.JOptionPane;
 
-import org.zootella.base.state.Close;
+import org.zootella.base.state.OldClose;
 
 public class Mistake {
 
@@ -34,7 +34,7 @@ public class Mistake {
 
 	/** Make sure the program closed all the objects that needed to be closed. */
 	public static void closeCheck() {
-		int open = Close.checkAll();
+		int open = OldClose.checkAll();
 		if (open == 0) return; // Check
 		String title = "Mistake close:"; // Compose
 		String body = open + " objects still open\n";

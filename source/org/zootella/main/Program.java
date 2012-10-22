@@ -1,11 +1,11 @@
 package org.zootella.main;
 
 import org.zootella.base.process.Mistake;
-import org.zootella.base.state.Close;
+import org.zootella.base.state.OldClose;
 import org.zootella.base.store.Store;
 import org.zootella.base.user.Face;
 
-public class Program extends Close {
+public class Program extends OldClose {
 	
 	public Program() {
 

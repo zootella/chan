@@ -6,12 +6,12 @@ import java.nio.channels.SocketChannel;
 import org.zootella.base.data.Bin;
 import org.zootella.base.net.name.IpPort;
 import org.zootella.base.process.Mistake;
-import org.zootella.base.state.Close;
+import org.zootella.base.state.OldClose;
 import org.zootella.base.time.Duration;
 import org.zootella.base.time.Now;
 
 /** An open TCP socket connection. */
-public class Socket extends Close {
+public class Socket extends OldClose {
 
 	/** Make a Socket object to hold a TCP socket connection and information about how it connected. */
 	public Socket(SocketChannel channel, IpPort ipPort, boolean outgoing, Now start) {

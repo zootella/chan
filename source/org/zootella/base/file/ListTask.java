@@ -3,12 +3,12 @@ package org.zootella.base.file;
 import java.util.List;
 
 import org.zootella.base.exception.ProgramException;
-import org.zootella.base.state.Close;
+import org.zootella.base.state.OldClose;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
 import org.zootella.base.state.Update;
 
-public class ListTask extends Close {
+public class ListTask extends OldClose {
 
 	public ListTask(Update up, Path folder) {
 		this.up = up; // We'll tell update when we're done

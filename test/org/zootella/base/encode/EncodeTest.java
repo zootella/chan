@@ -7,7 +7,7 @@ import org.zootella.base.data.Data;
 import org.zootella.base.data.Encode;
 import org.zootella.base.data.Quote;
 import org.zootella.base.exception.DataException;
-import org.zootella.base.state.Close;
+import org.zootella.base.state.OldClose;
 
 public class EncodeTest {
 	
@@ -57,7 +57,7 @@ public class EncodeTest {
 		Assert.assertTrue(Quote.text(stringToByte("\r")) == false);
 		Assert.assertTrue(Quote.text(stringToByte("\n")) == false);
 		
-		Close.log("hello");
+		OldClose.log("hello");
 		
 		
 		
@@ -89,9 +89,9 @@ public class EncodeTest {
 		Assert.assertEquals(before, d.toString()); // Make sure quoting and dequoting gets us back to the original data
 		Assert.assertEquals(after, s); // Confirm we predicted what the quoted text would look like
 
-		Close.log("");
-		Close.log(before);
-		Close.log(after);
+		OldClose.log("");
+		OldClose.log(before);
+		OldClose.log(after);
 	}
 	
 	private void testUnquote(String before, String after, boolean valid) {

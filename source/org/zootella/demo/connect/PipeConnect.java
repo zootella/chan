@@ -8,14 +8,14 @@ import org.zootella.base.net.connect.Connect;
 import org.zootella.base.net.flow.SocketBay;
 import org.zootella.base.net.name.IpPort;
 import org.zootella.base.process.Mistake;
-import org.zootella.base.state.Close;
+import org.zootella.base.state.OldClose;
 import org.zootella.base.state.Receive;
 import org.zootella.base.state.Update;
 import org.zootella.base.time.Ago;
-import org.zootella.base.time.Pulse;
+import org.zootella.base.time.OldPulse;
 import org.zootella.main.Program;
 
-public class PipeConnect extends Close {
+public class PipeConnect extends OldClose {
 	
 	/** Keep trying to upload hello to the peer at lan and internet, or let it connect to us, until it says hash back. */
 	public PipeConnect(Program program, Update up, IpPort lan, IpPort internet, Data hello, Data hash) {
@@ -35,7 +35,7 @@ public class PipeConnect extends Close {
 		
 		lanAgo = new Ago();
 		netAgo = new Ago();
-		pulse = new Pulse(receive);
+		pulse = new OldPulse(receive);
 	}
 	
 	private final Program program;
@@ -52,7 +52,7 @@ public class PipeConnect extends Close {
 	
 	private final Ago lanAgo;
 	private final Ago netAgo;
-	private final Pulse pulse;
+	private final OldPulse pulse;
 
 	@Override public void close() {
 		if (already()) return;

@@ -2,14 +2,14 @@ package org.zootella.demo.hash;
 
 import org.zootella.base.encrypt.hash.HashValve;
 import org.zootella.base.file.ReadValve;
-import org.zootella.base.state.Close;
+import org.zootella.base.state.OldClose;
 import org.zootella.base.state.Model;
 import org.zootella.base.state.Receive;
 import org.zootella.base.state.Update;
 import org.zootella.base.valve.Flow;
 import org.zootella.base.valve.Valve;
 
-public class HashCore extends Close {
+public class HashCore extends OldClose {
 
 	public HashCore() {
 		update = new Update(new MyReceive());

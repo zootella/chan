@@ -5,11 +5,11 @@ import org.zootella.base.data.Bin;
 import org.zootella.base.exception.ProgramException;
 import org.zootella.base.net.socket.Socket;
 import org.zootella.base.size.Range;
-import org.zootella.base.state.Close;
+import org.zootella.base.state.OldClose;
 import org.zootella.base.state.Receive;
 import org.zootella.base.state.Update;
 
-public class SocketBay extends Close {
+public class SocketBay extends OldClose {
 
 	/** Put Valve and Bay objects around socket to upload and download. */
 	public SocketBay(Update up, Socket socket) {

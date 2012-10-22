@@ -1,12 +1,12 @@
 package org.zootella.base.file;
 
 import org.zootella.base.exception.ProgramException;
-import org.zootella.base.state.Close;
+import org.zootella.base.state.OldClose;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
 import org.zootella.base.state.Update;
 
-public class OpenTask extends Close {
+public class OpenTask extends OldClose {
 	
 	// Make
 

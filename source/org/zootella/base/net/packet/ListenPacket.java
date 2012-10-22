@@ -9,10 +9,10 @@ import org.zootella.base.data.Bin;
 import org.zootella.base.exception.NetException;
 import org.zootella.base.net.name.Port;
 import org.zootella.base.process.Mistake;
-import org.zootella.base.state.Close;
+import org.zootella.base.state.OldClose;
 
 /** A UDP socket bound to port that can send and receive packets. */
-public class ListenPacket extends Close {
+public class ListenPacket extends OldClose {
 
 	/** Bind a new UDP socket to port. */
 	public ListenPacket(Port port) {

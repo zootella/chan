@@ -9,10 +9,10 @@ import org.zootella.base.exception.DiskException;
 import org.zootella.base.process.Mistake;
 import org.zootella.base.size.Stripe;
 import org.zootella.base.size.StripePattern;
-import org.zootella.base.state.Close;
+import org.zootella.base.state.OldClose;
 
 /** An open file on the disk with access to its data. */
-public class File extends Close {
+public class File extends OldClose {
 
 	// Make
 
