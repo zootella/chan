@@ -3,6 +3,8 @@ package org.zootella.base.state;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import org.zootella.base.exception.ProgramException;
 import org.zootella.base.process.Mistake;
 import org.zootella.base.time.Now;
@@ -37,12 +39,15 @@ public abstract class Close {
 	 * This automatically runs before execution enters the constructor of an object that extends Close.
 	 */
 	public Close() {
+		requireEventThread();
 		add(this); // Add this new object that extends Close to the program's list of open objects
 	}
 	
 	/** true once this object that extends Close has been closed, and promises to not change again. */
 	public boolean closed() { return objectClosed; }
-	private boolean objectClosed; // Private so objects that extend Close can't get to this
+	private volatile boolean objectClosed;
+	// Private so objects that extend Close can't get to this
+	// A Task thread should never check if an object is closed, volatile in case one does 
 
 	/**
 	 * Mark this object that extends Close as closed, and only do this once.
@@ -59,10 +64,12 @@ public abstract class Close {
 	// Program
 
 	/** Before the program closes, make sure every object with a close() method had it run. */
+	/*
 	public static int checkAll() {
 		check();
 		return listSize();
 	}
+	*/
 	
 	// Check
 
@@ -80,6 +87,7 @@ public abstract class Close {
 
 	/** Close c ignoring null and exceptions. */
 	public static void close(Close c) {
+		requireEventThread();
 		if (c == null) return;
 		try { c.close(); } catch (Throwable t) { Mistake.log(t); } // Keep going to close the next object
 	}
@@ -95,59 +103,156 @@ public abstract class Close {
 
 	// List
 
-	/** The program's list of objects that extend Close, and aren't closed yet. */
+	/** The program's list of all objects that extend Close, and aren't closed yet. */
 	private static final List<Close> list = new ArrayList<Close>();
 	/** Add a new object to the end of the program's list. */
-	private static synchronized void add(Close c) { list.add(c); }
+//	private static synchronized void add(Close c) { list.add(c); }
 	/** Remove the object at index i from the program's list. */
-	private static synchronized void remove(int i) { list.remove(i); }
-	/** Print information about the objects still in the list, and return how many there are. */
-	private static synchronized int check() {
-		int size = list.size();
-		if (size != 0) {
-			System.out.print(size + " objects open:\n");
-			for (Close c : list)
-				System.out.print(c.toString() + "\n");
+//	private static synchronized void remove(int i) { list.remove(i); }
+	
+	// Soon
+	
+	/** true when we've set Java to call run(), and it hasn't yet. */
+	private static boolean set;
+	private static boolean again;
+	
+	/**
+	 * Have this Update call the receive() method you gave it in a separate event.
+	 * Call send() several times in a row, and receive() will only happen once.
+	 * It's safe to call this from whatever thread you want.
+	 */
+	
+	public static void pulseSoon() {
+		requireEventThread();
+		
+		if (!set) {
+			set = true;
+			SwingUtilities.invokeLater(new MyRunnable()); // Have Java call run() below separately and soon
 		}
-		return size;
+		
+		again = true;
 	}
+
+	// Soon after send() above calls SwingUtilities.invokeLater(), Java calls this run() method
+	private static class MyRunnable implements Runnable {
+		public void run() {
+			try {
+				pulseAll();                            // Call our given receive() method
+			} catch (Throwable t) { Mistake.stop(t); } // Stop the program for an exception we didn't expect
+		}
+	}	
 	
 	// Pulse
 
-	/** How many objects that extend Close are in the program's list. */
-	private static synchronized int listSize() {
-		return list.size();
-	}
+	
+	
+	
+	
+	
+	
+	//do it all here
+	//synchronized, so a task thread that's created a new close object will wait to get into add
+	//but, realize that run will call into add
+	
+	// Don't run for more than 200ms
+	// Don't loop more times than the list was originally long
+	// Keep track of the size of the list
+	// Keep track of how many times we loop in a run
+	// Keep track of how long runs take
+	//keep track of how long the program spends running versus how long it spends not running, have both time counts
+	
+	//send update message to run immediately
+	//setup timer to pulse every 200ms in addition to running immediately
+	
+	//catch exceptions in the same way that update does now, that all moves in here too
+	
+	//maybe also runningNow, so if you set soon
 
-	/** Remove closed objects from the program's list so it only contains objects that need to be closed. */
-	private static synchronized void listClear() {
+	private static void pulseAll() {
+		
+		
+		
+		// Pulse up the list in many passes until no object requests another pulse soon
+		while (again) {
+			again = false;
+			
+			// Pulse up the list in a single pass
+			for (int i = list.size() - 1; i >= 0; i--) { // Loop backwards to pulse contained objects before the older objects that made them
+				Close c = list.get(i);
+				if (!c.closed()) { // Skip closed objects
+					try {
+						c.pulse(); // Pulse the object so it notices things that have finished and moves to the next step
+					} catch (Throwable t) { Mistake.stop(t); } // Stop the program for an exception we didn't expect
+				}
+			}
+		}
+
+		// In a single pass after that, pulse up the list to have objects compose information for the user
 		for (int i = list.size() - 1; i >= 0; i--) {
 			Close c = list.get(i);
-			
-			if (c.closed()) list.remove(i);
+			if (!c.closed()) { // Skip closed objects
+				try {
+					c.pulseUser(); // Pulse the object to have it compose text for the user to show current information
+				} catch (Throwable t) { Mistake.stop(t); } // Stop the program for an exception we didn't expect
+			}
 		}
+		
+		
+
+		
+		clear(); // Remove closed objects from the list all at once at the end
+		
+		set = false;
 	}
 
-	/** Make a single pass from the end of the list to the start, calling pulse() on each object. */
-	private static synchronized void listPulse() {
-		for (int i = list.size() - 1; i >= 0; i--) {
-			Close c = list.get(i);
-			
-			if (!c.closed()) c.pulse();
-		}
+	/** Add a new object that extends Close to the program's list of open objects. */
+	private static void add(Close c) {
+		list.add(c); // Adding on the end is OK because we loop by index number
 	}
 
-	/** Make a single pass from the end of the list to the start, calling pulseUser() on each object. */
-	private static synchronized void listPulseUser() {
-		for (int i = list.size() - 1; i >= 0; i--) {
-			Close c = list.get(i);
-			
-			if (!c.closed()) c.pulseUser();
+	/** Remove objects that got closed from our list. */
+	private static void clear() {
+		for (int i = list.size() - 1; i >= 0; i--) { // Loop backwards so we can remove things along the way
+			if (list.get(i).closed()) list.remove(i);
 		}
 	}
+	
+	
+	/**
+	 * Call before the program exits to make sure we've closed every object.
+	 * @return Text about objects still open by mistake, or blank if there's no problem
+	 */
+	public static String confirmAllClosed() {
+		
+		clear(); // Remove closed objects from the list
+		
+		int size = list.size();
+		if (size == 0) return ""; // Good, we had closed them all already
+		
+		StringBuffer s = new StringBuffer(); // Compose and return text about the objects still open by mistake
+		s.append(size + " objects open:\n");
+		for (Close c : list)
+			s.append(c.toString() + "\n");
+		return s.toString();
+	}
+	
 
 	// Log
 
 	/** Write out diagnostic text for the programmer. */
 	public static void log(String s) { System.out.println((new Now()).toString() + " " + s); }
+	
+	
+	
+	
+	//more down here to move elsewhere
+
+	/** Make sure this is the event thread, or exit the program without returning. */
+	private static void requireEventThread() {
+		if (!SwingUtilities.isEventDispatchThread()) Mistake.stop(new ProgramException("method limited to event thread only"));
+	}
+
+
+	
+	
 }
