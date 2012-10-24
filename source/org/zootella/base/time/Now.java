@@ -15,7 +15,7 @@ public class Now {
 		return age() >= milliseconds; 
 	}
 	
-	/** The number of milliseconds that have passed since this New was made. */
+	/** The number of milliseconds that have passed since this Now was made. */
 	public long age() { return Time.now() - time; }
 	
 	
