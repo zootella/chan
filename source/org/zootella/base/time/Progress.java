@@ -37,7 +37,7 @@ public class Progress {
 		if (hasSize() && done > size) throw new IndexOutOfBoundsException();
 		long gain = d - done;                       // See if we got closer to our goal
 		if (gain > 0) {                             // We did
-			if (speed == null) speed = new Speed(); // Make our Speed if we don't already have one
+			if (speed == null) speed = new OldSpeed(); // Make our Speed if we don't already have one
 			speed.add((int)gain);                   // Tell it the distance we jumped forward
 		}
 		done = d;
@@ -64,7 +64,7 @@ public class Progress {
 	}
 
 	/** Our Speed object, null if paused or haven't moved yet. */
-	private Speed speed;
+	private OldSpeed speed;
 
 	/** Pause this Progress so it forgets its speed, you don't have to unpause it. */
 	public void pause() {

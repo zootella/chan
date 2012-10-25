@@ -1,6 +1,6 @@
 package org.zootella.base.size;
 
-import org.zootella.base.time.Speed;
+import org.zootella.base.time.OldSpeed;
 
 /** A Meter has done that grows in a Range. */
 public class Meter {
@@ -13,7 +13,7 @@ public class Meter {
 	/** Make a Meter with the given Range. */
 	public Meter(Range range) {
 		this.range = range;
-		speed = new Speed();
+		speed = new OldSpeed();
 	}
 
 	// Look
@@ -33,7 +33,7 @@ public class Meter {
 	public boolean isEmpty() { return remain().isEmpty(); }
 
 	/** How fast done() is growing. */
-	public final Speed speed;
+	public final OldSpeed speed;
 	
 	// Add
 	

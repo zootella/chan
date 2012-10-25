@@ -1,37 +1,18 @@
 package org.zootella.base.state;
 
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.AbstractAction;
 import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 
 import org.zootella.base.exception.ProgramException;
 import org.zootella.base.process.Mistake;
 import org.zootella.base.time.Now;
+import org.zootella.base.time.Time;
 import org.zootella.base.user.Describe;
 
+/** The static list and methods here pulse all the open objects in the program to move things forward. */
 public class Pulse {
-	
-	// Presets
-
-	/** The program pulses 5 times a second. */
-	public static final int timeInterval = 200;
-	/** Don't let a single pulse last more than 1/10 second. */
-	public static final int timeLimit = 100;
-	
-	// Timer
-
-	// When the timer we make below goes off, Java calls this method
-	private static class MyActionListener extends AbstractAction {
-		public void actionPerformed(ActionEvent a) {
-			try {
-				soon();
-			} catch (Throwable t) { Mistake.stop(t); } // Stop the program for an exception we didn't expect
-		}
-	}
 
 	// Start
 	
@@ -79,7 +60,7 @@ public class Pulse {
 		while (again) {
 			again = false;
 			
-			if (now.expired(timeLimit)) { countHitLimit++; break; } // Quit early if we're over the time limit
+			if (now.expired(Time.delay / 2)) { countHitLimit++; break; } // Quit early if we're over the time limit
 			
 			// Pulse up the list in a single pass
 			for (int i = list.size() - 1; i >= 0; i--) { // Loop backwards to pulse contained objects before the older objects that made them
@@ -107,10 +88,6 @@ public class Pulse {
 		clear(); // Remove closed objects from the list all at once at the end
 		start = false; // Allow the next call to soon to start a new pulse
 		
-		Timer timer = new Timer(timeInterval, new MyActionListener()); // Set a new timer to go off once
-		timer.setRepeats(false);
-		timer.start();
-		
 		countTimeInside += now.age();
 		now = new Now();
 	}
@@ -131,6 +108,13 @@ public class Pulse {
 
 	/** The program's list of all objects that extend Close, and aren't closed yet. */
 	private static final List<Close> list = new ArrayList<Close>();
+	
+	// Ding
+
+	/** true when we are set to pulse again soon. */
+	public static boolean isSetToPulseSoon() { return start; }
+	/** The time when we most recently started or finished a pulse. */
+	public static Now timeStartedOrFinished() { return now; }
 	
 	// Monitor
 
