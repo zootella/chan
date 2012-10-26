@@ -70,7 +70,7 @@ public class TwoBoots<T> extends OldClose {
 			closeContents(previous);
 			previous = current;
 			current = new HashSet<T>();
-		}
+		}//TODO and if it's doubly expired, you need to toss out *both* boots, right?
 	}
 	
 	/** If we're holding objects that extend Close, call close() on all of them in set. */

@@ -1,65 +1,60 @@
 package org.zootella.base.time;
 
-
+/** Make a Speed object, tell it distances traveled or counts when they happen, and get the current speed. */
 public class Speed {
 	
-	public Speed(long w) {
-		this.w = w;
-		created = new Now();
+	/**
+	 * Make a new Speed object that can keep track of how fast you're traversing a distance or counting events.
+	 * Given a window of 3 * Time.second, the object will keep between 2 and 4 seconds of data to calculate the current speed.
+	 */
+	public Speed(long window) {
+		created = new Now();    // Record that column 0 started now
+		width = window * 2 / 3; // Calculate the column width
 	}
-	
-	private final long w; // Every delay milliseconds, we cycle the boots
+
+	/** When this Speed object was created, and the start of column 0. */
 	private final Now created;
-	private long current;   // The current boot we add objects to
-	private long previous;  // The previous boot we just keep around
+	/** The width in milliseconds of all the columns in time after that. */
+	private final long width;
 	
-	private long c;
-	
-	//have add and speed be the same function, it returns the current average speed, you can also give it a distance to add something
-	//yeah, that's a cool idea
+	/** The column index, 0 or more, we last added to. */
+	private long column;
+	/** The total distance recorded in that column of time. */
+	private long current;
+	/** The total distance we recorded in the previous column of time. */
+	private long previous;
 
-	public void add(long distance) {
-		Now now = new Now();
-		
-		cycle(now);
-		current += distance;
-		c = columnNumber(now);
-	}
+	/** Record that we just traveled the given distance or counted the given number of events. */
+	public void distance(long distance) { add(distance, 1); }
+	/** Record that we just counted another event. */
+	public void count() { add(1, 1); }
+	/** Find out how fast we're going right now, 0 or more distance units or events per given time unit, like Time.second. */
+	public long speed(long perTimeUnit) { return add(0, perTimeUnit); }
 	
-	// Help
-
-	/** If it's been long enough since the last time, close and remove the oldest objects we carry. */
-	private void cycle(Now now) {
+	/** Given a distance to add, or 0 to add nothing, calculate our speed right now in the given unit of time. */
+	public long add(long distance, long perTimeUnit) {
 		
-		if (c != columnNumber(now)) {
-			c = columnNumber(now);
-			previous = current;
+		long age = Time.now() - created.time; // Age of this Speed object
+		long columnNow = age / width;         // The column index, 0 or more, the current time places us in now
+		long time = age % width;              // How long we've been in the current column
+		if (columnNow != 0) time += width;    // After column 0, we also have distances from the previous column in time
+
+		if (column == columnNow) {            // We're still in the same column we last added a distance to, no cycle necessary
+		} else if (column + 1 == columnNow) { // Time has moved us into the next column
+			previous = current;               // Cycle the totals
+			current = 0;
+		} else {                              // Time has moved us two or more columns forward
+			previous = 0;                     // Zero both totals
 			current = 0;
 		}
-	}
 
-	
-	private long columnNumber(Now now) {
+		current += distance; // Add any given distance to the current total
+		column = columnNow; // Record the column number we put it in, and the column we cycled to above
 		
-		return (now.time - created.time) / w;
+		if (time < required) return 0; // Avoid reporting huge or inaccurate speeds at the very start
+		else return perTimeUnit * (current + previous) / time; // Rate is distance over time
 	}
 	
-	private long sampleTime(Now now) {
-		
-		long a = (now.time - created.time) % w;
-		if (columnNumber(now) != 0) a += w;
-		return a;
-	}
-	
-	public long speed() {
-		Now now = new Now();
-		cycle(now);
-		long distance = current + previous;
-		long time = sampleTime(now);
-		if (time == 0) return 0;
-		return distance / time;
-	}
-	
-	
-	
+	/** Don't report a speed at the very start because we don't have enough data yet. */
+	public static long required = Time.second / 10;
 }

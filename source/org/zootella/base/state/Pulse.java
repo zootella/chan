@@ -8,6 +8,7 @@ import javax.swing.SwingUtilities;
 import org.zootella.base.exception.ProgramException;
 import org.zootella.base.process.Mistake;
 import org.zootella.base.time.Now;
+import org.zootella.base.time.Speed;
 import org.zootella.base.time.Time;
 import org.zootella.base.user.Describe;
 
@@ -52,13 +53,15 @@ public class Pulse {
 	/** Pulse all the open objects in the program until none request another pulse soon. */
 	private static void pulse() {
 		
+		long currentSpeed = speed.add(1, Time.second); // 1 event, get speed in events per second
+		if (maximumSpeed < currentSpeed) maximumSpeed = currentSpeed; //TODO maybe skip middle if current speed is too high?
 		countPulses++;
-		countTimeOutside += now.age();
+		countTimeOutside += now.age(); // Measure how long we were outside
 		now = new Now();
 		
 		// Pulse up the list in many passes until no object requests another pulse soon
 		while (again) {
-			again = false;
+			again = false; // Don't loop again unless an object we pulse below calls soon() above
 			
 			if (now.expired(Time.delay / 2)) { countHitLimit++; break; } // Quit early if we're over the time limit
 			
@@ -88,7 +91,7 @@ public class Pulse {
 		clear(); // Remove closed objects from the list all at once at the end
 		start = false; // Allow the next call to soon to start a new pulse
 		
-		countTimeInside += now.age();
+		countTimeInside += now.age(); // Measure how long we were inside
 		now = new Now();
 	}
 	
@@ -121,6 +124,11 @@ public class Pulse {
 	/** The time when we last entered or left the pulse function. */
 	private static Now now = new Now();
 	
+	/** The speed at which pulses are happening right now. */
+	private static final Speed speed = new Speed(Time.second); // Keep the most recent 1 second of data
+	/** The maximum speed we recorded as the program ran. */
+	private static long maximumSpeed;
+	
 	/** How many pulses have happened. */
 	private static long countPulses;
 	/** How many loops have happened within all the pulses. */
@@ -141,6 +149,7 @@ public class Pulse {
 		s.append("The average pulse looped up a list of [" + Describe.average(countLoops, countObjects) + "] objects [" + Describe.average(countPulses, countLoops) + "] times.");
 		s.append("The average pulse took [" + Describe.average(countPulses, countTimeInside) + "] milliseconds, and [" + Describe.percent(countHitLimit, countPulses) + "] hit the time limit.");
 		s.append("The program spent [" + Describe.percent(countTimeInside, countTimeInside + countTimeOutside) + "] of its time pulsing.");
+		s.append("The fastest the program pulsed was [" + Describe.commas(maximumSpeed) + "] pulses per second");
 		return s.toString();
 	}
 	
