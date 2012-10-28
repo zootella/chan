@@ -36,6 +36,7 @@ public class WindowPanel {
 		browserAction.setEnabled(false);
 		connectAction.setEnabled(false);
 		spinAction.setEnabled(false);
+		trackerAction.setEnabled(false);
 		
 		menu = new JPopupMenu();
 		menu.add(new JMenuItem(snippetAction));
@@ -175,9 +176,6 @@ public class WindowPanel {
 		public TrackerAction() { super("Tracker"); }
 		public void actionPerformed(ActionEvent a) {
 			try {
-
-				Close.log("tracker action");
-
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
 	}
