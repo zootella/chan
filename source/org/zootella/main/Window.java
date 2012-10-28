@@ -8,7 +8,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import net.roydesign.mac.MRJAdapter;
 
@@ -28,7 +27,6 @@ public class Window extends OldClose {
 		
 		Dimension d = new Dimension(Guide.pipeWidth, Guide.toolHeight);
 		
-		//frame
 		frame = new JFrame();
 		frame.setUndecorated(true);
 		frame.setResizable(false);
@@ -44,17 +42,8 @@ public class Window extends OldClose {
 		frame.setTitle(Main.name);
 		frame.setBounds(Screen.positionSize(frame.getSize().width, frame.getSize().height));
 		
-		//tool
 		panel = new WindowPanel(user, this);
-		
-		//together
 		frame.setContentPane(panel.panel);
-
-		
-		
-		
-		
-		
 	}
 
 	public final Program program;

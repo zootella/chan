@@ -9,8 +9,10 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
 import org.zootella.base.process.Mistake;
+import org.zootella.base.state.Close;
 import org.zootella.base.user.skin.PlainButton;
 import org.zootella.base.user.widget.Grip;
+import org.zootella.demo.hash.HashDemo;
 
 public class WindowPanel {
 	
@@ -22,19 +24,28 @@ public class WindowPanel {
 		closeAction = new CloseAction();
 		makeAction = new MakeAction();
 		menuAction = new MenuAction();
+		
 		snippetAction = new SnippetAction();
-		preferencesAction = new PreferencesAction();
-		informationAction = new InformationAction();
+		browserAction = new BrowserAction();
+		connectAction = new ConnectAction();
 		hashAction = new HashAction();
-		aboutAction = new AboutAction();
+		hereAction = new HereAction();
+		spinAction = new SpinAction();
+		trackerAction = new TrackerAction();
+		
+		browserAction.setEnabled(false);
+		connectAction.setEnabled(false);
+		spinAction.setEnabled(false);
 		
 		menu = new JPopupMenu();
-		if (!Main.release)
-			menu.add(new JMenuItem(snippetAction));
-		menu.add(new JMenuItem(preferencesAction));
-		menu.add(new JMenuItem(informationAction));
+		menu.add(new JMenuItem(snippetAction));
+		menu.addSeparator();
+		menu.add(new JMenuItem(browserAction));
+		menu.add(new JMenuItem(connectAction));
 		menu.add(new JMenuItem(hashAction));
-		menu.add(new JMenuItem(aboutAction));
+		menu.add(new JMenuItem(hereAction));
+		menu.add(new JMenuItem(spinAction));
+		menu.add(new JMenuItem(trackerAction));
 		menu.addSeparator();
 		menu.add(new JMenuItem(user.exitAction));
 		
@@ -105,27 +116,23 @@ public class WindowPanel {
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
 	}
+	
+	// Demo
 
-	private final PreferencesAction preferencesAction;
-	private class PreferencesAction extends AbstractAction {
-		public PreferencesAction() { super("Preferences"); }
+	private final BrowserAction browserAction;
+	private class BrowserAction extends AbstractAction {
+		public BrowserAction() { super("Browser"); }
 		public void actionPerformed(ActionEvent a) {
 			try {
-				
-				System.out.println("preferences action");
-
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
 	}
 
-	private final InformationAction informationAction;
-	private class InformationAction extends AbstractAction {
-		public InformationAction() { super("Information"); }
+	private final ConnectAction connectAction;
+	private class ConnectAction extends AbstractAction {
+		public ConnectAction() { super("Connect"); }
 		public void actionPerformed(ActionEvent a) {
 			try {
-
-				System.out.println("information action");
-				
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
 	}
@@ -136,20 +143,41 @@ public class WindowPanel {
 		public void actionPerformed(ActionEvent a) {
 			try {
 
-				System.out.println("hash action");
-				
+				new HashDemo();
+
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
 	}
 
-	private final AboutAction aboutAction;
-	private class AboutAction extends AbstractAction {
-		public AboutAction() { super("About"); }
+	private final HereAction hereAction;
+	private class HereAction extends AbstractAction {
+		public HereAction() { super("Here"); }
 		public void actionPerformed(ActionEvent a) {
 			try {
-				
-				System.out.println("about action");
-				
+
+				program.user.here.frame.setVisible(true);
+
+			} catch (Throwable t) { Mistake.stop(t); }
+		}
+	}
+
+	private final SpinAction spinAction;
+	private class SpinAction extends AbstractAction {
+		public SpinAction() { super("Spin"); }
+		public void actionPerformed(ActionEvent a) {
+			try {
+			} catch (Throwable t) { Mistake.stop(t); }
+		}
+	}
+
+	private final TrackerAction trackerAction;
+	private class TrackerAction extends AbstractAction {
+		public TrackerAction() { super("Tracker"); }
+		public void actionPerformed(ActionEvent a) {
+			try {
+
+				Close.log("tracker action");
+
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
 	}
