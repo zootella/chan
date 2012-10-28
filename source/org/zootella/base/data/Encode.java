@@ -30,19 +30,16 @@ public class Encode {
 	public static Data fromBase62(String s) { Bay bay = new Bay(); fromBase62(bay, s); return bay.data(); }
 	
 	/** Turn data into text by putting bytes that aren't characters in square braces in base 16, "a[b]c\r\n" becomes "a[[b]]c[0d0a]". */
-	public static String box(Data d) { StringBuffer b = new StringBuffer(); box(b, d); return b.toString(); }
+	@Deprecated public static String box(Data d) { StringBuffer b = new StringBuffer(); box(b, d); return b.toString(); }
 	/** Turn box-encoded text back into the data it was made from. */
-	public static Data unbox(String s) { Bay bay = new Bay(); unbox(bay, s); return bay.data(); }
+	@Deprecated public static Data unbox(String s) { Bay bay = new Bay(); unbox(bay, s); return bay.data(); }
 	/** Turn data into text like "hello--", striking out non-ASCII bytes with hyphens. */
-	public static String strike(Data d) { StringBuffer b = new StringBuffer(); strike(b, d); return b.toString(); }
-
+	@Deprecated public static String strike(Data d) { StringBuffer b = new StringBuffer(); strike(b, d); return b.toString(); }
 	
 	/** Turn data into text using base 16, and put text characters in quotes, --The quote " character\r\n-- becomes --"The quote "22" character"0d0a-- */
-	public static String quote(Data d) { StringBuffer b = new StringBuffer(); Quote.encode(b, d); return b.toString(); }
+	public static String quote(Data d) { StringBuffer b = new StringBuffer(); toQuote(b, d); return b.toString(); }
 	/** Turn quoted text back into the data it was made from. */
-	public static Data unquote(String s) { Bay bay = new Bay(); Quote.decode(bay, s); return bay.data(); }
-	
-	
+	public static Data unquote(String s) { Bay bay = new Bay(); fromQuote(bay, s); return bay.data(); }
 	
 	// Base 16, 32, and 62
 
@@ -134,7 +131,7 @@ public class Encode {
 			c = Character.toUpperCase(s.charAt(i));             // Accept uppercase and lowercase letters
 			if      (c >= '0' && c <= '9') code = c - '0';      // '0'  0 0000 through '9'  9 1001
 			else if (c >= 'A' && c <= 'F') code = c - 'A' + 10; // 'A' 10 1010 through 'F' 15 1111
-			else throw new DataException();                  // Invalid character
+			else throw new DataException();                     // Invalid character
 
 			// This is the first character in a pair
 			if (i % 2 == 0) {
@@ -215,23 +212,97 @@ public class Encode {
 			}
 		}
 	}
+	
+	// Quote
 
+	/** Turn data into text using base 16, and put text characters in quotes, --The quote " character\r\n-- becomes --"The quote "22" character"0d0a-- */
+	public static void toQuote(StringBuffer b, Data d) {
+		
+		if (!moreText(d)) { // The given data is mostly data bytes, like random data
+			toBase16(b, d); // Present it as a single block of base 16 without quoting out the text it may contain
+			return;
+		}
+		
+		Data data = d.copy();    // Copy d to remove what we've encoded from data
+		while (data.hasData()) { // Loop until data is empty
+			if (isText(data.first())) {
+				b.append('\"');
+				b.append(data.cut(count(data, true)).toString()); // Surround bytes that are text characters with quotes				
+				b.append('\"');
+				
+			} else {
+				Encode.toBase16(b, data.cut(count(data, false))); // Encode other bytes into base 16 outside the quotes
+			}
+		}
+	}
+	
+	/** Turn quoted text back into the data it was made from. */
+	public static void fromQuote(Bay bay, String s) {
+		while (Text.is(s)) { // Loop until we're out of source text
+			
+			TextSplit q1 = Text.split(s, "\""); // Split on the first opening quote to look for bytes before text
+
+			TextSplit c = Text.split(q1.before, "#");        // Look for a comment outside the quotes
+			if (c.found) {                                   // Found a comment
+				bay.add(Encode.fromBase16(c.before.trim())); // Only bytes and spaces can be before the comment
+				return;                                      // Hitting a comment means we're done with the line
+			}
+				
+			bay.add(Encode.fromBase16(q1.before)); // Only bytes can be before the opening quote
+			if (!q1.found) return;                 // No opening quote, so we got it all
+			
+			TextSplit q2 = Text.split(q1.after, "\""); // Split on the closing quote
+			if (!q2.found) throw new DataException();  // Must have closing quote
+			
+			bay.add(q2.before); // Copy the quoted text across
+			s = q2.after;       // The remaining text is after the closing quote
+		}
+	}
+	
+	/** Count how many bytes at the start of d are quotable text characters, or false to count data bytes. */
+	private static int count(Data d, boolean text) {
+		int i = 0;
+		while (i < d.size()) {
+			byte y = d.get(i);
+			if (text ? !isText(y) : isText(y)) break;
+			i++; // Count this character and check the next one
+		}
+		return i;
+	}
+	
+	/** true if d has more text than data characters. */
+	private static boolean moreText(Data d) {
+		int text = 0; // The number bytes in d we could encode as text or data
+		int data = 0; // The number bytes in d we have to encode as data
+		for (int i = 0; i < d.size(); i++) {
+			byte y = d.get(i);
+			if (isText(y)) text++; // 94 of 255 bytes can be encoded as text, that's 37%
+			else           data++;
+		}
+		return text > data; // Picks true for a single byte of text, false for random bytes of data
+	}
+
+	/** true if byte y is a text character " " through "~" but not the double quote character. */
+	private static boolean isText(byte y) {
+		return (y >= ' ' && y <= '~') && y != '\"'; // Otherwise we'll have to encode y as data
+	}
+	
 	// Box
 
 	/** Turn data into text by putting bytes that aren't characters in square braces in base 16, "a[b]c\r\n" becomes "a[[b]]c[0d0a]". */
-	public static void box(StringBuffer b, Data d) {
+	@Deprecated public static void box(StringBuffer b, Data d) {
 
 		// d is mostly text characters
-		if (text(d)) {
+		if (boxChoose(d)) {
 			Data data = d.copy();    // Copy d to remove what we've encoded from data
 			while (data.hasData()) { // Stop when data is empty
 				byte y = data.first();
 				if      (y == '[') { b.append("[["); data.remove(1); } // Turn "[" into "[["
 				else if (y == ']') { b.append("]]"); data.remove(1); } // Turn "]" into "]]"
-				else if (text(y)) b.append(data.cut(count(data, true)).toString()); // Bytes that are text characters don't change
+				else if (boxText(y)) b.append(data.cut(boxCount(data, true)).toString()); // Bytes that are text characters don't change
 				else { // Encode other bytes into base 16 in square braces
 					b.append('[');
-					toBase16(b, data.cut(count(data, false)));
+					toBase16(b, data.cut(boxCount(data, false)));
 					b.append(']');
 				}
 			}
@@ -245,7 +316,7 @@ public class Encode {
 	}
 	
 	/** Turn box-encoded text back into the data it was made from. */
-	public static void unbox(Bay bay, String s) {
+	@Deprecated public static void unbox(Bay bay, String s) {
 		try {
 
 			// Move i down s, stopping when it reaches the end
@@ -292,11 +363,12 @@ public class Encode {
 
 	// Library
 
+	//TODO get rid of this now that you have quote, it's better
 	/** Turn data into text like "hello--", striking out non-text bytes with hyphens. */
-	public static void strike(StringBuffer b, Data d) {
+	@Deprecated public static void strike(StringBuffer b, Data d) {
 		for (int i = 0; i < d.size(); i++) {
 			byte y = d.get(i);              // Loop for each byte of data y in d
-			if (text(y)) b.append((char)y); // If it's " " through "~", include it in the text
+			if (boxText(y)) b.append((char)y); // If it's " " through "~", include it in the text
 			else         b.append('-');     // Otherwise, show a "-" in its place
 		}
 	}
@@ -304,31 +376,31 @@ public class Encode {
 	// Inside
 
 	/** Count how many bytes at the start of d are text characters, or false to count data bytes. */
-	private static int count(Data d, boolean text) {
+	@Deprecated private static int boxCount(Data d, boolean text) {
 		int i = 0;
 		while (i < d.size()) {
 			byte y = d.get(i);
 			if (y == '[' || y == ']') break; // Stop at "[" or "]" when counting safe or unsafe bytes
-			if (text ? !text(y) : text(y)) break;
+			if (text ? !boxText(y) : boxText(y)) break;
 			i++;
 		}
 		return i;
 	}
 
 	/** true if d is mostly text characters, false to encode it all as data. */
-	private static boolean text(Data d) {
+	@Deprecated private static boolean boxChoose(Data d) {
 		int text = 0; // The number of text bytes in d
 		int data = 0; // The number of data bytes in d
 		for (int i = 0; i < d.size(); i++) {
 			byte y = d.get(i);   // Loop for each byte of data y in d
-			if (text(y)) text++; // It's a text byte, count it
+			if (boxText(y)) text++; // It's a text byte, count it
 			else         data++; // It's a data byte, count it
 		}
 		return data == 0 || text > data; // Encode as text if no data, or more than half text
 	}
 
 	/** true if byte y is a text character " " through "~", false to encode y as data. */
-	private static boolean text(byte y) {
+	@Deprecated private static boolean boxText(byte y) {
 		return y >= ' ' && y <= '~';
 	}
 }

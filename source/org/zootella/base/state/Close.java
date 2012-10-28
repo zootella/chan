@@ -1,8 +1,8 @@
 package org.zootella.base.state;
 
 import org.zootella.base.exception.ProgramException;
+import org.zootella.base.process.Log;
 import org.zootella.base.process.Mistake;
-import org.zootella.base.time.Now;
 
 /** Have your object extend Close so the program will pulse it, and notice if you forget to later call its close() method. */
 public abstract class Close {
@@ -86,8 +86,6 @@ public abstract class Close {
 	/** true if c exists and is closed. */
 	public static boolean done(Close c) { return c != null && c.closed(); }
 
-	// Log
-
 	/** Write out diagnostic text for the programmer. */
-	public static void log(String s) { System.out.println((new Now()).toString() + " " + s); }
+	public static void log(String s) { Log.log(s); }
 }

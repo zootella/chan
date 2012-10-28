@@ -1,67 +1,66 @@
 package org.zootella.base.encode;
 
 import org.junit.Assert;
-
 import org.junit.Test;
 import org.zootella.base.data.Data;
 import org.zootella.base.data.Encode;
-import org.zootella.base.data.Quote;
 import org.zootella.base.exception.DataException;
-import org.zootella.base.state.OldClose;
+import org.zootella.base.process.Log;
 
 public class EncodeTest {
 	
 	@Test public void test() throws Exception {
 		
-		test("");
-		test("a");
-		test("ab");
-		test("[");
-		test("]");
-		test("\0");
-		test("\t");
-		test("a[b]c\r\n");
-		test("[hello]\0\t\r\n");
+		//blank
+		testQuote("", "");
+		
+		//single text and data
+		testQuote("a", "\"a\"");
+		testQuote("\r", "0d");
 
-		test(Data.random(16));
-	}
+		//special character
+		testQuote("\"", "22");
+		
+		//longer samples
+		testQuote("a and here is some text\"b\"c\r\n", "\"a and here is some text\"22\"b\"22\"c\"0d0a");
+		testQuote("hello\0\t\r\n", "\"hello\"00090d0a");
+		
+		//true and false
+		testQuote("t", "\"t\"");
+		testQuote("f", "\"f\"");
 
-	public void test(String a) throws Exception {
-			
-		String b = Encode.box(new Data(a));
-		String c = Encode.unbox(b).toString();
-		Assert.assertTrue(a.equals(c));
-	}
+		//tab
+		testQuote("\ttab\t", "09\"tab\"09");
 
-	public void test(Data a) throws Exception {
-			
-		String b = Encode.box(a);
-		Data c = Encode.unbox(b);
-		Assert.assertTrue(a.equals(c));
-	}
-	
-	
-	
-	@Test public void testQuote() throws Exception {
+		//invalid
+		testUnquoteInvalid("poop");
+		testUnquoteInvalid("\"value");
+		testUnquoteInvalid("0a0b\"value");
+		testUnquoteInvalid("\"hello you\"0d0a poop#comment");
+		testUnquoteInvalid("\"hello you\"0d0apoop#comment");
+		testUnquoteInvalid("poop\"hello you\"0d0a");
+		testUnquoteInvalid("poop\"hello you\"");
+		
+		//comment
+		testUnquote("\"value\"0d0a #comment", "value\r\n");
+		testUnquote("\"hello you\"0d0a",          "hello you\r\n");
+		testUnquote("\"hello you\"0d0a#comment",  "hello you\r\n");
+		testUnquote("\"hello you\"0d0a #comment", "hello you\r\n");
+		testUnquote("\"room #9\"0d0a",          "room #9\r\n");
+		testUnquote("\"room #9\"0d0a#comment",  "room #9\r\n");
+		testUnquote("\"room #9\"0d0a #comment", "room #9\r\n");
+		
+		//a comment can say whatever
+		testUnquote("\"hello\"0d0a #note, with \"quotes\" and stuff", "hello\r\n");
+		
+		//comments different places
+		testUnquote("0d0a #note", "\r\n");
+		testUnquote("0d0a#note", "\r\n");
+		testUnquote("#note", "");
+		testUnquote(" #note", ""); //TODO works but maybe shouldn't
+		testUnquote(" 0d0a #note", "\r\n"); //this one too, leading space is wrong but allowed
 
-		
-		
-		Assert.assertTrue(Quote.text(stringToByte("a")) == true);
-		Assert.assertTrue(Quote.text(stringToByte("5")) == true);
-		Assert.assertTrue(Quote.text(stringToByte(" ")) == true);
-		Assert.assertTrue(Quote.text(stringToByte("~")) == true);
-		Assert.assertTrue(Quote.text(stringToByte("'")) == true);
-		
-		Assert.assertTrue(Quote.text(stringToByte("\"")) == false);
-		Assert.assertTrue(Quote.text(stringToByte("\0")) == false);
-		Assert.assertTrue(Quote.text(stringToByte("\r")) == false);
-		Assert.assertTrue(Quote.text(stringToByte("\n")) == false);
-		
-		OldClose.log("hello");
-		
-		
-		
-
+		//another batch
 		testQuote("", "");
 		testQuote("a", "\"a\"");
 		testQuote(" ", "\" \"");
@@ -70,59 +69,57 @@ public class EncodeTest {
 		testQuote("Hello You\r\n", "\"Hello You\"0d0a");
 		testQuote("He only says \"Yes\" once a year.\r\n", "\"He only says \"22\"Yes\"22\" once a year.\"0d0a");
 		
-		testQuote(  "a\tb\tc",     "\"a\"09\"b\"09\"c\"");
-		testQuote("\ta\tb\tc",   "09\"a\"09\"b\"09\"c\"");
-		testQuote(  "a\tb\tc\t",   "\"a\"09\"b\"09\"c\"09");
-		testQuote("\ta\tb\tc\t", "09\"a\"09\"b\"09\"c\"09");
+		//lots of tabs
+		testQuote(  "aaa\tbbb\tccc",     "\"aaa\"09\"bbb\"09\"ccc\"");
+		testQuote("\taaa\tbbb\tccc",   "09\"aaa\"09\"bbb\"09\"ccc\"");
+		testQuote(  "aaa\tbbb\tccc\t",   "\"aaa\"09\"bbb\"09\"ccc\"09");
+		testQuote("\taaa\tbbb\tccc\t", "09\"aaa\"09\"bbb\"09\"ccc\"09");
 		
-		testQuote("The quote \" character\r\n", "\"The quote \"22\" character\"0d0a");		
-		
-		
+		//the quote character
+		testQuote("The quote \" character\r\n", "\"The quote \"22\" character\"0d0a");
+
+		//pound is ok in a quote
+		testUnquote("\"car #1\"0d0a #comment", "car #1\r\n");
+
+		//random data
+		for (int i = 1; i < 20; i++)
+			testQuoteData(Data.random(20));
 	}
 	
+	private void testQuoteData(Data before) {
+		
+		String s = Encode.quote(before);
+		Data d = Encode.unquote(s);
+		
+		Log.log(s);
+		
+		Assert.assertEquals(before, d); // Make sure quoting and dequoting gets us back to the original data
+	}
 	
 	private void testQuote(String before, String after) {
 		
 		String s = Encode.quote(new Data(before));
 		Data d = Encode.unquote(s);
+
+		Log.log("");
+		Log.log(before);
+		Log.log(after);
 		
 		Assert.assertEquals(before, d.toString()); // Make sure quoting and dequoting gets us back to the original data
 		Assert.assertEquals(after, s); // Confirm we predicted what the quoted text would look like
-
-		OldClose.log("");
-		OldClose.log(before);
-		OldClose.log(after);
 	}
 	
-	private void testUnquote(String before, String after, boolean valid) {
-
-		if (valid) {
-			
-			Data d = Encode.unquote(before);
-			String s = Encode.quote(d);
-			
-			Assert.assertEquals(before, s);//confirm the round trip didn't change it
-			Assert.assertEquals(after, d.toString());//confirm it became what was predicted
-			
-		} else {
-			
-			try {
-				Data d = Encode.unquote(before);
-				Assert.fail();
-			} catch (DataException e) {}
-		}
+	private void testUnquote(String before, String after) {
 		
-	}
-
-	
-	
-	
-	byte stringToByte(String s) {
-		Data d = new Data(s);
-		return d.first();
+		Data d = Encode.unquote(before);
+		String s = Encode.quote(d);
+		Assert.assertEquals(after, d.toString());//confirm it became what was predicted
 	}
 	
-	
-	
-	
+	private void testUnquoteInvalid(String before) {
+		try {
+			Data d = Encode.unquote(before);
+			Assert.fail();
+		} catch (DataException e) {}
+	}
 }

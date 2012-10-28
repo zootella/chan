@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.zootella.base.exception.ProgramException;
+import org.zootella.base.process.Log;
 import org.zootella.base.process.Mistake;
 import org.zootella.base.time.Duration;
 import org.zootella.base.time.Now;
@@ -105,5 +106,5 @@ public abstract class OldClose {
 	//TODO problem accessing whenClosed, remove it and just have public final Now birth
 	
 	// Log
-	public static void log(String s) { System.out.println((new Now()).toString() + " " + s); }
+	public static void log(String s) { Log.log(s); }
 }
