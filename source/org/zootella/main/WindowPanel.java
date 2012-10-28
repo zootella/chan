@@ -12,11 +12,11 @@ import org.zootella.base.process.Mistake;
 import org.zootella.base.user.skin.PlainButton;
 import org.zootella.base.user.widget.Grip;
 
-public class ToolPanel {
+public class WindowPanel {
 	
 	// Object
 	
-	public ToolPanel(User user, Window window) {
+	public WindowPanel(User user, Window window) {
 		this.program = window.program;
 
 		closeAction = new CloseAction();
@@ -51,17 +51,6 @@ public class ToolPanel {
 		panel.add(makeButton.button);
 		panel.add(menuButton.button);
 		new Grip(window.frame, panel);
-		
-		/*
-		SkinPanel skin = new SkinPanel();
-		skin.setBounds(10, 100, 80, 25);
-		skin.setBackground(Color.red);
-		panel.add(skin);
-		*/
-		
-		
-		
-		
 	}
 	
 	private final Program program;

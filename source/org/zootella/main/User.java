@@ -22,7 +22,7 @@ public class User extends OldClose {
 		
 		skin = new Skin(program.store.folder.add("skin.png"), Guide.skinSize);
 
-		main = new Window(this);
+		window = new Window(this);
 		here = new HereFrame(this);
 
 		if (!Desktop.isMac()) // On Mac, we've already got the icon on the dock
@@ -33,14 +33,14 @@ public class User extends OldClose {
 	
 	public final Program program;
 	public final Skin skin;
-	public final Window main;
+	public final Window window;
 	public final HereFrame here;
 	public CornerIcon icon;
 	
 	@Override public void close() {
 		if (already()) return;
 		
-		close(main);
+		close(window);
 		close(here);
 		close(icon);
 	}
@@ -49,7 +49,7 @@ public class User extends OldClose {
 		if (show == b) return;
 		show = b;
 
-		main.frame.setVisible(show);
+		window.frame.setVisible(show);
 		if (is(icon))
 			icon.show(!show);
 	}

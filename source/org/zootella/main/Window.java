@@ -26,57 +26,41 @@ public class Window extends OldClose {
 	public Window(User user) {
 		program = user.program;
 		
+		Dimension d = new Dimension(Guide.pipeWidth, Guide.toolHeight);
+		
+		//frame
 		frame = new JFrame();
 		frame.setUndecorated(true);
 		frame.setResizable(false);
 		frame.setLayout(null);
-		
-		panel = new JPanel();
-		panel.setLayout(null);
-
-		tool = new ToolPanel(user, this);
-		tool.panel.setLocation(0, 0);
-		
-		fill();
-		
+		frame.setSize(d);
 		frame.addWindowListener(new MyWindowListener()); // Find out when the user closes the window from the taskbar
 		if (Desktop.isMac()) {
 			MRJAdapter.addQuitApplicationListener(new MyQuitActionListener()); // And from the Mac application menu
 			MRJAdapter.addReopenApplicationListener(new MyReopenActionListener()); // And when she clicks the dock icon
 		}
-
+		
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource(Guide.icon)));
 		frame.setTitle(Main.name);
 		frame.setBounds(Screen.positionSize(frame.getSize().width, frame.getSize().height));
-		frame.setContentPane(panel);
-	}
-
-	public void fill() {
-
-		Dimension d = new Dimension(Guide.pipeWidth, Guide.toolHeight);
 		
-		panel.setSize(d);
-		frame.setSize(d);
+		//tool
+		panel = new WindowPanel(user, this);
+		
+		//together
+		frame.setContentPane(panel.panel);
 
-		panel.removeAll();
-		panel.add(tool.panel);
-		int y = Guide.toolHeight;
-		/*
-		for (Pipe pipe : program.core.pipes.pipes) {
-			JPanel p = pipe.userPanel().panel;
-			p.setLocation(0, y);
-			panel.add(p);
-			y += Guide.pipeHeight;
-		}
-		*/
+		
+		
+		
+		
+		
 	}
 
 	public final Program program;
 
 	public final JFrame frame;
-	public final JPanel panel;
-
-	public final ToolPanel tool;
+	public final WindowPanel panel;
 
 	@Override public void close() {
 		if (already()) return;
@@ -84,11 +68,6 @@ public class Window extends OldClose {
 		frame.setVisible(false);
 		frame.dispose(); // Dispose the frame so the process can close
 	}
-
-	
-	
-
-	
 	
 	/** On Windows, the user right-clicked the taskbar button and clicked "X Close" or keyed Alt+F4. */
 	private class MyWindowListener extends WindowAdapter {
