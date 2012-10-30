@@ -37,9 +37,9 @@ public class Encode {
 	@Deprecated public static String strike(Data d) { StringBuffer b = new StringBuffer(); strike(b, d); return b.toString(); }
 	
 	/** Turn data into text using base 16, and put text characters in quotes, --The quote " character\r\n-- becomes --"The quote "22" character"0d0a-- */
-	public static String quote(Data d) { StringBuffer b = new StringBuffer(); toQuote(b, d); return b.toString(); }
+	public static String quote(Data d) { StringBuffer b = new StringBuffer(); quote(b, d); return b.toString(); }
 	/** Turn quoted text back into the data it was made from. */
-	public static Data unquote(String s) { Bay bay = new Bay(); fromQuote(bay, s); return bay.data(); }
+	public static Data unquote(String s) { Bay bay = new Bay(); unquote(bay, s); return bay.data(); }
 	
 	// Base 16, 32, and 62
 
@@ -216,7 +216,7 @@ public class Encode {
 	// Quote
 
 	/** Turn data into text using base 16, and put text characters in quotes, --The quote " character\r\n-- becomes --"The quote "22" character"0d0a-- */
-	public static void toQuote(StringBuffer b, Data d) {
+	public static void quote(StringBuffer b, Data d) {
 		
 		if (!moreText(d)) { // The given data is mostly data bytes, like random data
 			toBase16(b, d); // Present it as a single block of base 16 without quoting out the text it may contain
@@ -237,7 +237,7 @@ public class Encode {
 	}
 	
 	/** Turn quoted text back into the data it was made from. */
-	public static void fromQuote(Bay bay, String s) {
+	public static void unquote(Bay bay, String s) {
 		while (Text.is(s)) { // Loop until we're out of source text
 			
 			TextSplit q1 = Text.split(s, "\""); // Split on the first opening quote to look for bytes before text

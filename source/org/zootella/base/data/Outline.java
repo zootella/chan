@@ -134,7 +134,7 @@ public class Outline {
 		
 		// Add a line that describes this Outline object like "  name:value\r\n" to the given StringBuffer
 		b.append(indent + name + ":");
-		Encode.box(b, value); // Box non-text bytes in base 16 in square braces
+		Encode.quote(b, value); // Base 16 with text in quotes
 		b.append("\r\n");
 		
 		// Beneath our line, make lines describing each Outline in our contents
@@ -174,14 +174,14 @@ public class Outline {
 			
 			// Count how many indent characters s has
 			int indent = 0;
-			while (s.charAt(indent) == ' ' || s.charAt(indent) == '\t') indent++; // Works with spaces or tabs
+			while (s.charAt(indent) == ' ') indent++; // Works with spaces only, not tabs
 			s = Text.after(s, indent); // Move beyond them, making s like "name:value"
 			
 			// Split s around ":" to get the name and value
 			TextSplit text = Text.split(s, ":");
 			if (!text.found) throw new DataException(); // Make sure there is a ":"
 			String name = text.before;
-			Data value = Encode.unbox(text.after); // Turn the box-encoded text back into the data it was made from
+			Data value = Encode.unquote(text.after); // Turn the quoted text back into the data it was made from
 
 			// Make an Outline object and save the indent in it
 			Outline o = new Outline(name, value);

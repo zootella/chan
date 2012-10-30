@@ -36,8 +36,8 @@ public class OutlineTest {
 		testInvalid(l.toString());
 
 		l = new Lines();
-		l.add("a:hello");
-		l.add("  b:a[b"); // this is bad because [ needs to be escaped to [[
+		l.add("a:\"hello\"");
+		l.add("  b:a\"b"); // the value is bad because it contains a single quote
 		l.add("");
 		testInvalid(l.toString());
 		
@@ -111,7 +111,7 @@ public class OutlineTest {
 		l.add("  b:");
 		l.add("    c:");
 		l.add("      d:");
-		l.add("       e:");
+		l.add("        e:");
 		l.add("");
 		test(l.toString());
 
