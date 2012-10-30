@@ -172,7 +172,7 @@ public class Outline {
 	private static Outline parse(String s) {
 		try {
 			
-			// Count how many indent characters s has
+			// Count how many indent spaces s has
 			int indent = 0;
 			while (s.charAt(indent) == ' ') indent++; // Works with spaces only, not tabs
 			s = Text.after(s, indent); // Move beyond them, making s like "name:value"
@@ -185,13 +185,13 @@ public class Outline {
 
 			// Make an Outline object and save the indent in it
 			Outline o = new Outline(name, value);
-			o.indent = indent; // Save the number of indent characters so group() will know what to do
+			o.indent = indent; // Save the number of indent spaces so group() will know what to do
 			return o;
 
 		} catch (IndexOutOfBoundsException e) { throw new DataException(); } // charAt() went beyond the end of s
 	}
 
-	/** If this Outline was parsed from a line of text in a text outline, the number of indent characters it had, like 2 in "  name:value". */
+	/** If this Outline was parsed from a line of text in a text outline, the number of indent spaces it had, like 2 in "  name:value". */
 	private int indent;
 	
 	// Convert to data

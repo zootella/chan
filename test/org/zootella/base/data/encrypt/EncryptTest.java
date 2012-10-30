@@ -22,7 +22,7 @@ public class EncryptTest {
 		Data a = new Data("this is my short and very secret message");
 		Data b = Pair.encrypt(a, key);
 		Data c = Pair.decrypt(b, key);
-		System.out.println(c.strike());
+		System.out.println(c.quote());
 		assertEquals(a, c);
 	}
 
