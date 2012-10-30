@@ -340,4 +340,11 @@ public class Text {
 	public static boolean isNumber(char c) {
 		return (c >= '0' && c <= '9');
 	}
+	
+	// Quote
+	
+	/** Replace | with " to make string literals look nicer. */
+	public static String quote(String s) {
+		return replace(s, "|", "\"");
+	}
 }
