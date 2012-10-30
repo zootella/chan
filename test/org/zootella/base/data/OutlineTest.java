@@ -16,150 +16,149 @@ public class OutlineTest {
 	@Test
 	public void test() throws Exception {
 		
+		Lines l;
 		
-		String s;
+		l = new Lines();
+		l.add("a:");
+		l.add("");
+		test(l.toString());
+		
+		l = new Lines();
+		l.add("a:");
+		l.add("  b:");
+		l.add("");
+		test(l.toString());
 
-		s = "";
-		s += "a:\r\n";
-		s += "\r\n";
-		test(s);
-		
-		s = "";
-		s += "a:\r\n";
-		s += " b:\r\n";
-		s += "\r\n";
-		test(s);
+		l = new Lines();
+		l.add("a:");
+		l.add("b:"); // this is bad because b can't be on the same level
+		l.add("");
+		testInvalid(l.toString());
 
-		s = "";
-		s += "a:\r\n";
-		s += "b:\r\n"; // this is bad because b can't be on the same level
-		s += "\r\n";
-		try {
-			test(s);
-			fail();
-		} catch (DataException e) {}
+		l = new Lines();
+		l.add("a:hello");
+		l.add("  b:a[b"); // this is bad because [ needs to be escaped to [[
+		l.add("");
+		testInvalid(l.toString());
+		
+		l = new Lines();
+		l.add("a:");
+		l.add("  b:");
+		l.add("  c:");
+		l.add("");
+		test(l.toString());
+		
+		l = new Lines();
+		l.add("a:");
+		l.add("  b:");
+		l.add("    c:");
+		l.add("");
+		test(l.toString());
+		
+		l = new Lines();
+		l.add("a:");
+		l.add("  b:");
+		l.add("    c:");
+		l.add("  d:");
+		l.add("");
+		test(l.toString());
+		
+		l = new Lines();
+		l.add("a:");
+		l.add("  b:");
+		l.add("    c:");
+		l.add("    d:");
+		l.add("");
+		test(l.toString());
+		
+		l = new Lines();
+		l.add("a:");
+		l.add("  b:");
+		l.add("    c:");
+		l.add("      d:");
+		l.add("");
+		test(l.toString());
+		
+		l = new Lines();
+		l.add("a:");
+		l.add("  b:");
+		l.add("    c:");
+		l.add("      d:");
+		l.add("  e:");
+		l.add("");
+		test(l.toString());
+		
+		l = new Lines();
+		l.add("a:");
+		l.add("  b:");
+		l.add("    c:");
+		l.add("      d:");
+		l.add("    e:");
+		l.add("");
+		test(l.toString());
 
-		s = "";
-		s += "a:hello\r\n";
-		s += " b:a[b\r\n"; // this is bad because [ needs to be escaped to [[
-		s += "\r\n";
-		try {
-			test(s);
-			fail();
-		} catch (DataException e) {}
-		
-		s = "";
-		s += "a:\r\n";
-		s += " b:\r\n";
-		s += " c:\r\n";
-		s += "\r\n";
-		test(s);
-		
-		s = "";
-		s += "a:\r\n";
-		s += " b:\r\n";
-		s += "  c:\r\n";
-		s += "\r\n";
-		test(s);
-		
-		s = "";
-		s += "a:\r\n";
-		s += " b:\r\n";
-		s += "  c:\r\n";
-		s += " d:\r\n";
-		s += "\r\n";
-		test(s);
-		
-		s = "";
-		s += "a:\r\n";
-		s += " b:\r\n";
-		s += "  c:\r\n";
-		s += "  d:\r\n";
-		s += "\r\n";
-		test(s);
-		
-		s = "";
-		s += "a:\r\n";
-		s += " b:\r\n";
-		s += "  c:\r\n";
-		s += "   d:\r\n";
-		s += "\r\n";
-		test(s);
-		
-		s = "";
-		s += "a:\r\n";
-		s += " b:\r\n";
-		s += "  c:\r\n";
-		s += "   d:\r\n";
-		s += " e:\r\n";
-		s += "\r\n";
-		test(s);
-		
-		s = "";
-		s += "a:\r\n";
-		s += " b:\r\n";
-		s += "  c:\r\n";
-		s += "   d:\r\n";
-		s += "  e:\r\n";
-		s += "\r\n";
-		test(s);
+		l = new Lines();
+		l.add("a:");
+		l.add("  b:");
+		l.add("    c:");
+		l.add("      d:");
+		l.add("      e:");
+		l.add("");
+		test(l.toString());
 
-		s = "";
-		s += "a:\r\n";
-		s += " b:\r\n";
-		s += "  c:\r\n";
-		s += "   d:\r\n";
-		s += "   e:\r\n";
-		s += "\r\n";
-		test(s);
+		l = new Lines();
+		l.add("a:");
+		l.add("  b:");
+		l.add("    c:");
+		l.add("      d:");
+		l.add("       e:");
+		l.add("");
+		test(l.toString());
 
-		s = "";
-		s += "a:\r\n";
-		s += " b:\r\n";
-		s += "  c:\r\n";
-		s += "   d:\r\n";
-		s += "    e:\r\n";
-		s += "\r\n";
-		test(s);
-
-
-		s = "";
-		s += "a:\r\n";
-		s += " b:\r\n";
-		s += " c:\r\n";
-		s += "  d:\r\n";
-		s += "  e:\r\n";
-		s += "   f:\r\n";
-		s += "   g:\r\n";
-		s += "    h:\r\n";
-		s += "    i:\r\n";
-		s += "     j:\r\n";
-		s += "     k:\r\n";
-		s += "  l:\r\n";
-		s += "   m:\r\n";
-		s += "   n:\r\n";
-		s += " o:\r\n";
-		s += "  p:\r\n";
-		s += "   q:\r\n";
-		s += " r:\r\n";
-		s += " s:\r\n";
-		s += " t:\r\n";
-		s += " u:\r\n";
-		s += "  v:\r\n";
-		s += "   w:\r\n";
-		s += "   x:\r\n";
-		s += "  y:\r\n";
-		s += " z:\r\n";
-		s += "\r\n";
-		test(s);
+		l = new Lines();
+		l.add("a:");
+		l.add("  b:");
+		l.add("  c:");
+		l.add("    d:");
+		l.add("    e:");
+		l.add("      f:");
+		l.add("      g:");
+		l.add("        h:");
+		l.add("        i:");
+		l.add("          j:");
+		l.add("          k:");
+		l.add("    l:");
+		l.add("      m:");
+		l.add("      n:");
+		l.add("  o:");
+		l.add("    p:");
+		l.add("      q:");
+		l.add("  r:");
+		l.add("  s:");
+		l.add("  t:");
+		l.add("  u:");
+		l.add("    v:");
+		l.add("      w:");
+		l.add("      x:");
+		l.add("    y:");
+		l.add("  z:");
+		l.add("");
+		test(l.toString());
 		
 		// see how long that one is, in data and in text
 		
-		Data asText = new Data(s);
+		Data asText = new Data(l.toString());
 		int sizeAsText = asText.size();
 		Outline o = Outline.fromText(asText);
 		int sizeAsData = o.toData().size();
 		System.out.println(sizeAsText + " " + sizeAsData); // 165 to 104
+	}
+	
+	public void testInvalid(String s) throws Exception {
+		try {
+			test(s);
+			fail();
+		} catch (DataException e) {}
 	}
 
 	public void test(String s) throws Exception {
