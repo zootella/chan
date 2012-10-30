@@ -7,6 +7,7 @@ import java.nio.ByteBuffer;
 import org.zootella.base.exception.DiskException;
 import org.zootella.base.exception.NetException;
 import org.zootella.base.file.File;
+import org.zootella.base.list.RecycleBin;
 import org.zootella.base.net.name.IpPort;
 import org.zootella.base.net.packet.ListenPacket;
 import org.zootella.base.net.socket.Socket;
@@ -32,11 +33,17 @@ public class Bin {
 	
 	/** Get a new empty 8 KB Bin. */
 	public static Bin medium() {
+		Bin recycled = recycleMedium.get();
+		if (recycled != null)
+			return recycled;
 		return new Bin(medium);
 	}
 	
 	/** Get a new empty 64 KB Bin. */
 	public static Bin big() {
+		Bin recycled = recycleBig.get();
+		if (recycled != null)
+			return recycled;
 		return new Bin(big);
 	}
 
@@ -44,6 +51,21 @@ public class Bin {
 	private Bin(int size) {
 		this.buffer = ByteBuffer.allocateDirect(size);
 	}
+	
+	// Recycle
+	
+	/** Recycle this bin so the program can use it again instead of allocating a new one. */
+	public void recycle() {
+		if (capacity() == medium)
+			recycleMedium.add(this);
+		else if (capacity() == big)
+			recycleBig.add(this);
+	}
+
+	/** Empty medium size bins ready for quick reuse. */
+	private static final RecycleBin recycleMedium = new RecycleBin(medium);
+	/** Empty big bins ready for quick reuse. */
+	private static final RecycleBin recycleBig = new RecycleBin(big);
 	
 	// Look
 
