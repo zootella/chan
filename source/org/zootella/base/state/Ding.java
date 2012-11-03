@@ -34,9 +34,7 @@ public class Ding extends Close {
 			try {
 				if (closed()) return; // Don't do anything if we're closed
 				
-				if (!Pulse.isSetToPulseSoon() &&                       // If the program isn't already pulsing or set to start, and
-					Pulse.timeStartedOrFinished().expired(Time.delay)) // It's been longer than the delay since the last pulse finished
-					Pulse.soon();                                      // Have the program pulse soon to notice things that have timed out
+				Pulse.pulse.ding(); // Pulse soon if we haven't pulsed in a while
 
 			} catch (Throwable t) { Mistake.stop(t); } // Stop the program for an exception we didn't expect
 		}

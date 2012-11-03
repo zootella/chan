@@ -5,29 +5,53 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import org.zootella.base.exception.ProgramException;
 import org.zootella.base.process.Mistake;
 import org.zootella.base.time.Now;
 import org.zootella.base.time.Speed;
 import org.zootella.base.time.Time;
 import org.zootella.base.user.Describe;
 
-/** The static list and methods here pulse all the open objects in the program to move things forward. */
+/** The program's single pulse object lists and pulses all the open objects in the program to move things forward. */
 public class Pulse {
+	
+	// Instance
+	
+	/** The program's single Pulse object. */
+	public static final Pulse pulse = new Pulse();
 
 	// Start
 	
 	/** true when we've set Java to call run(), and it hasn't yet. */
-	private static boolean start;
+	private boolean start;
 	/** true when an object has requested another pass up the pulse list. */
-	private static boolean again;
+	private boolean again;
+	
+	/** Pulse soon if we haven't pulsed in a while. */
+	public void ding() {
+		if (!start &&                // If the program isn't already pulsing or set to start, and
+			now.expired(Time.delay)) // It's been longer than the delay since the last pulse finished
+			soon();                  // Have the program pulse soon to notice things that have timed out
+	}
 
 	/**
 	 * An object in the program has changed or finished.
 	 * Pulse soon so the object that made it can notice and take the next step forward.
+	 * It's safe to call this from the event thread or a Task thread, and it will return quickly.
 	 */
-	public static void soon() {
-		requireEventThread(); // Only the event thread can request a pulse soon
+	public void soon() {
+		if (SwingUtilities.isEventDispatchThread()) {
+			soonDo();
+		} else {
+			SwingUtilities.invokeLater(new Runnable() { // Have the normal Swing thread call this run() method
+				public void run() {
+					try {
+						soonDo();
+					} catch (Throwable t) { Mistake.stop(t); } // Stop the program for an exception we didn't expect
+				}
+			});
+		}
+	}
+	private void soonDo() {
 
 		// Start a pulse if one isn't already happening
 		if (!start) { // No need to start a new pulse if we're doing one now already
@@ -40,7 +64,7 @@ public class Pulse {
 	}
 
 	// Soon after soon() above calls SwingUtilities.invokeLater(), Java calls this run() method
-	private static class MyRunnable implements Runnable {
+	private class MyRunnable implements Runnable {
 		public void run() {
 			try {
 				pulse();
@@ -51,7 +75,7 @@ public class Pulse {
 	// Pulse
 	
 	/** Pulse all the open objects in the program until none request another pulse soon. */
-	private static void pulse() {
+	private synchronized void pulse() {
 		
 		long currentSpeed = speed.add(1, Time.second); // 1 event, get speed in events per second
 		if (maximumSpeed < currentSpeed) maximumSpeed = currentSpeed; //TODO maybe skip middle if current speed is too high?
@@ -98,52 +122,45 @@ public class Pulse {
 	// List
 
 	/** Add a new object that extends Close to the program's list of open objects. */
-	public static void add(Close c) { // The Close constructor already checked that only the event thread can do this
+	public synchronized void add(Close c) { // If a Task thread creates a new Close object, it will enter this method
 		list.add(c); // It's safe to add to the end even during a pulse because we loop by index number
 	}
 
 	/** Remove objects that got closed from our list. */
-	private static void clear() {
+	private synchronized void clear() {
 		for (int i = list.size() - 1; i >= 0; i--) { // Loop backwards so we can remove things along the way
 			if (list.get(i).closed()) list.remove(i);
 		}
 	}
 
 	/** The program's list of all objects that extend Close, and aren't closed yet. */
-	private static final List<Close> list = new ArrayList<Close>();
-	
-	// Ding
-
-	/** true when we are set to pulse again soon. */
-	public static boolean isSetToPulseSoon() { return start; }
-	/** The time when we most recently started or finished a pulse. */
-	public static Now timeStartedOrFinished() { return now; }
+	private final List<Close> list = new ArrayList<Close>(); // Methods that use list are synchronized
 	
 	// Monitor
 
 	/** The time when we last entered or left the pulse function. */
-	private static Now now = new Now();
+	private Now now = new Now();
 	
 	/** The speed at which pulses are happening right now. */
-	private static final Speed speed = new Speed(Time.second); // Keep the most recent 1 second of data
+	private final Speed speed = new Speed(Time.second); // Keep the most recent 1 second of data
 	/** The maximum speed we recorded as the program ran. */
-	private static long maximumSpeed;
+	private long maximumSpeed;
 	
 	/** How many pulses have happened. */
-	private static long countPulses;
+	private long countPulses;
 	/** How many loops have happened within all the pulses. */
-	private static long countLoops;
+	private long countLoops;
 	/** How many objects we've pulsed within all the loops and pulses. */
-	private static long countObjects;
+	private long countObjects;
 	/** How many pulses have gone over the time limit and quit early. */
-	private static long countHitLimit;
+	private long countHitLimit;
 	/** How long the program has spent inside the pulse function, in milliseconds. */
-	private static long countTimeInside;
+	private long countTimeInside;
 	/** How long the program has spent outside the pulse function, in milliseconds. */
-	private static long countTimeOutside;
+	private long countTimeOutside;
 
 	/** Compose text about how efficiently the program has been running. */
-	public static String composeEfficiency() {
+	public String composeEfficiency() {
 		
 		StringBuffer s = new StringBuffer();
 		s.append("The average pulse looped up a list of [" + Describe.average(countLoops, countObjects) + "] objects [" + Describe.average(countPulses, countLoops) + "] times.");
@@ -157,7 +174,7 @@ public class Pulse {
 	 * Call before the program exits to make sure we've closed every object.
 	 * @return Text about objects still open by mistake, or blank if there's no problem
 	 */
-	public static String confirmAllClosed() {
+	public synchronized String confirmAllClosed() {
 		
 		clear(); // Remove closed objects from the list
 		
@@ -169,12 +186,5 @@ public class Pulse {
 		for (Close c : list)
 			s.append(c.toString() + "\n");
 		return s.toString();
-	}
-	
-	// Require
-
-	/** Make sure this is the event thread, or exit the program without returning. */
-	public static void requireEventThread() {
-		if (!SwingUtilities.isEventDispatchThread()) Mistake.stop(new ProgramException("method limited to event thread only"));
 	}
 }

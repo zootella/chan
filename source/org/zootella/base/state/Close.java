@@ -34,14 +34,14 @@ public abstract class Close {
 	 * This automatically runs before execution enters the constructor of an object that extends Close.
 	 */
 	public Close() {
-		Pulse.requireEventThread(); // Only the event thread can make a new Close object
-		Pulse.add(this); // Add this new object that extends Close to the program's list of open objects
-		Pulse.soon(); // Have the program pulse this new object soon
+		Pulse.pulse.add(this); // Add this new object that extends Close to the program's list of open objects
+		Pulse.pulse.soon(); // Have the program pulse this new object soon
 	}
 	
 	/** true once this object that extends Close has been closed, and promises to not change again. */
 	public boolean closed() { return objectClosed; }
-	private boolean objectClosed; // Private so objects that extend Close can't get to this
+	private volatile boolean objectClosed; // Private so objects that extend Close can't see or change this boolean
+	                                       // Volatile so the event thread and Task threads can see if an object is closed and close it
 
 	/**
 	 * Mark this object that extends Close as closed, and only do this once.
@@ -52,7 +52,7 @@ public abstract class Close {
 	public boolean already() {
 		if (objectClosed) return true; // We're already closed, return true to return from the close() method
 		objectClosed = true;           // Mark this object that extends Close as now permanently closed
-		Pulse.soon();                  // Have the program pulse soon so the object that made this one can notice it finished
+		Pulse.pulse.soon();            // Have the program pulse soon so the object that made this one can notice it finished
 		return false;                  // Return false to run the contents of the close() method this first and only time
 	}
 	
@@ -72,7 +72,6 @@ public abstract class Close {
 
 	/** Close c ignoring null and exceptions. */
 	public static void close(Close c) {
-		Pulse.requireEventThread(); // Only the event thread can close an object
 		if (c == null) return;
 		try { c.close(); } catch (Throwable t) { Mistake.log(t); } // Keep going to close the next object
 	}
