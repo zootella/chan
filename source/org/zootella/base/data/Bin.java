@@ -63,9 +63,9 @@ public class Bin {
 	}
 
 	/** Empty medium size bins ready for quick reuse. */
-	private static final RecycleBin recycleMedium = new RecycleBin(medium);
+	private static final RecycleBin recycleMedium = new RecycleBin();
 	/** Empty big bins ready for quick reuse. */
-	private static final RecycleBin recycleBig = new RecycleBin(big);
+	private static final RecycleBin recycleBig = new RecycleBin();
 	
 	// Look
 
