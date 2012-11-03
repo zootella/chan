@@ -75,7 +75,7 @@ public class Pulse {
 	// Pulse
 	
 	/** Pulse all the open objects in the program until none request another pulse soon. */
-	private synchronized void pulse() {
+	private void pulse() {
 		
 		long currentSpeed = speed.add(1, Time.second); // 1 event, get speed in events per second
 		if (maximumSpeed < currentSpeed) maximumSpeed = currentSpeed; //TODO maybe skip middle if current speed is too high?
@@ -93,7 +93,7 @@ public class Pulse {
 			for (int i = list.size() - 1; i >= 0; i--) { // Loop backwards to pulse contained objects before the older objects that made them
 				countLoops++;
 				Close c = list.get(i);
-				if (!c.closed()) { // Skip closed objects
+				if (Close.open(c)) { // Skip closed objects
 					countObjects++;
 					try {
 						c.pulse(); // Pulse the object so it notices things that have finished and moves to the next step
@@ -105,7 +105,7 @@ public class Pulse {
 		// In a single pass after that, pulse up the list to have objects compose information for the user
 		for (int i = list.size() - 1; i >= 0; i--) {
 			Close c = list.get(i);
-			if (!c.closed()) { // Skip closed objects
+			if (Close.open(c)) { // Skip closed objects
 				try {
 					c.pulseUser(); // Pulse the object to have it compose text for the user to show current information
 				} catch (Throwable t) { Mistake.stop(t); } // Stop the program for an exception we didn't expect
@@ -122,19 +122,19 @@ public class Pulse {
 	// List
 
 	/** Add a new object that extends Close to the program's list of open objects. */
-	public synchronized void add(Close c) { // If a Task thread creates a new Close object, it will enter this method
+	public void add(Close c) {
 		list.add(c); // It's safe to add to the end even during a pulse because we loop by index number
 	}
 
 	/** Remove objects that got closed from our list. */
-	private synchronized void clear() {
+	private void clear() {
 		for (int i = list.size() - 1; i >= 0; i--) { // Loop backwards so we can remove things along the way
 			if (list.get(i).closed()) list.remove(i);
 		}
 	}
 
 	/** The program's list of all objects that extend Close, and aren't closed yet. */
-	private final List<Close> list = new ArrayList<Close>(); // Methods that use list are synchronized
+	private final CloseList list = new CloseList();
 	
 	// Monitor
 
@@ -174,7 +174,7 @@ public class Pulse {
 	 * Call before the program exits to make sure we've closed every object.
 	 * @return Text about objects still open by mistake, or blank if there's no problem
 	 */
-	public synchronized String confirmAllClosed() {
+	public String confirmAllClosed() {
 		
 		clear(); // Remove closed objects from the list
 		
@@ -183,8 +183,12 @@ public class Pulse {
 		
 		StringBuffer s = new StringBuffer(); // Compose and return text about the objects still open by mistake
 		s.append(size + " objects open:\n");
-		for (Close c : list)
-			s.append(c.toString() + "\n");
+		for (int i = 0; i < size; i++) {
+			Close c = list.get(i);
+			if (Close.open(c)) { // Skip closed objects
+				s.append(c.toString() + "\n");
+			}
+		}
 		return s.toString();
 	}
 }
