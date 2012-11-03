@@ -1,8 +1,5 @@
 package org.zootella.base.state;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.SwingUtilities;
 
 import org.zootella.base.process.Mistake;
@@ -129,7 +126,9 @@ public class Pulse {
 	/** Remove objects that got closed from our list. */
 	private void clear() {
 		for (int i = list.size() - 1; i >= 0; i--) { // Loop backwards so we can remove things along the way
-			if (list.get(i).closed()) list.remove(i);
+			Close c = list.get(i);
+			if (Close.done(c)) // Only remove closed objects
+				list.remove(i);
 		}
 	}
 
