@@ -31,7 +31,7 @@ public abstract class Model extends Close {
 	public void close() {
 		if (already()) return;
 		close(delay);
-		close(pulse);
+		close(oldPulse);
 		for (View view : new HashSet<View>(views)) // Copy the list so we can change the original
 			view.vanish();                         // This removes the view from views
 		views.clear();                             // It should be empty now, but clear it just to be sure
@@ -62,11 +62,11 @@ public abstract class Model extends Close {
 	// Pulse
 
 	/** If this Model has something guaranteed to change in time, like an age, have it pulse views above. */
-	public void pulse() {
-		if (pulse == null)
-			pulse = new OldPulse(new MyReceive());
+	public void modelPulse() {
+		if (oldPulse == null)
+			oldPulse = new OldPulse(new MyReceive());
 	}
-	private OldPulse pulse;//TODO confirm nobody's using this and get rid of it
+	private OldPulse oldPulse;//TODO confirm nobody's using this and get rid of it
 	
 	
 	
