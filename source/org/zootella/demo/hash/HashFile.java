@@ -9,14 +9,12 @@ import org.zootella.base.file.OpenTask;
 import org.zootella.base.file.Path;
 import org.zootella.base.file.ReadValve;
 import org.zootella.base.size.Range;
-import org.zootella.base.state.OldClose;
-import org.zootella.base.state.Model;
+import org.zootella.base.state.Close;
 import org.zootella.base.state.Receive;
 import org.zootella.base.state.Update;
 import org.zootella.base.valve.Flow;
-import org.zootella.base.valve.Valve;
 
-public class HashFile extends OldClose {
+public class HashFile extends Close {
 
 	public HashFile(Update up, String path) {
 		this.up = up;

@@ -8,7 +8,7 @@ import org.zootella.base.time.Delay;
 import org.zootella.base.time.OldPulse;
 
 /** An object has a Model that extends this class to keep View objects above up to date. */
-public abstract class Model extends OldClose {
+public abstract class Model extends Close {
 
 	// Core
 

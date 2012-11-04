@@ -6,13 +6,13 @@ import javax.swing.AbstractAction;
 
 import org.zootella.base.desktop.Desktop;
 import org.zootella.base.process.Mistake;
-import org.zootella.base.state.OldClose;
+import org.zootella.base.state.Close;
 import org.zootella.base.user.CornerIcon;
 import org.zootella.base.user.Face;
 import org.zootella.base.user.skin.Skin;
 import org.zootella.demo.here.HereFrame;
 
-public class User extends OldClose {
+public class User extends Close {
 
 	public User(Program program) {
 		this.program = program;

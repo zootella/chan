@@ -5,7 +5,6 @@ import org.zootella.base.data.Outline;
 import org.zootella.base.data.Text;
 import org.zootella.base.exception.DataException;
 import org.zootella.base.exception.ProgramException;
-import org.zootella.base.net.name.Ip;
 import org.zootella.base.net.name.IpPort;
 import org.zootella.base.net.name.Port;
 import org.zootella.base.net.packet.Packet;
@@ -13,18 +12,17 @@ import org.zootella.base.net.packet.PacketReceive;
 import org.zootella.base.net.packet.Packets;
 import org.zootella.base.net.web.DomainTask;
 import org.zootella.base.process.Mistake;
-import org.zootella.base.state.OldClose;
+import org.zootella.base.state.Close;
 import org.zootella.base.state.Once;
 import org.zootella.base.state.Receive;
 import org.zootella.base.state.Result;
 import org.zootella.base.state.Update;
 import org.zootella.base.time.Duration;
 import org.zootella.base.time.Egg;
-import org.zootella.base.time.Now;
 import org.zootella.center.Center;
 
 /** A CenterTask figures out what our IP address is once and right now. */
-public class CenterTask extends OldClose {
+public class CenterTask extends Close {
 	
 	// Make
 	

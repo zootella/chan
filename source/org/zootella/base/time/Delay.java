@@ -6,10 +6,10 @@ import javax.swing.AbstractAction;
 import javax.swing.Timer;
 
 import org.zootella.base.process.Mistake;
-import org.zootella.base.state.OldClose;
+import org.zootella.base.state.Close;
 import org.zootella.base.state.Receive;
 
-public class Delay extends OldClose {
+public class Delay extends Close {
 
 	/** Make a Delay that will call receive() once shortly after the first of a bunch of send() calls. */
 	public Delay(Receive receive) { this(receive, Time.delay); }

@@ -16,9 +16,9 @@ import javax.swing.Action;
 
 import org.zootella.base.exception.PlatformException;
 import org.zootella.base.process.Mistake;
-import org.zootella.base.state.OldClose;
+import org.zootella.base.state.Close;
 
-public class CornerIcon extends OldClose {
+public class CornerIcon extends Close {
 	
 	public CornerIcon(String name, Image image, Action restoreAction, Action exitAction) {
 		this.restoreAction = restoreAction;

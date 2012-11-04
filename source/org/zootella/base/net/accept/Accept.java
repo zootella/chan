@@ -6,13 +6,13 @@ import java.util.Set;
 import org.zootella.base.list.TwoBoots;
 import org.zootella.base.net.flow.SocketBay;
 import org.zootella.base.net.name.Port;
-import org.zootella.base.state.OldClose;
+import org.zootella.base.state.Close;
 import org.zootella.base.state.Receive;
 import org.zootella.base.state.Update;
 import org.zootella.base.time.Time;
 
 /** The program's Accept object listens on a port to accept new incoming TCP socket connections. */
-public class Accept extends OldClose {
+public class Accept extends Close {
 	
 	public Accept(Port port) {
 		
@@ -61,7 +61,7 @@ public class Accept extends OldClose {
 	
 	/** Add o to the list of objects this Packets object shows the packets it receives. */
 	public void add(AcceptReceive o) {
-		open(); // If this object is closed, we can't let it change, throw an exception
+		confirmOpen(); // If this object is closed, we can't let it change, throw an exception
 		if (!receivers.contains(o))
 			receivers.add(o);
 		update.send();

@@ -8,9 +8,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import org.zootella.base.exception.TimeException;
 import org.zootella.base.process.Mistake;
-import org.zootella.base.state.OldClose;
+import org.zootella.base.state.Close;
 import org.zootella.base.state.View;
 import org.zootella.base.user.Refresh;
 import org.zootella.base.user.Screen;
@@ -22,7 +21,7 @@ import org.zootella.main.Program;
 import org.zootella.main.User;
 
 /** The Info window that shows advanced statistics and diagnostic information. */
-public class HereFrame extends OldClose {
+public class HereFrame extends Close {
 	
 	private final Program program;
 

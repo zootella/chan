@@ -6,11 +6,11 @@ import javax.swing.AbstractAction;
 import javax.swing.Timer;
 
 import org.zootella.base.process.Mistake;
-import org.zootella.base.state.OldClose;
+import org.zootella.base.state.Close;
 import org.zootella.base.state.Receive;
 import org.zootella.base.state.Update;
 
-public class OldPulse extends OldClose {
+public class OldPulse extends Close {
 
 	/** Make a Pulse that will call the given receive() method 5 times a second. */
 	public OldPulse(Receive receive) { this(receive, Time.delay); }

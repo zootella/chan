@@ -6,12 +6,12 @@ import java.net.UnknownHostException;
 import org.zootella.base.exception.NetException;
 import org.zootella.base.exception.ProgramException;
 import org.zootella.base.net.name.Ip;
-import org.zootella.base.state.OldClose;
+import org.zootella.base.state.Close;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
 import org.zootella.base.state.Update;
 
-public class DomainTask extends OldClose {
+public class DomainTask extends Close {
 	
 	// Make
 

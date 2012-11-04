@@ -1,11 +1,11 @@
 package org.zootella.base.time;
 
 import org.zootella.base.exception.TimeException;
-import org.zootella.base.state.OldClose;
+import org.zootella.base.state.Close;
 import org.zootella.base.state.Receive;
 
 /** Make and check an Egg timer to close with a TimeException when the disk or network made you wait for 4 seconds. */
-public class Egg extends OldClose {
+public class Egg extends Close {
 	
 	public Egg(Receive receive) { this(receive, Time.out); }
 	public Egg(Receive receive, long delay) {

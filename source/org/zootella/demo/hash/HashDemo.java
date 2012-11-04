@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import org.zootella.base.process.Mistake;
-import org.zootella.base.state.OldClose;
+import org.zootella.base.state.Close;
 import org.zootella.base.user.Dialog;
 import org.zootella.base.user.Screen;
 import org.zootella.base.user.panel.Cell;
@@ -21,7 +21,7 @@ import org.zootella.base.user.widget.TextLine;
 import org.zootella.main.Guide;
 
 /** The Hash window that lets the user hash a file and shows progress. */
-public class HashDemo extends OldClose {
+public class HashDemo extends Close {
 	
 	public HashDemo() {
 		

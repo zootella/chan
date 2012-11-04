@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
 import org.zootella.base.process.Mistake;
-import org.zootella.base.state.Close;
 import org.zootella.base.user.skin.PlainButton;
 import org.zootella.base.user.widget.Grip;
 import org.zootella.demo.hash.HashDemo;

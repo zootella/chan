@@ -4,11 +4,11 @@ import javax.crypto.Cipher;
 
 import org.zootella.base.data.Bin;
 import org.zootella.base.size.Meter;
-import org.zootella.base.state.OldClose;
+import org.zootella.base.state.Close;
 import org.zootella.base.state.Update;
 import org.zootella.base.valve.Valve;
 
-public class SecretValve extends OldClose implements Valve {
+public class SecretValve extends Close implements Valve {
 
 	public SecretValve(Update update, Cipher cipher, int mode) {
 		this.update = update;

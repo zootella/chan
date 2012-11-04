@@ -15,9 +15,9 @@ import org.zootella.base.net.packet.PacketReceive;
 import org.zootella.base.net.packet.Packets;
 import org.zootella.base.process.Alive;
 import org.zootella.base.process.Mistake;
-import org.zootella.base.state.OldClose;
+import org.zootella.base.state.Close;
 
-public class Center extends OldClose {
+public class Center extends Close {
 
 	/** Domain name and port number of the central server. */
 	public static final String site = "bootcloud.info:9193";

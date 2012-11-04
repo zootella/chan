@@ -2,12 +2,12 @@ package org.zootella.base.net.packet;
 
 import org.zootella.base.data.Bin;
 import org.zootella.base.exception.ProgramException;
-import org.zootella.base.state.OldClose;
+import org.zootella.base.state.Close;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
 import org.zootella.base.state.Update;
 
-public class SendTask extends OldClose {
+public class SendTask extends Close {
 
 	// Make
 

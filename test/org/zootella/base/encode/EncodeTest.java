@@ -124,7 +124,7 @@ public class EncodeTest {
 	private void testUnquoteInvalid(String before) {
 		before = Text.quote(before);
 		try {
-			Data d = Encode.unquote(before);
+			Encode.unquote(before);
 			Assert.fail();
 		} catch (DataException e) {}
 	}

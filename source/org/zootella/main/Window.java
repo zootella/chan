@@ -13,11 +13,11 @@ import net.roydesign.mac.MRJAdapter;
 
 import org.zootella.base.desktop.Desktop;
 import org.zootella.base.process.Mistake;
-import org.zootella.base.state.OldClose;
+import org.zootella.base.state.Close;
 import org.zootella.base.user.Screen;
 
 /** The main window on the screen that lists the running pipes. */
-public class Window extends OldClose {
+public class Window extends Close {
 
 	// Object
 

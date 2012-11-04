@@ -7,13 +7,13 @@ import org.zootella.base.net.name.Port;
 import org.zootella.base.net.packet.Packets;
 import org.zootella.base.net.upnp.Router;
 import org.zootella.base.net.upnp.name.Map;
-import org.zootella.base.state.OldClose;
+import org.zootella.base.state.Close;
 import org.zootella.base.state.Model;
 import org.zootella.base.state.Receive;
 import org.zootella.base.state.Result;
 import org.zootella.base.state.Update;
 
-public class Here extends OldClose {
+public class Here extends Close {
 
 	public Here(Packets packets, Port port) {
 		this.packets = packets;

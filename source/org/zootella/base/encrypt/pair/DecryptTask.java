@@ -2,12 +2,12 @@ package org.zootella.base.encrypt.pair;
 
 import org.zootella.base.data.Data;
 import org.zootella.base.exception.ProgramException;
-import org.zootella.base.state.OldClose;
+import org.zootella.base.state.Close;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
 import org.zootella.base.state.Update;
 
-public class DecryptTask extends OldClose {
+public class DecryptTask extends Close {
 
 	public DecryptTask(Update up, Data data, PairKey key) {
 		this.up = up; // We'll tell update when we're done

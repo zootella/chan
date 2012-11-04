@@ -5,12 +5,12 @@ import org.zootella.base.exception.ProgramException;
 import org.zootella.base.size.Range;
 import org.zootella.base.size.StripePattern;
 import org.zootella.base.size.move.StripeMove;
-import org.zootella.base.state.OldClose;
+import org.zootella.base.state.Close;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
 import org.zootella.base.state.Update;
 
-public class ReadTask extends OldClose {
+public class ReadTask extends Close {
 	
 	// Make
 

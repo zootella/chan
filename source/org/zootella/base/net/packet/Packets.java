@@ -8,12 +8,12 @@ import org.zootella.base.data.Data;
 import org.zootella.base.list.BinBin;
 import org.zootella.base.net.name.IpPort;
 import org.zootella.base.net.name.Port;
-import org.zootella.base.state.OldClose;
+import org.zootella.base.state.Close;
 import org.zootella.base.state.Receive;
 import org.zootella.base.state.Update;
 
 /** The program's Packets object listens on a port to send and receive UDP packets. */
-public class Packets extends OldClose {
+public class Packets extends Close {
 
 	/** Make a new Packets object that listens on the given port number. */
 	public Packets(Port port) {
@@ -84,7 +84,7 @@ public class Packets extends OldClose {
 
 	/** Send data to ipPort as the payload of a UDP packet. */
 	public void send(Data data, IpPort ipPort) {
-		open();
+		confirmOpen();
 		Bin bin = bin();
 		bin.add(data);
 		send(bin, ipPort);
@@ -92,13 +92,13 @@ public class Packets extends OldClose {
 	
 	/** Get an empty Bin to fill with data and then send. */
 	public Bin bin() {
-		open();
+		confirmOpen();
 		return bins.get();
 	}
 
 	/** Send the data in bin to ipPort as a new UDP packet. */
 	public void send(Bin bin, IpPort ipPort) {
-		open();
+		confirmOpen();
 		packets.add(new Packet(bin, ipPort));
 		update.send();
 	}
@@ -107,7 +107,7 @@ public class Packets extends OldClose {
 
 	/** Add o to the list of objects this Packets object shows the packets it receives. */
 	public void add(PacketReceive o) {
-		open(); // If this object is closed, we can't let it change, throw an exception
+		confirmOpen(); // If this object is closed, we can't let it change, throw an exception
 		if (!receivers.contains(o))
 			receivers.add(o);
 	}

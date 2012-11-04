@@ -4,11 +4,11 @@ import org.zootella.base.data.Bin;
 import org.zootella.base.net.socket.Socket;
 import org.zootella.base.size.Meter;
 import org.zootella.base.size.Range;
-import org.zootella.base.state.OldClose;
+import org.zootella.base.state.Close;
 import org.zootella.base.state.Update;
 import org.zootella.base.valve.Valve;
 
-public class UploadValve extends OldClose implements Valve {
+public class UploadValve extends Close implements Valve {
 	
 	// Make
 

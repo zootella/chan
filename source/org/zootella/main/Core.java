@@ -6,11 +6,11 @@ import org.zootella.base.net.accept.Accept;
 import org.zootella.base.net.name.Port;
 import org.zootella.base.net.packet.Packets;
 import org.zootella.base.process.Mistake;
-import org.zootella.base.state.OldClose;
+import org.zootella.base.state.Close;
 import org.zootella.demo.here.Here;
 
 /** The core program beneath the window that does everything. */
-public class Core extends OldClose {
+public class Core extends Close {
 
 	public Core(Program program) {
 		this.program = program;

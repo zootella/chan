@@ -3,24 +3,26 @@ package org.zootella.base.net.upnp;
 import org.cybergarage.upnp.ControlPoint;
 import org.zootella.base.data.Outline;
 import org.zootella.base.exception.ProgramException;
-import org.zootella.base.exception.TimeException;
 import org.zootella.base.net.name.Ip;
 import org.zootella.base.net.upnp.name.Map;
 import org.zootella.base.net.upnp.task.AddTask;
 import org.zootella.base.net.upnp.task.IpTask;
 import org.zootella.base.net.upnp.task.StartTask;
 import org.zootella.base.process.Mistake;
-import org.zootella.base.state.OldClose;
+import org.zootella.base.state.Close;
 import org.zootella.base.state.Receive;
 import org.zootella.base.state.Result;
 import org.zootella.base.state.Update;
 import org.zootella.base.time.Egg;
+import org.zootella.base.time.Now;
 import org.zootella.base.time.Time;
 
-public class Router extends OldClose {
+public class Router extends Close {
 	
 	public Router(Update up, Map tcp, Map udp) {
 		this.up = up;
+		
+		whenMade = new Now();
 		
 		Receive receive = new MyReceive();
 		update = new Update(receive);
@@ -33,6 +35,8 @@ public class Router extends OldClose {
 		startTask = new StartTask(update, listen.listen);
 		log("start");
 	}
+	
+	private final Now whenMade;
 	
 	private final Map tcpMap;
 	private final Map udpMap;
@@ -94,7 +98,7 @@ public class Router extends OldClose {
 					control = startTask.result();
 				if (access == null && listen.access() != null) {
 					access = listen.access();
-					nameResult = new Result<Outline>(access.o, whenMade());
+					nameResult = new Result<Outline>(access.o, whenMade);
 					up.send();
 					log("access " + access.o.value("friendlyname"));
 				}
@@ -129,12 +133,12 @@ public class Router extends OldClose {
 	
 	private void exception(ProgramException e) {
 		if (nameResult == null)
-			nameResult = new Result<Outline>(null, whenMade(), e);
+			nameResult = new Result<Outline>(null, whenMade, e);
 		if (ipResult == null)
-			ipResult = new Result<Ip>(null, whenMade(), e);
+			ipResult = new Result<Ip>(null, whenMade, e);
 		if (tcpResult == null)
-			tcpResult = new Result<Map>(null, whenMade(), e);
+			tcpResult = new Result<Map>(null, whenMade, e);
 		if (udpResult == null)
-			udpResult = new Result<Map>(null, whenMade(), e);
+			udpResult = new Result<Map>(null, whenMade, e);
 	}
 }

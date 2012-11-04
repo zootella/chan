@@ -3,11 +3,11 @@ package org.zootella.base.encrypt.hash;
 import org.zootella.base.data.Bin;
 import org.zootella.base.size.Meter;
 import org.zootella.base.size.Range;
-import org.zootella.base.state.OldClose;
+import org.zootella.base.state.Close;
 import org.zootella.base.state.Update;
 import org.zootella.base.valve.Valve;
 
-public class HashValve extends OldClose implements Valve {
+public class HashValve extends Close implements Valve {
 	
 	// Make
 

@@ -3,10 +3,10 @@ package org.zootella.base.list;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.zootella.base.state.OldClose;
+import org.zootella.base.state.Close;
 import org.zootella.base.time.Now;
 
-public class TwoBoots<T> extends OldClose {
+public class TwoBoots<T> extends Close {
 	
 	// Make
 
@@ -37,7 +37,7 @@ public class TwoBoots<T> extends OldClose {
 
 	/** Add t to this TwoBoots, we'll keep it for awhile, then close and discard it. */
 	public void add(T t) {
-		open();
+		confirmOpen();
 		cycle();
 		if (!current.contains(t) && !previous.contains(t))
 			current.add(t);
@@ -45,7 +45,7 @@ public class TwoBoots<T> extends OldClose {
 
 	/** Remove t from this TwoBoots, does not close it. */
 	public void remove(T t) {
-		open();
+		confirmOpen();
 		cycle();
 		current.remove(t);
 		previous.remove(t);
@@ -53,7 +53,7 @@ public class TwoBoots<T> extends OldClose {
 
 	/** All the objects currently in this TwoBoots. */
 	public Set<T> list() {
-		open();
+		confirmOpen();
 		cycle();
 		Set<T> set = new HashSet<T>();
 		set.addAll(current);
@@ -76,7 +76,7 @@ public class TwoBoots<T> extends OldClose {
 	/** If we're holding objects that extend Close, call close() on all of them in set. */
 	private void closeContents(Set<T> set) {
 		for (T t : set)
-			if (t instanceof OldClose)
-				close((OldClose)t);
+			if (t instanceof Close)
+				close((Close)t);
 	}
 }

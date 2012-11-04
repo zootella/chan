@@ -7,10 +7,10 @@ import java.nio.channels.ServerSocketChannel;
 import org.zootella.base.exception.NetException;
 import org.zootella.base.net.name.Port;
 import org.zootella.base.process.Mistake;
-import org.zootella.base.state.OldClose;
+import org.zootella.base.state.Close;
 
 /** A TCP server socket bound to port that can listen for a new incoming connection. */
-public class ListenSocket extends OldClose {
+public class ListenSocket extends Close {
 
 	// Open
 

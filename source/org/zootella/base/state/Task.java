@@ -6,7 +6,7 @@ import org.zootella.base.exception.ProgramException;
 import org.zootella.base.process.Mistake;
 
 /** Make a Task to run some code in a separate thread. */
-public class Task extends OldClose {
+public class Task extends Close {
 	
 	// Make
 

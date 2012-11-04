@@ -4,13 +4,13 @@ import org.zootella.base.exception.ProgramException;
 import org.zootella.base.net.name.Ip;
 import org.zootella.base.net.upnp.Access;
 import org.zootella.base.net.upnp.Do;
-import org.zootella.base.state.OldClose;
+import org.zootella.base.state.Close;
 import org.zootella.base.state.Result;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
 import org.zootella.base.state.Update;
 
-public class IpTask extends OldClose {
+public class IpTask extends Close {
 	
 	// Make
 

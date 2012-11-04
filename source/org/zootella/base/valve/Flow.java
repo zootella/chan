@@ -4,11 +4,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.zootella.base.data.Bin;
-import org.zootella.base.state.OldClose;
+import org.zootella.base.state.Close;
 import org.zootella.base.state.Update;
 
 /** A list of Valve objects that data flows through. */
-public class Flow extends OldClose {
+public class Flow extends Close {
 
 	// Make
 	
@@ -39,7 +39,7 @@ public class Flow extends OldClose {
 	public void close() {
 		if (already()) return;
 		for (Valve valve : list)
-			close((OldClose)valve); // Close each Valve in our list
+			close((Close)valve); // Close each Valve in our list
 		update.send();
 	}
 	
