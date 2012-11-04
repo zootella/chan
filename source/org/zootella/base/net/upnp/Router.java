@@ -80,8 +80,6 @@ public class Router extends Close {
 		} catch (Throwable t) { Mistake.log(t); }
 		
 		close(startTask);
-		
-		up.send();
 	}
 
 	@Override public void pulse() {

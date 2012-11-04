@@ -29,7 +29,6 @@ public class RemoveTask extends Close {
 	@Override public void close() {
 		if (already()) return;
 		close(task);
-		up.send();
 	}
 
 	// Result

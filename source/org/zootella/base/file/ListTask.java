@@ -23,7 +23,6 @@ public class ListTask extends Close {
 	@Override public void close() {
 		if (already()) return;
 		close(task);
-		up.send();
 	}
 
 	public List<Name> result() { check(exception, list); return list; }

@@ -19,7 +19,6 @@ public class MakeKeyTask extends Close {
 	@Override public void close() {
 		if (already()) return;
 		close(task);
-		up.send();
 	}
 
 	public SignKey result() { check(exception, key); return key; }

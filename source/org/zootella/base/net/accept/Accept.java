@@ -20,7 +20,6 @@ public class Accept extends Close {
 		receivers = new HashSet<AcceptReceive>();
 
 		update = new Update();
-		update.send();
 	}
 	
 	private final Update update;

@@ -37,7 +37,6 @@ public class CenterTask extends Close {
 		egg = new Egg();
 		sent = new Once();
 		update = new Update();
-		update.send();
 	}
 
 	private final Update up;

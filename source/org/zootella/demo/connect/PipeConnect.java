@@ -28,7 +28,6 @@ public class PipeConnect extends Close {
 		program.core.accept.add(acceptReceive);
 
 		update = new Update();
-		update.send();
 		
 		lanAgo = new Ago();
 		netAgo = new Ago();
@@ -54,7 +53,6 @@ public class PipeConnect extends Close {
 		close(lan);
 		close(net);
 		try { program.core.accept.remove(acceptReceive); } catch (Throwable t) { Mistake.log(t); }
-		up.send();
 	}
 	
 	/** When done() call result() to get the SocketBay with the peer's valid greeting sitting in download(). */

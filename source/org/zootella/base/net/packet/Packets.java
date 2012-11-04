@@ -25,7 +25,6 @@ public class Packets extends Close {
 
 		// Start update
 		update = new Update();
-		update.send();
 	}
 	
 	/** Packets we're about to send. */

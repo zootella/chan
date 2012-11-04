@@ -23,7 +23,6 @@ public class Connect extends Close {
 		
 		egg = new Egg();
 		update = new Update();
-		update.send();
 	}
 	
 	private final Update up;
@@ -39,7 +38,6 @@ public class Connect extends Close {
 		close(connect);
 		if (exception != null)
 			close(socket);
-		up.send();
 	}
 	
 	public SocketBay result() { check(exception, socket); return socket; }

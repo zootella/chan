@@ -31,7 +31,6 @@ public class SecretTask extends Close {
 	@Override public void close() {
 		if (already()) return;
 		close(task);
-		up.send();
 	}
 
 	public Move result() { check(exception, data); return data; }

@@ -30,7 +30,6 @@ public class HashTask extends Close {
 	@Override public void close() {
 		if (already()) return;
 		close(task);
-		up.send();
 	}
 
 	/** How much we hashed when we're done, or throws the exception that made us give up. */

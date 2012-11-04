@@ -18,8 +18,6 @@ public class HashFile extends Close {
 	public HashFile(Update up, String path) {
 		this.up = up;
 		update = new Update();
-
-		update.send(); //TODO this is necessary, right?
 	}
 	
 	private final Update up;
@@ -41,8 +39,6 @@ public class HashFile extends Close {
 		close(openTask);
 		close(flow); // Closes the valves in the list
 		close(file);
-		
-		up.send();
 	}
 	
 

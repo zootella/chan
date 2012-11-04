@@ -22,7 +22,6 @@ public class ParseSecretKeyTask extends Close {
 	@Override public void close() {
 		if (already()) return;
 		close(task);
-		up.send();
 	}
 
 	public KeySecret result() { check(exception, key); return key; }

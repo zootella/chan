@@ -24,7 +24,6 @@ public class DecryptTask extends Close {
 	@Override public void close() {
 		if (already()) return;
 		close(task);
-		up.send();
 	}
 
 	public Data result() { check(exception, decrypted); return decrypted; }
