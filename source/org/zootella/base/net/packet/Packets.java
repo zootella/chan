@@ -53,31 +53,28 @@ public class Packets extends Close {
 		receivers.clear(); // Stop bothering objects above
 	}
 
-	private class MyReceive implements Receive {
-		public void receive() {
-			if (closed()) return;
+	@Override public void pulse() {
 
-			// Send
-			if (done(send)) { // Our SendTask finished sending a packet
-				Bin bin = send.result();
-				send = null;
-				bins.add(bin); // Recycle the Bin it used
-			}
-			if (no(send) && !packets.isEmpty()) // We're not sending a packet right now and we've got one to send
-				send = new SendTask(update, listen, packets.remove(0)); // Send it
-			
-			// Receive
-			if (done(receive)) { // Our ReceiveTask finished waiting for and getting a packet
-				Packet packet = receive.result(); // Get the packet
-				receive = null;
-				for (PacketReceive r : new ArrayList<PacketReceive>(receivers)) // Show it to each interested object above
-					if (r.receive(packet))
-						break; // r recognized it, don't show it to the other PacketReceive objects above
-				bins.add(packet.bin); // That's it for packet, recycle its Bin
-			}
-			if (no(receive)) // Wait for the next packet to arrive
-				receive = new ReceiveTask(update, listen, bins.get());
+		// Send
+		if (done(send)) { // Our SendTask finished sending a packet
+			Bin bin = send.result();
+			send = null;
+			bins.add(bin); // Recycle the Bin it used
 		}
+		if (no(send) && !packets.isEmpty()) // We're not sending a packet right now and we've got one to send
+			send = new SendTask(update, listen, packets.remove(0)); // Send it
+		
+		// Receive
+		if (done(receive)) { // Our ReceiveTask finished waiting for and getting a packet
+			Packet packet = receive.result(); // Get the packet
+			receive = null;
+			for (PacketReceive r : new ArrayList<PacketReceive>(receivers)) // Show it to each interested object above
+				if (r.receive(packet))
+					break; // r recognized it, don't show it to the other PacketReceive objects above
+			bins.add(packet.bin); // That's it for packet, recycle its Bin
+		}
+		if (no(receive)) // Wait for the next packet to arrive
+			receive = new ReceiveTask(update, listen, bins.get());
 	}
 	
 	// Send

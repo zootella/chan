@@ -71,26 +71,23 @@ public class CenterTask extends Close {
 	// Do
 
 	private final MyReceive receive;
-	private class MyReceive implements Receive {
-		public void receive() {
-			if (closed()) return;
-			try {
+	@Override public void pulse() {
+		try {
 
-				// Throw a TimeException if we've been trying to finish for more than 4 seconds
-				egg.check();
+			// Throw a TimeException if we've been trying to finish for more than 4 seconds
+			egg.check();
 
-				// Look up the IP address of the central server
-				if (no(domain))
-					domain = new DomainTask(update, Text.before(Center.site, ":"));
-				if (done(domain) && center == null)
-					center = new IpPort(domain.result(), new Port(Number.toInt(Text.after(Center.site, ":"))));
+			// Look up the IP address of the central server
+			if (no(domain))
+				domain = new DomainTask(update, Text.before(Center.site, ":"));
+			if (done(domain) && center == null)
+				center = new IpPort(domain.result(), new Port(Number.toInt(Text.after(Center.site, ":"))));
 
-				// Send the central server a UDP packet to find out what our IP address is
-				if (center != null && internet == null && sent.once())
-					packets.send((new Outline("aq")).toData(), center);
+			// Send the central server a UDP packet to find out what our IP address is
+			if (center != null && internet == null && sent.once())
+				packets.send((new Outline("aq")).toData(), center);
 
-			} catch (ProgramException e) { exception = e; close(CenterTask.this); up.send(); }
-		}
+		} catch (ProgramException e) { exception = e; close(this); up.send(); }
 	}
 	
 	private final MyPacketReceive packetReceive;

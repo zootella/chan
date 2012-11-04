@@ -47,37 +47,34 @@ public class HashFile extends Close {
 	}
 	
 
-	private class MyReceive implements Receive {
-		public void receive() {
-			if (closed()) return;
-			try {
+	@Override public void pulse() {
+		try {
+			
+			//open the file
+			if (no(openTask))
+				openTask = new OpenTask(update, new Open(new Path(path), null, Open.read));
+			if (done(openTask) && no(file))
+				file = openTask.result();
+			
+			if (is(file) && no(flow)) {
 				
-				//open the file
-				if (no(openTask))
-					openTask = new OpenTask(update, new Open(new Path(path), null, Open.read));
-				if (done(openTask) && no(file))
-					file = openTask.result();
+				Range range = new Range(0, file.size());//TODO test that a 0 byte file passes through this correctly, it should
 				
-				if (is(file) && no(flow)) {
-					
-					Range range = new Range(0, file.size());//TODO test that a 0 byte file passes through this correctly, it should
-					
-					//hash it
-					readValve = new ReadValve(update, file, range);
-					hashValve = new HashValve(update, range);
-					
-					flow = new Flow(update, false, false);
-					flow.list.add(readValve);
-					flow.list.add(hashValve);
-				}
+				//hash it
+				readValve = new ReadValve(update, file, range);
+				hashValve = new HashValve(update, range);
 				
-				if (is(flow))
-					flow.move();
-				
-				up.send();//TODO this is cheap, you should only send one when you know something has changed
-				
-			} catch (ProgramException e) { exception = e; close(HashFile.this); up.send(); }
-		}
+				flow = new Flow(update, false, false);
+				flow.list.add(readValve);
+				flow.list.add(hashValve);
+			}
+			
+			if (is(flow))
+				flow.move();
+			
+			up.send();//TODO this is cheap, you should only send one when you know something has changed
+			
+		} catch (ProgramException e) { exception = e; close(this); up.send(); }
 	}
 	
 	private String path;

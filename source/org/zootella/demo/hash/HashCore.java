@@ -46,11 +46,8 @@ public class HashCore extends Close {
 	}
 	
 
-	private class MyReceive implements Receive {
-		public void receive() {
-			if (closed()) return;
+	@Override public void pulse() {
 			
-		}
 	}
 	
 	private String path;

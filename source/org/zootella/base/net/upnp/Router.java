@@ -87,48 +87,45 @@ public class Router extends Close {
 		up.send();
 	}
 
-	private class MyReceive implements Receive {
-		public void receive() {
-			if (closed()) return;
-			try {
-				
-				egg.check();
-				
-				if (control == null && done(startTask))
-					control = startTask.result();
-				if (access == null && listen.access() != null) {
-					access = listen.access();
-					nameResult = new Result<Outline>(access.o, whenMade);
-					up.send();
-					log("access " + access.o.value("friendlyname"));
-				}
-				
-				if (no(ipTask) && access != null)
-					ipTask = new IpTask(update, listen.access());
-				if (ipResult == null && done(ipTask)) {
-					ipResult = ipTask.result();
-					up.send();
-					log("ip " + ipResult.result().toString() + " " + ipResult.duration.toString());
-				}
-				
-				if (no(tcpTask) && access != null)
-					tcpTask = new AddTask(update, access, tcpMap);
-				if (tcpResult == null && done(tcpTask)) {
-					tcpResult = tcpTask.result();
-					up.send();
-					log("tcp " + " " + tcpResult.duration.toString());
-				}
-				
-				if (no(udpTask) && access != null)
-					udpTask = new AddTask(update, access, udpMap);
-				if (udpResult == null && done(udpTask)) {
-					udpResult = udpTask.result();
-					up.send();
-					log("udp " + " " + udpResult.duration.toString());
-				}
+	@Override public void pulse() {
+		try {
+			
+			egg.check();
+			
+			if (control == null && done(startTask))
+				control = startTask.result();
+			if (access == null && listen.access() != null) {
+				access = listen.access();
+				nameResult = new Result<Outline>(access.o, whenMade);
+				up.send();
+				log("access " + access.o.value("friendlyname"));
+			}
+			
+			if (no(ipTask) && access != null)
+				ipTask = new IpTask(update, listen.access());
+			if (ipResult == null && done(ipTask)) {
+				ipResult = ipTask.result();
+				up.send();
+				log("ip " + ipResult.result().toString() + " " + ipResult.duration.toString());
+			}
+			
+			if (no(tcpTask) && access != null)
+				tcpTask = new AddTask(update, access, tcpMap);
+			if (tcpResult == null && done(tcpTask)) {
+				tcpResult = tcpTask.result();
+				up.send();
+				log("tcp " + " " + tcpResult.duration.toString());
+			}
+			
+			if (no(udpTask) && access != null)
+				udpTask = new AddTask(update, access, udpMap);
+			if (udpResult == null && done(udpTask)) {
+				udpResult = udpTask.result();
+				up.send();
+				log("udp " + " " + udpResult.duration.toString());
+			}
 
-			} catch (ProgramException e) { exception(e); close(Router.this); return; }
-		}
+		} catch (ProgramException e) { exception(e); close(this); return; }
 	}
 	
 	private void exception(ProgramException e) {

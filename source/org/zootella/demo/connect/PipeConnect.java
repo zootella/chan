@@ -68,35 +68,32 @@ public class PipeConnect extends Close {
 	private SocketBay socket; // as soon as you get socket, you close
 
 	private final MyReceive receive;
-	private class MyReceive implements Receive {
-		public void receive() {
-			if (closed()) return;
+	@Override public void pulse() {
 
-			// Connect to peer's LAN address
-			if (no(lan) && lanAgo.enough()) {
-				lan = new Connect(update, lanIp, hello, hash);
-				attempts++;
-			}
-			if (done(lan)) {
-				try {
-					socket = lan.result(); // As soon as we have socket, close and return
-					close(PipeConnect.this);
-					return;
-				} catch (ProgramException e) { Mistake.ignore(e); }
-				lan = null;
-			}
+		// Connect to peer's LAN address
+		if (no(lan) && lanAgo.enough()) {
+			lan = new Connect(update, lanIp, hello, hash);
+			attempts++;
+		}
+		if (done(lan)) {
+			try {
+				socket = lan.result(); // As soon as we have socket, close and return
+				close(PipeConnect.this);
+				return;
+			} catch (ProgramException e) { Mistake.ignore(e); }
+			lan = null;
+		}
 
-			// Connect to peer's Internet address
-			if (no(net) && netAgo.enough())
-				net = new Connect(update, netIp, hello, hash);
-			if (done(net)) {
-				try {
-					socket = net.result();
-					close(PipeConnect.this);
-					return;
-				} catch (ProgramException e) { Mistake.ignore(e); }
-				net = null;
-			}
+		// Connect to peer's Internet address
+		if (no(net) && netAgo.enough())
+			net = new Connect(update, netIp, hello, hash);
+		if (done(net)) {
+			try {
+				socket = net.result();
+				close(PipeConnect.this);
+				return;
+			} catch (ProgramException e) { Mistake.ignore(e); }
+			net = null;
 		}
 	}
 	

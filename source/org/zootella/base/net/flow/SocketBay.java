@@ -42,29 +42,26 @@ public class SocketBay extends Close {
 		close(socket);
 	}
 	
-	private class MyReceive implements Receive {
-		public void receive() {
-			if (closed()) return;
-			try {
+	@Override public void pulse() {
+		try {
 
-				uploadValve.stop();
-				downloadValve.stop();
-				
-				if (uploadBay.hasData() && uploadValve.in() != null && uploadValve.in().hasSpace()) {
-					uploadValve.in().add(uploadBay);
-					up.send();
-				}
+			uploadValve.stop();
+			downloadValve.stop();
+			
+			if (uploadBay.hasData() && uploadValve.in() != null && uploadValve.in().hasSpace()) {
+				uploadValve.in().add(uploadBay);
+				up.send();
+			}
 
-				if (downloadBay.size() < Bin.big && downloadValve.out() != null && downloadValve.out().hasData()) {
-					downloadBay.add(downloadValve.out());
-					up.send();
-				}
-				
-				uploadValve.start();
-				downloadValve.start();
+			if (downloadBay.size() < Bin.big && downloadValve.out() != null && downloadValve.out().hasData()) {
+				downloadBay.add(downloadValve.out());
+				up.send();
+			}
+			
+			uploadValve.start();
+			downloadValve.start();
 
-			} catch (ProgramException e) { exception = e; close(SocketBay.this); }
-		}
+		} catch (ProgramException e) { exception = e; close(this); }
 	}
 	
 	/** Add data to upload to this Bay. */

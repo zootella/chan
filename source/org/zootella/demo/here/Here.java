@@ -41,26 +41,23 @@ public class Here extends Close {
 	}
 	
 
-	private class MyReceive implements Receive {
-		public void receive() {
-			if (closed()) return;
-			
-			if (is(router)) {
-				if (natModel == null && router.hasName())
-					natModel = router.name();
-				if (natIp == null && router.hasIp())
-					natIp = router.ip();
-				if (mapTcp == null && router.hasTcp())
-					mapTcp = router.tcp();
-				if (mapUdp == null && router.hasUdp())
-					mapUdp = router.udp();
-			}
+	@Override public void pulse() {
+		
+		if (is(router)) {
+			if (natModel == null && router.hasName())
+				natModel = router.name();
+			if (natIp == null && router.hasIp())
+				natIp = router.ip();
+			if (mapTcp == null && router.hasTcp())
+				mapTcp = router.tcp();
+			if (mapUdp == null && router.hasUdp())
+				mapUdp = router.udp();
+		}
 
-			if (done(centerTask)) {
-				centerIpPort = centerTask.result();
-				centerTask = null;
-				model.changed();
-			}
+		if (done(centerTask)) {
+			centerIpPort = centerTask.result();
+			centerTask = null;
+			model.changed();
 		}
 	}
 	

@@ -39,24 +39,21 @@ public class Accept extends Close {
 		close(sockets);
 	}
 
-	private class MyReceive implements Receive {
-		public void receive() {
-			if (closed()) return;
-			
-			// Wait for new sockets to connect
-			if (done(acceptTask)) {
-				sockets.add(new SocketBay(update, acceptTask.result()));
-				acceptTask = null;
-			}
-			if (no(acceptTask))
-				acceptTask = new AcceptTask(update, listenSocket);
-
-			// Show each AcceptReceive object above each socket that has connected in
-			for (AcceptReceive r : new HashSet<AcceptReceive>(receivers))
-				for (SocketBay s : sockets.list())
-					if (r.receive(s))
-						sockets.remove(s); // r took s, remove s from our list
+	@Override public void pulse() {
+		
+		// Wait for new sockets to connect
+		if (done(acceptTask)) {
+			sockets.add(new SocketBay(update, acceptTask.result()));
+			acceptTask = null;
 		}
+		if (no(acceptTask))
+			acceptTask = new AcceptTask(update, listenSocket);
+
+		// Show each AcceptReceive object above each socket that has connected in
+		for (AcceptReceive r : new HashSet<AcceptReceive>(receivers))
+			for (SocketBay s : sockets.list())
+				if (r.receive(s))
+					sockets.remove(s); // r took s, remove s from our list
 	}
 	
 	/** Add o to the list of objects this Packets object shows the packets it receives. */

@@ -51,12 +51,9 @@ public abstract class Model extends Close {
 	public void changed() { update.send(); } // Right away
 	/** The object this Model is a part of has changed, have Model tell all the views above to update soon. */
 	public void progress() { delay.send(); } // After the delay
-	private class MyReceive implements Receive {
-		public void receive() {
-			if (closed()) return;
-			for (View view : views)
-				view.refresh(); // This Model has changed, tell all our views above
-		}
+	@Override public void pulse() {
+		for (View view : views)
+			view.refresh(); // This Model has changed, tell all our views above
 	}
 
 	// Pulse
