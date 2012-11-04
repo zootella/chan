@@ -7,14 +7,14 @@ import javax.swing.Timer;
 
 import org.zootella.base.process.Mistake;
 import org.zootella.base.state.Close;
-import org.zootella.base.state.Receive;
+import org.zootella.base.state.OldReceive;
 
 public class Delay extends Close {
 
 	/** Make a Delay that will call receive() once shortly after the first of a bunch of send() calls. */
-	public Delay(Receive receive) { this(receive, Time.delay); }
+	public Delay(OldReceive receive) { this(receive, Time.delay); }
 	/** Make a Delay that will call receive() once delay milliseconds after the first of a bunch of send() calls. */
-	public Delay(Receive receive, long delay) {
+	public Delay(OldReceive receive, long delay) {
 		this.receive = receive;
 		if (delay < Time.delay) delay = Time.delay; // Make sure delay isn't too fast
 		timer = new Timer((int)delay, new MyActionListener());
@@ -22,7 +22,7 @@ public class Delay extends Close {
 	}
 
 	/** A link to the receive() method we call. */
-	private final Receive receive;
+	private final OldReceive receive;
 	/** Our Timer that doesn't repeat. */
 	private Timer timer;
 

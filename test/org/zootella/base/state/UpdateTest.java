@@ -4,7 +4,7 @@ import javax.swing.JDialog;
 
 import org.junit.Test;
 
-import org.zootella.base.state.Receive;
+import org.zootella.base.state.OldReceive;
 import org.zootella.base.state.Update;
 import org.zootella.base.user.Dialog;
 
@@ -46,7 +46,7 @@ public class UpdateTest {
 		public Update update;
 		public Child child;
 		
-		private class MyReceive implements Receive {
+		private class MyReceive implements OldReceive {
 			public void receive() {
 				
 				child.finished();

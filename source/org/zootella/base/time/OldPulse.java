@@ -7,15 +7,15 @@ import javax.swing.Timer;
 
 import org.zootella.base.process.Mistake;
 import org.zootella.base.state.Close;
-import org.zootella.base.state.Receive;
+import org.zootella.base.state.OldReceive;
 import org.zootella.base.state.Update;
 
 public class OldPulse extends Close {
 
 	/** Make a Pulse that will call the given receive() method 5 times a second. */
-	public OldPulse(Receive receive) { this(receive, Time.delay); }
+	public OldPulse(OldReceive receive) { this(receive, Time.delay); }
 	/** Make a Pulse that will call the given receive() method every delay milliseconds. */
-	public OldPulse(Receive receive, long delay) {
+	public OldPulse(OldReceive receive, long delay) {
 		this.receive = receive;
 		if (delay < Time.delay) delay = Time.delay; // Make sure delay isn't too fast
 		timer = new Timer((int)delay, new MyActionListener());
@@ -26,7 +26,7 @@ public class OldPulse extends Close {
 	}
 	
 	/** A link to the receive() method we call. */
-	private final Receive receive;
+	private final OldReceive receive;
 	/** Our Timer set to repeat. */
 	private Timer timer;
 

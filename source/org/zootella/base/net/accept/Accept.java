@@ -7,7 +7,6 @@ import org.zootella.base.list.TwoBoots;
 import org.zootella.base.net.flow.SocketBay;
 import org.zootella.base.net.name.Port;
 import org.zootella.base.state.Close;
-import org.zootella.base.state.Receive;
 import org.zootella.base.state.Update;
 import org.zootella.base.time.Time;
 

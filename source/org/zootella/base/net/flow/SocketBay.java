@@ -6,7 +6,6 @@ import org.zootella.base.exception.ProgramException;
 import org.zootella.base.net.socket.Socket;
 import org.zootella.base.size.Range;
 import org.zootella.base.state.Close;
-import org.zootella.base.state.Receive;
 import org.zootella.base.state.Update;
 
 public class SocketBay extends Close {

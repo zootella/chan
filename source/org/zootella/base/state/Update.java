@@ -14,13 +14,13 @@ public class Update {
 	// Make
 
 	/** Make an Update that will have a separate event call receive() once soon after several send() calls. */
-	public Update(Receive receive) {
+	public Update(OldReceive receive) {
 		this.receive = receive;
 		spin = new Spin();
 	}
 	
 	/** A link to the receive() method we call. */
-	private final Receive receive;
+	private final OldReceive receive;
 	/** Our Spin object that detects if we go too fast. */
 	private final Spin spin;
 	

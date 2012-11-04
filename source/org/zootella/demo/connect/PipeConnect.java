@@ -9,10 +9,8 @@ import org.zootella.base.net.flow.SocketBay;
 import org.zootella.base.net.name.IpPort;
 import org.zootella.base.process.Mistake;
 import org.zootella.base.state.Close;
-import org.zootella.base.state.Receive;
 import org.zootella.base.state.Update;
 import org.zootella.base.time.Ago;
-import org.zootella.base.time.OldPulse;
 import org.zootella.main.Program;
 
 public class PipeConnect extends Close {
@@ -34,7 +32,6 @@ public class PipeConnect extends Close {
 		
 		lanAgo = new Ago();
 		netAgo = new Ago();
-		pulse = new OldPulse();
 	}
 	
 	private final Program program;
@@ -51,13 +48,11 @@ public class PipeConnect extends Close {
 	
 	private final Ago lanAgo;
 	private final Ago netAgo;
-	private final OldPulse pulse;
 
 	@Override public void close() {
 		if (already()) return;
 		close(lan);
 		close(net);
-		close(pulse);
 		try { program.core.accept.remove(acceptReceive); } catch (Throwable t) { Mistake.log(t); }
 		up.send();
 	}

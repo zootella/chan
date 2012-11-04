@@ -10,7 +10,6 @@ import org.zootella.base.net.upnp.task.IpTask;
 import org.zootella.base.net.upnp.task.StartTask;
 import org.zootella.base.process.Mistake;
 import org.zootella.base.state.Close;
-import org.zootella.base.state.Receive;
 import org.zootella.base.state.Result;
 import org.zootella.base.state.Update;
 import org.zootella.base.time.Egg;
@@ -71,7 +70,6 @@ public class Router extends Close {
 	@Override public void close() {
 		if (already()) return;
 		
-		close(egg);
 		close(udpTask);
 		close(tcpTask);
 		close(ipTask);

@@ -14,7 +14,6 @@ import org.zootella.base.net.web.DomainTask;
 import org.zootella.base.process.Mistake;
 import org.zootella.base.state.Close;
 import org.zootella.base.state.Once;
-import org.zootella.base.state.Receive;
 import org.zootella.base.state.Result;
 import org.zootella.base.state.Update;
 import org.zootella.base.time.Duration;
@@ -54,7 +53,6 @@ public class CenterTask extends Close {
 		if (already()) return;
 		
 		packets.remove(packetReceive);
-		close(egg);
 		close(domain);
 	}
 

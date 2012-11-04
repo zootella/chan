@@ -2,7 +2,6 @@ package org.zootella.demo.hash;
 
 import org.zootella.base.state.Close;
 import org.zootella.base.state.Model;
-import org.zootella.base.state.Receive;
 import org.zootella.base.state.Update;
 
 public class HashCore extends Close {

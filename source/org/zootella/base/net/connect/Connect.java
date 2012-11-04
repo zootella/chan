@@ -9,7 +9,6 @@ import org.zootella.base.net.flow.SocketBay;
 import org.zootella.base.net.name.IpPort;
 import org.zootella.base.process.Mistake;
 import org.zootella.base.state.Close;
-import org.zootella.base.state.Receive;
 import org.zootella.base.state.Update;
 import org.zootella.base.time.Egg;
 
@@ -37,7 +36,6 @@ public class Connect extends Close {
 
 	@Override public void close() {
 		if (already()) return;
-		close(egg);
 		close(connect);
 		if (exception != null)
 			close(socket);
