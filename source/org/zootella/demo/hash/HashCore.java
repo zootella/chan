@@ -8,7 +8,7 @@ import org.zootella.base.state.Update;
 public class HashCore extends Close {
 
 	public HashCore() {
-		update = new Update(new MyReceive());
+		update = new Update();
 		model = new MyModel();
 		
 		/*

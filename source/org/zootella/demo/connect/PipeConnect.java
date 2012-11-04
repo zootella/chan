@@ -29,13 +29,12 @@ public class PipeConnect extends Close {
 		acceptReceive = new MyAcceptReceive();
 		program.core.accept.add(acceptReceive);
 
-		receive = new MyReceive();
-		update = new Update(receive);
+		update = new Update();
 		update.send();
 		
 		lanAgo = new Ago();
 		netAgo = new Ago();
-		pulse = new OldPulse(receive);
+		pulse = new OldPulse();
 	}
 	
 	private final Program program;
@@ -67,7 +66,6 @@ public class PipeConnect extends Close {
 	public SocketBay result() { return socket; }
 	private SocketBay socket; // as soon as you get socket, you close
 
-	private final MyReceive receive;
 	@Override public void pulse() {
 
 		// Connect to peer's LAN address

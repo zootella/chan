@@ -14,9 +14,8 @@ public abstract class Model extends Close {
 
 	/** Setup the core of this new object that extends Model. */
 	public Model() {
-		Receive receive = new MyReceive();
-		delay = new Delay(receive);
-		update = new Update(receive);
+		delay = new Delay();
+		update = new Update();
 		views = new HashSet<View>();
 	}
 	
@@ -61,7 +60,7 @@ public abstract class Model extends Close {
 	/** If this Model has something guaranteed to change in time, like an age, have it pulse views above. */
 	public void modelPulse() {
 		if (oldPulse == null)
-			oldPulse = new OldPulse(new MyReceive());
+			oldPulse = new OldPulse();
 	}
 	private OldPulse oldPulse;//TODO confirm nobody's using this and get rid of it
 	

@@ -18,7 +18,7 @@ public class HashFile extends Close {
 
 	public HashFile(Update up, String path) {
 		this.up = up;
-		update = new Update(new MyReceive());
+		update = new Update();
 
 		update.send(); //TODO this is necessary, right?
 	}

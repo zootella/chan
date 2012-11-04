@@ -39,7 +39,7 @@ public class UpdateTest {
 		
 		public Parent() {
 			
-			update = new Update(new MyReceive());
+			update = new Update();
 			child = new Child(update);
 		}
 		

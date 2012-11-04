@@ -22,9 +22,8 @@ public class Connect extends Close {
 		this.hello = hello;
 		this.hash = hash;
 		
-		receive = new MyReceive();
-		egg = new Egg(receive);
-		update = new Update(receive);
+		egg = new Egg();
+		update = new Update();
 		update.send();
 	}
 	
@@ -49,7 +48,6 @@ public class Connect extends Close {
 	private ProgramException exception;
 	private SocketBay socket;
 
-	private final MyReceive receive;
 	@Override public void pulse() {
 		try {
 			egg.check();

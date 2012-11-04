@@ -19,7 +19,7 @@ public class SocketBay extends Close {
 		uploadBay = new Bay();
 		downloadBay = new Bay();
 		
-		update = new Update(new MyReceive());
+		update = new Update();
 		uploadValve = new UploadValve(update, socket, Range.unlimited());
 		downloadValve = new DownloadValve(update, socket, Range.unlimited());
 		update.send();

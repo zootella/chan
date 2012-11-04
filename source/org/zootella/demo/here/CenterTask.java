@@ -35,10 +35,9 @@ public class CenterTask extends Close {
 
 		// Save and connect our Update objects
 		this.up = up;
-		receive = new MyReceive();
-		egg = new Egg(receive);
+		egg = new Egg();
 		sent = new Once();
-		update = new Update(receive);
+		update = new Update();
 		update.send();
 	}
 
@@ -70,7 +69,6 @@ public class CenterTask extends Close {
 
 	// Do
 
-	private final MyReceive receive;
 	@Override public void pulse() {
 		try {
 

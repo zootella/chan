@@ -20,7 +20,7 @@ public class Accept extends Close {
 		sockets = new TwoBoots<SocketBay>(Time.out);
 		receivers = new HashSet<AcceptReceive>();
 
-		update = new Update(new MyReceive());
+		update = new Update();
 		update.send();
 	}
 	

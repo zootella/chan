@@ -6,6 +6,11 @@ import org.zootella.base.process.Mistake;
 
 public class Update {
 	
+	public Update() {
+		this.receive = null;
+		spin = new Spin();
+	}
+	
 	// Make
 
 	/** Make an Update that will have a separate event call receive() once soon after several send() calls. */

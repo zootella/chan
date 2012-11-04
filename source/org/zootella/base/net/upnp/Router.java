@@ -24,9 +24,8 @@ public class Router extends Close {
 		
 		whenMade = new Now();
 		
-		Receive receive = new MyReceive();
-		update = new Update(receive);
-		egg = new Egg(receive, 20 * Time.second);
+		update = new Update();
+		egg = new Egg(20 * Time.second);
 
 		tcpMap = tcp;
 		udpMap = udp;

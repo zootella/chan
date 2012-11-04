@@ -25,7 +25,7 @@ public class Packets extends Close {
 		listen = new ListenPacket(port);
 
 		// Start update
-		update = new Update(new MyReceive());
+		update = new Update();
 		update.send();
 	}
 	
