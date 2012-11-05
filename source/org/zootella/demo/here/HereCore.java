@@ -8,15 +8,14 @@ import org.zootella.base.net.packet.Packets;
 import org.zootella.base.net.upnp.Router;
 import org.zootella.base.net.upnp.name.Map;
 import org.zootella.base.state.Close;
-import org.zootella.base.state.Model;
 import org.zootella.base.state.Result;
+import org.zootella.base.user.Describe;
 
 public class HereCore extends Close {
 
 	public HereCore(Packets packets, Port port) {
 		this.packets = packets;
 		this.port = port;
-		model = new MyModel();
 		
 		refreshLan();
 		refreshBind();
@@ -31,7 +30,6 @@ public class HereCore extends Close {
 
 	@Override public void close() {
 		if (already()) return;
-		close(model);
 		close(centerTask);
 		close(router);
 	}
@@ -53,7 +51,7 @@ public class HereCore extends Close {
 		if (done(centerTask)) {
 			centerIpPort = centerTask.result();
 			centerTask = null;
-			model.changed();
+//			model.changed(); Don't need to replace this with soon() because pulseUser() will get called after all the pulse() already
 		}
 	}
 	
@@ -84,7 +82,7 @@ public class HereCore extends Close {
 	// refresh
 	public void refreshLan() {
 		lanIp = LanIp.ip();
-		model.changed();
+		soon();
 	}
 	public void refreshBind() {}
 	public void refreshNat() {
@@ -108,37 +106,40 @@ public class HereCore extends Close {
 	}
 	
 	private Router router;
+	
+	// Model
+	
+	//methods that compose text for the user
+	//any view you want can call them whenever it wants
+	//views will probably call them in a pulseUser() method, though
+	//and check to only update the screen if what is returned is different from what is on the screen, to avoid blinking
 
-	public final MyModel model;
-	public class MyModel extends Model {
-		
-		public String ips() {
-			if (HereCore.this.net() == null || HereCore.this.lan() == null) return "";
-			return HereCore.this.net().toString() + " -> " + HereCore.this.lan().toString();
-		}
-		
-		public String lanIp()    { return describe(HereCore.this.lanIp()); }
-		public String bindPort() { return describe(HereCore.this.bindPort()); }
-		public String natModel() { return describe(HereCore.this.natModel()); }
-		public String natIp()    { return describe(HereCore.this.natIp()); }
-		public String mapTcp()   { return describe(HereCore.this.mapTcp()); }
-		public String mapUdp()   { return describe(HereCore.this.mapUdp()); }
-		public String centerIp() { return describe(HereCore.this.centerIpPort()); }
-
-		public String lanIpTime()    { return describeTime(HereCore.this.lanIp()); }
-		public String bindPortTime() { return describeTime(HereCore.this.bindPort()); }
-		public String natModelTime() { return describeTime(HereCore.this.natModel()); }
-		public String natIpTime()    { return describeTime(HereCore.this.natIp()); }
-		public String mapTcpTime()   { return describeTime(HereCore.this.mapTcp()); }
-		public String mapUdpTime()   { return describeTime(HereCore.this.mapUdp()); }
-		public String centerIpTime() { return describeTime(HereCore.this.centerIpPort()); }
-
-		public String lanIpError()    { return describeError(HereCore.this.lanIp()); }
-		public String bindPortError() { return describeError(HereCore.this.bindPort()); }
-		public String natModelError() { return describeError(HereCore.this.natModel()); }
-		public String natIpError()    { return describeError(HereCore.this.natIp()); }
-		public String mapTcpError()   { return describeError(HereCore.this.mapTcp()); }
-		public String mapUdpError()   { return describeError(HereCore.this.mapUdp()); }
-		public String centerIpError() { return describeError(HereCore.this.centerIpPort()); }
+	public String userIps() {
+		if (HereCore.this.net() == null || HereCore.this.lan() == null) return "";
+		return HereCore.this.net().toString() + " -> " + HereCore.this.lan().toString();
 	}
+	
+	public String userLanIp()    { return Describe.describe(HereCore.this.lanIp()); }
+	public String userBindPort() { return Describe.describe(HereCore.this.bindPort()); }
+	public String userNatModel() { return Describe.describe(HereCore.this.natModel()); }
+	public String userNatIp()    { return Describe.describe(HereCore.this.natIp()); }
+	public String userMapTcp()   { return Describe.describe(HereCore.this.mapTcp()); }
+	public String userMapUdp()   { return Describe.describe(HereCore.this.mapUdp()); }
+	public String userCenterIp() { return Describe.describe(HereCore.this.centerIpPort()); }
+	
+	public String userLanIpTime()    { return Describe.describeTime(HereCore.this.lanIp()); }
+	public String userBindPortTime() { return Describe.describeTime(HereCore.this.bindPort()); }
+	public String userNatModelTime() { return Describe.describeTime(HereCore.this.natModel()); }
+	public String userNatIpTime()    { return Describe.describeTime(HereCore.this.natIp()); }
+	public String userMapTcpTime()   { return Describe.describeTime(HereCore.this.mapTcp()); }
+	public String userMapUdpTime()   { return Describe.describeTime(HereCore.this.mapUdp()); }
+	public String userCenterIpTime() { return Describe.describeTime(HereCore.this.centerIpPort()); }
+	
+	public String userLanIpError()    { return Describe.describeError(HereCore.this.lanIp()); }
+	public String userBindPortError() { return Describe.describeError(HereCore.this.bindPort()); }
+	public String userNatModelError() { return Describe.describeError(HereCore.this.natModel()); }
+	public String userNatIpError()    { return Describe.describeError(HereCore.this.natIp()); }
+	public String userMapTcpError()   { return Describe.describeError(HereCore.this.mapTcp()); }
+	public String userMapUdpError()   { return Describe.describeError(HereCore.this.mapUdp()); }
+	public String userCenterIpError() { return Describe.describeError(HereCore.this.centerIpPort()); }
 }

@@ -10,7 +10,6 @@ import javax.swing.JLabel;
 
 import org.zootella.base.process.Mistake;
 import org.zootella.base.state.Close;
-import org.zootella.base.state.View;
 import org.zootella.base.user.Refresh;
 import org.zootella.base.user.Screen;
 import org.zootella.base.user.panel.Cell;
@@ -75,10 +74,6 @@ public class HereUser extends Close {
 		//          4, 5
 		//          4, 6
 		panel.place(4, 7, 1, 1, 0, 0, 1, 2, Cell.wrap(new JButton(centerAction)).grow());
-
-		// Make our inner View object and connect the Model below to it
-		program.core.here.model.add(view); // When the Model below changes, it will call our view.refresh() method
-		view.refresh();//TODO why not put view.refresh() inside add(view)
 
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -166,49 +161,32 @@ public class HereUser extends Close {
 	
 	
 	// View
-
-	// When our Model underneath changes, it calls these methods
-	private final View view = new MyView();
-	private class MyView implements View {
-
-		// The Model beneath changed, we need to update what we show the user
-		public void refresh() {
-			
-			Refresh.text(lanValue.area, program.core.here.model.lanIp());
-			Refresh.text(bindValue.area, program.core.here.model.bindPort());
-			Refresh.text(natModelValue.area, program.core.here.model.natModel());
-			Refresh.text(natIpValue.area, program.core.here.model.natIp());
-			Refresh.text(natTcpValue.area, program.core.here.model.mapTcp());
-			Refresh.text(natUdpValue.area, program.core.here.model.mapUdp());
-			Refresh.text(centerValue.area, program.core.here.model.centerIp());
-			
-			Refresh.text(lanTime.area, program.core.here.model.lanIpTime());
-			Refresh.text(bindTime.area, program.core.here.model.bindPortTime());
-			Refresh.text(natModelTime.area, program.core.here.model.natModelTime());
-			Refresh.text(natIpTime.area, program.core.here.model.natIpTime());
-			Refresh.text(natTcpTime.area, program.core.here.model.mapTcpTime());
-			Refresh.text(natUdpTime.area, program.core.here.model.mapUdpTime());
-			Refresh.text(centerTime.area, program.core.here.model.centerIpTime());
-			
-			Refresh.text(lanError.area, program.core.here.model.lanIpError());
-			Refresh.text(bindError.area, program.core.here.model.bindPortError());
-			Refresh.text(natModelError.area, program.core.here.model.natModelError());
-			Refresh.text(natIpError.area, program.core.here.model.natIpError());
-			Refresh.text(natTcpError.area, program.core.here.model.mapTcpError());
-			Refresh.text(natUdpError.area, program.core.here.model.mapUdpError());
-			Refresh.text(centerError.area, program.core.here.model.centerIpError());
-		}
-
-		// The Model beneath closed, take this View off the screen
-		public void vanish() { close(HereUser.this); }
+	
+	@Override public void pulseUser() {
+		if (!frame.isVisible()) return;
+		
+		Refresh.text(lanValue.area, program.core.here.userLanIp());
+		Refresh.text(bindValue.area, program.core.here.userBindPort());
+		Refresh.text(natModelValue.area, program.core.here.userNatModel());
+		Refresh.text(natIpValue.area, program.core.here.userNatIp());
+		Refresh.text(natTcpValue.area, program.core.here.userMapTcp());
+		Refresh.text(natUdpValue.area, program.core.here.userMapUdp());
+		Refresh.text(centerValue.area, program.core.here.userCenterIp());
+		
+		Refresh.text(lanTime.area, program.core.here.userLanIpTime());
+		Refresh.text(bindTime.area, program.core.here.userBindPortTime());
+		Refresh.text(natModelTime.area, program.core.here.userNatModelTime());
+		Refresh.text(natIpTime.area, program.core.here.userNatIpTime());
+		Refresh.text(natTcpTime.area, program.core.here.userMapTcpTime());
+		Refresh.text(natUdpTime.area, program.core.here.userMapUdpTime());
+		Refresh.text(centerTime.area, program.core.here.userCenterIpTime());
+		
+		Refresh.text(lanError.area, program.core.here.userLanIpError());
+		Refresh.text(bindError.area, program.core.here.userBindPortError());
+		Refresh.text(natModelError.area, program.core.here.userNatModelError());
+		Refresh.text(natIpError.area, program.core.here.userNatIpError());
+		Refresh.text(natTcpError.area, program.core.here.userMapTcpError());
+		Refresh.text(natUdpError.area, program.core.here.userMapUdpError());
+		Refresh.text(centerError.area, program.core.here.userCenterIpError());
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

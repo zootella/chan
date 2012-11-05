@@ -5,6 +5,8 @@ import java.util.Date;
 
 import org.zootella.base.data.Number;
 import org.zootella.base.data.Text;
+import org.zootella.base.exception.ProgramException;
+import org.zootella.base.state.Result;
 import org.zootella.base.time.Time;
 
 public class Describe {
@@ -142,4 +144,54 @@ public class Describe {
 		if (o == null) return "";
 		return o.toString();
 	}
+	
+	
+	
+	
+	
+	//TODO moved in from the old model class
+	
+	public static String describe(Result<?> result) {
+		if (result == null) return "";
+		try {
+			return result.result().toString();
+		} catch (ProgramException e) {
+			return e.toString();
+		}
+	}
+	
+	public static String describeTime(Result<?> result) {
+		if (result == null) return "";
+		return result.duration.toString();
+	}
+	
+	public static String describeError(Result<?> result) {
+		if (result == null) return "";
+		if (result.exception == null) return "";
+		return result.exception.toString();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
