@@ -21,11 +21,11 @@ import org.zootella.main.Program;
 import org.zootella.main.User;
 
 /** The Info window that shows advanced statistics and diagnostic information. */
-public class HereFrame extends Close {
+public class HereUser extends Close {
 	
 	private final Program program;
 
-	public HereFrame(User user) {
+	public HereUser(User user) {
 		program = user.program;
 
 		panel = new Panel();
@@ -200,7 +200,7 @@ public class HereFrame extends Close {
 		}
 
 		// The Model beneath closed, take this View off the screen
-		public void vanish() { close(HereFrame.this); }
+		public void vanish() { close(HereUser.this); }
 	}
 	
 	

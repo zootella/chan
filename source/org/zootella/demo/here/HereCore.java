@@ -11,9 +11,9 @@ import org.zootella.base.state.Close;
 import org.zootella.base.state.Model;
 import org.zootella.base.state.Result;
 
-public class Here extends Close {
+public class HereCore extends Close {
 
-	public Here(Packets packets, Port port) {
+	public HereCore(Packets packets, Port port) {
 		this.packets = packets;
 		this.port = port;
 		model = new MyModel();
@@ -83,7 +83,7 @@ public class Here extends Close {
 	
 	// refresh
 	public void refreshLan() {
-		lanIp = HereLan.ip();
+		lanIp = LanIp.ip();
 		model.changed();
 	}
 	public void refreshBind() {}
@@ -95,7 +95,7 @@ public class Here extends Close {
 		mapTcp = null;
 		mapUdp = null;
 		
-		IpPort l = new IpPort(HereLan.ip().result(), port);
+		IpPort l = new IpPort(LanIp.ip().result(), port);
 		Map t = new Map(port, l, "TCP", "Pipe");
 		Map u = new Map(port, l, "UDP", "Pipe");
 		router = new Router(t, u);
@@ -113,32 +113,32 @@ public class Here extends Close {
 	public class MyModel extends Model {
 		
 		public String ips() {
-			if (Here.this.net() == null || Here.this.lan() == null) return "";
-			return Here.this.net().toString() + " -> " + Here.this.lan().toString();
+			if (HereCore.this.net() == null || HereCore.this.lan() == null) return "";
+			return HereCore.this.net().toString() + " -> " + HereCore.this.lan().toString();
 		}
 		
-		public String lanIp()    { return describe(Here.this.lanIp()); }
-		public String bindPort() { return describe(Here.this.bindPort()); }
-		public String natModel() { return describe(Here.this.natModel()); }
-		public String natIp()    { return describe(Here.this.natIp()); }
-		public String mapTcp()   { return describe(Here.this.mapTcp()); }
-		public String mapUdp()   { return describe(Here.this.mapUdp()); }
-		public String centerIp() { return describe(Here.this.centerIpPort()); }
+		public String lanIp()    { return describe(HereCore.this.lanIp()); }
+		public String bindPort() { return describe(HereCore.this.bindPort()); }
+		public String natModel() { return describe(HereCore.this.natModel()); }
+		public String natIp()    { return describe(HereCore.this.natIp()); }
+		public String mapTcp()   { return describe(HereCore.this.mapTcp()); }
+		public String mapUdp()   { return describe(HereCore.this.mapUdp()); }
+		public String centerIp() { return describe(HereCore.this.centerIpPort()); }
 
-		public String lanIpTime()    { return describeTime(Here.this.lanIp()); }
-		public String bindPortTime() { return describeTime(Here.this.bindPort()); }
-		public String natModelTime() { return describeTime(Here.this.natModel()); }
-		public String natIpTime()    { return describeTime(Here.this.natIp()); }
-		public String mapTcpTime()   { return describeTime(Here.this.mapTcp()); }
-		public String mapUdpTime()   { return describeTime(Here.this.mapUdp()); }
-		public String centerIpTime() { return describeTime(Here.this.centerIpPort()); }
+		public String lanIpTime()    { return describeTime(HereCore.this.lanIp()); }
+		public String bindPortTime() { return describeTime(HereCore.this.bindPort()); }
+		public String natModelTime() { return describeTime(HereCore.this.natModel()); }
+		public String natIpTime()    { return describeTime(HereCore.this.natIp()); }
+		public String mapTcpTime()   { return describeTime(HereCore.this.mapTcp()); }
+		public String mapUdpTime()   { return describeTime(HereCore.this.mapUdp()); }
+		public String centerIpTime() { return describeTime(HereCore.this.centerIpPort()); }
 
-		public String lanIpError()    { return describeError(Here.this.lanIp()); }
-		public String bindPortError() { return describeError(Here.this.bindPort()); }
-		public String natModelError() { return describeError(Here.this.natModel()); }
-		public String natIpError()    { return describeError(Here.this.natIp()); }
-		public String mapTcpError()   { return describeError(Here.this.mapTcp()); }
-		public String mapUdpError()   { return describeError(Here.this.mapUdp()); }
-		public String centerIpError() { return describeError(Here.this.centerIpPort()); }
+		public String lanIpError()    { return describeError(HereCore.this.lanIp()); }
+		public String bindPortError() { return describeError(HereCore.this.bindPort()); }
+		public String natModelError() { return describeError(HereCore.this.natModel()); }
+		public String natIpError()    { return describeError(HereCore.this.natIp()); }
+		public String mapTcpError()   { return describeError(HereCore.this.mapTcp()); }
+		public String mapUdpError()   { return describeError(HereCore.this.mapUdp()); }
+		public String centerIpError() { return describeError(HereCore.this.centerIpPort()); }
 	}
 }

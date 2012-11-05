@@ -10,7 +10,7 @@ import org.zootella.base.state.Result;
 import org.zootella.base.time.Duration;
 import org.zootella.base.time.Now;
 
-public class HereLan {
+public class LanIp {
 	
 	public static Result<Ip> ip() {
 		Ip ip = null;

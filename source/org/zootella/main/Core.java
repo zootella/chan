@@ -7,7 +7,7 @@ import org.zootella.base.net.name.Port;
 import org.zootella.base.net.packet.Packets;
 import org.zootella.base.process.Mistake;
 import org.zootella.base.state.Close;
-import org.zootella.demo.here.Here;
+import org.zootella.demo.here.HereCore;
 
 /** The core program beneath the window that does everything. */
 public class Core extends Close {
@@ -27,7 +27,7 @@ public class Core extends Close {
 
 		accept = new Accept(port);
 		packets = new Packets(port);
-		here = new Here(packets, port);
+		here = new HereCore(packets, port);
 	}
 
 	private final Program program;
@@ -35,7 +35,7 @@ public class Core extends Close {
 	public final Packets packets;
 
 	private final Port port;
-	public final Here here;
+	public final HereCore here;
 	
 	@Override public void close() {
 		if (already()) return;
