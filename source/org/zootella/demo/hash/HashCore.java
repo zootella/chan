@@ -1,12 +1,10 @@
 package org.zootella.demo.hash;
 
 import org.zootella.base.state.Close;
-import org.zootella.base.state.Model;
 
 public class HashCore extends Close {
 
 	public HashCore() {
-		model = new MyModel();
 		
 		/*
 		readValve = new ReadValve(update, file, range);
@@ -38,7 +36,6 @@ public class HashCore extends Close {
 	@Override public void close() {
 		if (already()) return;
 		close(hashFile);
-		close(model);
 	}
 	
 
@@ -74,14 +71,11 @@ public class HashCore extends Close {
 	
 	
 
-	public final MyModel model;
-	public class MyModel extends Model {
 		
-		public String status1() { return path; }
-		public String status2() { return status2; }
-		public String status3() { return status3; }
+	public String userStatus1() { return path; }
+	public String userStatus2() { return status2; }
+	public String userStatus3() { return status3; }
 		
 		
 		
-	}
 }
