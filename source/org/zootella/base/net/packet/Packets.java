@@ -22,9 +22,6 @@ public class Packets extends Close {
 		receivers = new ArrayList<PacketReceive>();
 		bins = new BinBin();
 		listen = new ListenPacket(port);
-
-		// Start update
-		update = new Update();
 	}
 	
 	/** Packets we're about to send. */
@@ -36,7 +33,7 @@ public class Packets extends Close {
 	/** Our datagram socket bound to port that we use to send and receive UDP packets. */
 	private final ListenPacket listen;
 	/** Our Update object that objects below tell when they've changed. */
-	private final Update update;
+//	private final Update update;
 
 	/** A SendTask that sends a UDP packet. */
 	private SendTask send;

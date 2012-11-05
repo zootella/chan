@@ -22,11 +22,8 @@ public class Connect extends Close {
 		this.hash = hash;
 		
 		egg = new Egg();
-		update = new Update();
 	}
 	
-	private final Update up;
-	private final Update update;
 	private final IpPort ipPort;
 	private final Data hello;
 	private final Data hash;

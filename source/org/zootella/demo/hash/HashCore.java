@@ -7,7 +7,6 @@ import org.zootella.base.state.Update;
 public class HashCore extends Close {
 
 	public HashCore() {
-		update = new Update();
 		model = new MyModel();
 		
 		/*
@@ -24,7 +23,6 @@ public class HashCore extends Close {
 		
 	}
 	
-	private final Update update;
 	
 	private HashFile hashFile;
 	

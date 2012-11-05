@@ -26,16 +26,12 @@ public class PipeConnect extends Close {
 		
 		acceptReceive = new MyAcceptReceive();
 		program.core.accept.add(acceptReceive);
-
-		update = new Update();
 		
 		lanAgo = new Ago();
 		netAgo = new Ago();
 	}
 	
 	private final Program program;
-	private final Update up;
-	private final Update update;
 	
 	private final IpPort lanIp; // remote peer's lan ip address
 	private final IpPort netIp; // remote peer's internet ip address

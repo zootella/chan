@@ -32,15 +32,10 @@ public class CenterTask extends Close {
 		packetReceive = new MyPacketReceive();
 		packets.add(packetReceive);
 
-		// Save and connect our Update objects
-		this.up = up;
 		egg = new Egg();
 		sent = new Once();
-		update = new Update();
 	}
 
-	private final Update up;
-	private final Update update;
 	private final Packets packets;
 	private final Egg egg;
 	private final Once sent;

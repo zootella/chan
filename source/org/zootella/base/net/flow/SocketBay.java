@@ -18,12 +18,9 @@ public class SocketBay extends Close {
 		uploadBay = new Bay();
 		downloadBay = new Bay();
 		
-		update = new Update();
 		uploadValve = new UploadValve(update, socket, Range.unlimited());
 		downloadValve = new DownloadValve(update, socket, Range.unlimited());
 	}
-	
-	private final Update update;
 	
 	// pull them out and change 'em later, null those you don't want close() to close
 	public Update up;

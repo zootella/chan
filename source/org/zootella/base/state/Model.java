@@ -13,14 +13,14 @@ public abstract class Model extends Close {
 	/** Setup the core of this new object that extends Model. */
 	public Model() {
 //		delay = new Delay();
-		update = new Update();
+//		update = new Update();
 		views = new HashSet<View>();
 	}
 	
 	/** Our Delay that keeps us from updating the screen so frequently the whole program would slow down. */
 //	private final Delay delay;
 	/** Our Update acts right away. */
-	private final Update update;
+//	private final Update update;
 	/** Our list of View objects above viewing us. */
 	private final Set<View> views;
 	

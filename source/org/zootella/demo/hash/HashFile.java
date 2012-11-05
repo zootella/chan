@@ -16,13 +16,8 @@ import org.zootella.base.valve.Flow;
 public class HashFile extends Close {
 
 	public HashFile(Update up, String path) {
-		this.up = up;
-		update = new Update();
 	}
 	
-	private final Update up;
-	private final Update update;
-
 	private OpenTask openTask;
 	private File file;
 	private ReadValve readValve;

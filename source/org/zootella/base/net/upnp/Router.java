@@ -23,7 +23,6 @@ public class Router extends Close {
 		
 		whenMade = new Now();
 		
-		update = new Update();
 		egg = new Egg(20 * Time.second);
 
 		tcpMap = tcp;
@@ -39,8 +38,6 @@ public class Router extends Close {
 	private final Map tcpMap;
 	private final Map udpMap;
 	
-	private final Update up;
-	private final Update update;
 	private final Egg egg;
 	
 	private Listen listen;

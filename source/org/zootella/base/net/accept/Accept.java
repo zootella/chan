@@ -18,11 +18,7 @@ public class Accept extends Close {
 		listenSocket = new ListenSocket(port);
 		sockets = new TwoBoots<SocketBay>(Time.out);
 		receivers = new HashSet<AcceptReceive>();
-
-		update = new Update();
 	}
-	
-	private final Update update;
 	
 	private final ListenSocket listenSocket;
 	private AcceptTask acceptTask;

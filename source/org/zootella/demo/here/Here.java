@@ -17,7 +17,6 @@ public class Here extends Close {
 	public Here(Packets packets, Port port) {
 		this.packets = packets;
 		this.port = port;
-		update = new Update();
 		model = new MyModel();
 		
 		refreshLan();
@@ -28,7 +27,6 @@ public class Here extends Close {
 	
 	private final Packets packets;
 	private final Port port;
-	private final Update update;
 	
 	private CenterTask centerTask;
 
