@@ -6,21 +6,16 @@ import org.zootella.base.process.Mistake;
 
 public class Update {
 	
-	public Update() {
-		this.receive = null;
-		spin = new Spin();
-	}
-	
 	// Make
 
 	/** Make an Update that will have a separate event call receive() once soon after several send() calls. */
-	public Update(OldReceive receive) {
-		this.receive = receive;
+	public Update(/*OldReceive receive*/) {
+//		this.receive = receive;
 		spin = new Spin();
 	}
 	
 	/** A link to the receive() method we call. */
-	private final OldReceive receive;
+//	private final OldReceive receive;
 	/** Our Spin object that detects if we go too fast. */
 	private final Spin spin;
 	
@@ -59,7 +54,7 @@ public class Update {
 			try {
 				set = false;                           // Let the next call to send() go through
 				spin.count();                          // Make sure we haven't been doing this too frequently
-				receive.receive();                     // Call our given receive() method
+//				receive.receive();                     // Call our given receive() method
 			} catch (Throwable t) { Mistake.stop(t); } // Stop the program for an exception we didn't expect
 		}
 	}
