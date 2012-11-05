@@ -16,7 +16,6 @@ public class Connect extends Close {
 	
 	/** Make a new TCP socket connection to ipPort, say hello and get hash response, in 4 seconds or less. */
 	public Connect(Update up, IpPort ipPort, Data hello, Data hash) {
-		this.up = up;
 		this.ipPort = ipPort;
 		this.hello = hello;
 		this.hash = hash;

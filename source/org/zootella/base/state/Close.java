@@ -35,7 +35,7 @@ public abstract class Close {
 	 */
 	public Close() {
 		Pulse.pulse.add(this); // Add this new object that extends Close to the program's list of open objects
-		Pulse.pulse.soon(); // Have the program pulse this new object soon
+		soon();                // Have the program pulse this new object soon
 	}
 	
 	/** true once this object that extends Close has been closed, and promises to not change again. */
@@ -52,7 +52,7 @@ public abstract class Close {
 	public boolean already() {
 		if (objectClosed) return true; // We're already closed, return true to return from the close() method
 		objectClosed = true;           // Mark this object that extends Close as now permanently closed
-		Pulse.pulse.soon();            // Have the program pulse soon so the object that made this one can notice it finished
+		soon();                        // Have the program pulse soon so the object that made this one can notice it finished
 		return false;                  // Return false to run the contents of the close() method this first and only time
 	}
 	
@@ -84,6 +84,9 @@ public abstract class Close {
 	public static boolean open(Close c) { return c != null && !c.closed(); }
 	/** true if c exists and is closed. */
 	public static boolean done(Close c) { return c != null && c.closed(); }
+	
+	/** Pulse the program soon so it can notice something that has finished or changed. */
+	public static void soon() { Pulse.pulse.soon(); }
 
 	/** Write out diagnostic text for the programmer. */
 	public static void log(String s) { Log.log(s); }

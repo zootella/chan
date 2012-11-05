@@ -62,9 +62,9 @@ public class HashFile extends Close {
 			if (is(flow))
 				flow.move();
 			
-			up.send();//TODO this is cheap, you should only send one when you know something has changed
+			soon();//TODO this is cheap, you should only send one when you know something has changed
 			
-		} catch (ProgramException e) { exception = e; close(this); up.send(); }
+		} catch (ProgramException e) { exception = e; close(this); }
 	}
 	
 	private String path;

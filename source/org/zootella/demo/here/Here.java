@@ -100,12 +100,12 @@ public class Here extends Close {
 		Map t = new Map(port, l, "TCP", "Pipe");
 		Map u = new Map(port, l, "UDP", "Pipe");
 		router = new Router(update, t, u);
-		update.send();
+		soon();
 	}
 	public void refreshCenter() {
 		close(centerTask);
 		centerTask = new CenterTask(update, packets);
-		update.send();
+		soon();
 	}
 	
 	private Router router;

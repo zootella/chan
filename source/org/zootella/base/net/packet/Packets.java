@@ -92,7 +92,7 @@ public class Packets extends Close {
 	public void send(Bin bin, IpPort ipPort) {
 		confirmOpen();
 		packets.add(new Packet(bin, ipPort));
-		update.send();
+		soon();
 	}
 	
 	// Receive

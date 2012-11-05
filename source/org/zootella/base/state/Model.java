@@ -45,9 +45,9 @@ public abstract class Model extends Close {
 
 	//TODO added update to split into changed() and progress()
 	/** The object this Model is a part of has changed, have Model tell all the views above to update right away. */
-	public void changed() { update.send(); } // Right away
+	public void changed() { soon(); } // Right away
 	/** The object this Model is a part of has changed, have Model tell all the views above to update soon. */
-	public void progress() { update.send(); /*delay.send();*/ } // After the delay
+	public void progress() { soon(); /*delay.send();*/ } // After the delay
 	@Override public void pulse() {
 		for (View view : views)
 			view.refresh(); // This Model has changed, tell all our views above

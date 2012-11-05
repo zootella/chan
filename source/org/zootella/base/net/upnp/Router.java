@@ -19,8 +19,6 @@ import org.zootella.base.time.Time;
 public class Router extends Close {
 	
 	public Router(Update up, Map tcp, Map udp) {
-		this.up = up;
-		
 		whenMade = new Now();
 		
 		egg = new Egg(20 * Time.second);
@@ -89,7 +87,7 @@ public class Router extends Close {
 			if (access == null && listen.access() != null) {
 				access = listen.access();
 				nameResult = new Result<Outline>(access.o, whenMade);
-				up.send();
+				soon();
 				log("access " + access.o.value("friendlyname"));
 			}
 			
@@ -97,7 +95,7 @@ public class Router extends Close {
 				ipTask = new IpTask(update, listen.access());
 			if (ipResult == null && done(ipTask)) {
 				ipResult = ipTask.result();
-				up.send();
+				soon();
 				log("ip " + ipResult.result().toString() + " " + ipResult.duration.toString());
 			}
 			
@@ -105,7 +103,7 @@ public class Router extends Close {
 				tcpTask = new AddTask(update, access, tcpMap);
 			if (tcpResult == null && done(tcpTask)) {
 				tcpResult = tcpTask.result();
-				up.send();
+				soon();
 				log("tcp " + " " + tcpResult.duration.toString());
 			}
 			
@@ -113,7 +111,7 @@ public class Router extends Close {
 				udpTask = new AddTask(update, access, udpMap);
 			if (udpResult == null && done(udpTask)) {
 				udpResult = udpTask.result();
-				up.send();
+				soon();
 				log("udp " + " " + udpResult.duration.toString());
 			}
 

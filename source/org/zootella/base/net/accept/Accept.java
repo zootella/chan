@@ -55,7 +55,7 @@ public class Accept extends Close {
 		confirmOpen(); // If this object is closed, we can't let it change, throw an exception
 		if (!receivers.contains(o))
 			receivers.add(o);
-		update.send();
+		soon();
 	}
 	
 	/** Remove o from the list of objects this Packets object bothers with arrived packets. */

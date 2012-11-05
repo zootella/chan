@@ -77,7 +77,7 @@ public class CenterTask extends Close {
 			if (center != null && internet == null && sent.once())
 				packets.send((new Outline("aq")).toData(), center);
 
-		} catch (ProgramException e) { exception = e; close(this); up.send(); }
+		} catch (ProgramException e) { exception = e; close(this); }
 	}
 	
 	private final MyPacketReceive packetReceive;
@@ -93,12 +93,12 @@ public class CenterTask extends Close {
 						throw new DataException("received corrupted ap");
 					internet = new IpPort(o.value()); // Read
 					close(CenterTask.this); // It worked, we're done
-					up.send();
+					soon();
 					return true;
 				}
 			}
 			catch (DataException e) { Mistake.log(e); }
-			catch (ProgramException e) { exception = e; close(CenterTask.this); up.send(); }
+			catch (ProgramException e) { exception = e; close(CenterTask.this); }
 			return false;
 		}
 	}

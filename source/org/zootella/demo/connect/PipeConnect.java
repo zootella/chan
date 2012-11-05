@@ -18,7 +18,6 @@ public class PipeConnect extends Close {
 	/** Keep trying to upload hello to the peer at lan and internet, or let it connect to us, until it says hash back. */
 	public PipeConnect(Program program, Update up, IpPort lan, IpPort internet, Data hello, Data hash) {
 		this.program = program;
-		this.up = up;
 		this.lanIp = lan;
 		this.netIp = internet;
 		this.hello = hello;
