@@ -23,7 +23,7 @@ public class WriteValve extends Close implements Valve {
 	private WriteTask later;
 
 	/** Close this Valve so it gives up all resources and won't start again. */
-	public void close() {
+	@Override public void close() {
 		if (already()) return;
 		if (later != null) {
 			close(later);

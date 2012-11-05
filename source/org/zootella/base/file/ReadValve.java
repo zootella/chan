@@ -23,7 +23,7 @@ public class ReadValve extends Close implements Valve {
 	private ReadTask task;
 
 	/** Close this Valve so it gives up all resources and won't start again. */
-	public void close() {
+	@Override public void close() {
 		if (already()) return;
 		if (task != null) {
 			close(task);

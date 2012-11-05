@@ -64,7 +64,7 @@ public class Pulse {
 	private class MyRunnable implements Runnable {
 		public void run() {
 			try {
-				pulse();
+				pulseAll();
 			} catch (Throwable t) { Mistake.stop(t); } // Stop the program for an exception we didn't expect
 		}
 	}
@@ -72,7 +72,7 @@ public class Pulse {
 	// Pulse
 	
 	/** Pulse all the open objects in the program until none request another pulse soon. */
-	private void pulse() {
+	private void pulseAll() {
 		
 		long currentSpeed = speed.add(1, Time.second); // 1 event, get speed in events per second
 		if (maximumSpeed < currentSpeed) maximumSpeed = currentSpeed; //TODO maybe skip middle if current speed is too high?

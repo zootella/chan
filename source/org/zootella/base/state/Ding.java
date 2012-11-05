@@ -22,7 +22,7 @@ public class Ding extends Close {
 	private Timer timer;
 
 	/** Close our Ding so it never pulses the program again. */
-	public void close() {
+	@Override public void close() {
 		if (already()) return;
 		timer.stop(); // Stop and discard timer, keeping it might prevent the program from closing
 		timer = null;

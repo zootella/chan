@@ -24,7 +24,7 @@ public class DownloadValve extends Close implements Valve {
 	private DownloadTask task;
 
 	/** Close this Valve so it gives up all resources and won't start again. */
-	public void close() {
+	@Override public void close() {
 		if (already()) return;
 		close(task);
 		task = null; // Discard the closed later so in() and out() work

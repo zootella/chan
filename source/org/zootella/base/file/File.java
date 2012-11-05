@@ -56,7 +56,7 @@ public class File extends Close {
 	// Close
 
 	/** Close our open connection to this file on the disk. */
-	public void close() {
+	@Override public void close() {
 		if (already()) return;
 		try { file.close(); } catch (Throwable t) { Mistake.log(t); } // Also closes file's FileChannel, may throw IOException
 	}
