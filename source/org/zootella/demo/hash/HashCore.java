@@ -2,7 +2,6 @@ package org.zootella.demo.hash;
 
 import org.zootella.base.state.Close;
 import org.zootella.base.state.Model;
-import org.zootella.base.state.Update;
 
 public class HashCore extends Close {
 
@@ -61,7 +60,7 @@ public class HashCore extends Close {
 		
 		if (hashFile != null) close(hashFile);
 
-		hashFile = new HashFile(update, path);
+		hashFile = new HashFile(path);
 		
 		
 		

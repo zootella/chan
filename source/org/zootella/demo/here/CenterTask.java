@@ -15,7 +15,6 @@ import org.zootella.base.process.Mistake;
 import org.zootella.base.state.Close;
 import org.zootella.base.state.Once;
 import org.zootella.base.state.Result;
-import org.zootella.base.state.Update;
 import org.zootella.base.time.Duration;
 import org.zootella.base.time.Egg;
 import org.zootella.center.Center;
@@ -25,7 +24,7 @@ public class CenterTask extends Close {
 	
 	// Make
 	
-	public CenterTask(Update up, Packets packets) {
+	public CenterTask(Packets packets) {
 
 		// Save and connect the given object that sends UDP packets
 		this.packets = packets;
@@ -69,7 +68,7 @@ public class CenterTask extends Close {
 
 			// Look up the IP address of the central server
 			if (no(domain))
-				domain = new DomainTask(update, Text.before(Center.site, ":"));
+				domain = new DomainTask(Text.before(Center.site, ":"));
 			if (done(domain) && center == null)
 				center = new IpPort(domain.result(), new Port(Number.toInt(Text.after(Center.site, ":"))));
 

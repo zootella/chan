@@ -9,14 +9,13 @@ import org.zootella.base.net.flow.SocketBay;
 import org.zootella.base.net.name.IpPort;
 import org.zootella.base.process.Mistake;
 import org.zootella.base.state.Close;
-import org.zootella.base.state.Update;
 import org.zootella.base.time.Ago;
 import org.zootella.main.Program;
 
 public class PipeConnect extends Close {
 	
 	/** Keep trying to upload hello to the peer at lan and internet, or let it connect to us, until it says hash back. */
-	public PipeConnect(Program program, Update up, IpPort lan, IpPort internet, Data hello, Data hash) {
+	public PipeConnect(Program program, IpPort lan, IpPort internet, Data hello, Data hash) {
 		this.program = program;
 		this.lanIp = lan;
 		this.netIp = internet;
@@ -58,7 +57,7 @@ public class PipeConnect extends Close {
 
 		// Connect to peer's LAN address
 		if (no(lan) && lanAgo.enough()) {
-			lan = new Connect(update, lanIp, hello, hash);
+			lan = new Connect(lanIp, hello, hash);
 			attempts++;
 		}
 		if (done(lan)) {
@@ -72,7 +71,7 @@ public class PipeConnect extends Close {
 
 		// Connect to peer's Internet address
 		if (no(net) && netAgo.enough())
-			net = new Connect(update, netIp, hello, hash);
+			net = new Connect(netIp, hello, hash);
 		if (done(net)) {
 			try {
 				socket = net.result();

@@ -6,24 +6,21 @@ import org.zootella.base.exception.ProgramException;
 import org.zootella.base.net.socket.Socket;
 import org.zootella.base.size.Range;
 import org.zootella.base.state.Close;
-import org.zootella.base.state.Update;
 
 public class SocketBay extends Close {
 
 	/** Put Valve and Bay objects around socket to upload and download. */
-	public SocketBay(Update up, Socket socket) {
-		this.up = up;
+	public SocketBay(Socket socket) {
 		this.socket = socket;
 		
 		uploadBay = new Bay();
 		downloadBay = new Bay();
 		
-		uploadValve = new UploadValve(update, socket, Range.unlimited());
-		downloadValve = new DownloadValve(update, socket, Range.unlimited());
+		uploadValve = new UploadValve(socket, Range.unlimited());
+		downloadValve = new DownloadValve(socket, Range.unlimited());
 	}
 	
 	// pull them out and change 'em later, null those you don't want close() to close
-	public Update up;
 	public Socket socket;
 	public UploadValve uploadValve;
 	public DownloadValve downloadValve;
@@ -45,12 +42,12 @@ public class SocketBay extends Close {
 			
 			if (uploadBay.hasData() && uploadValve.in() != null && uploadValve.in().hasSpace()) {
 				uploadValve.in().add(uploadBay);
-				up.send();
+				soon();
 			}
 
 			if (downloadBay.size() < Bin.big && downloadValve.out() != null && downloadValve.out().hasData()) {
 				downloadBay.add(downloadValve.out());
-				up.send();
+				soon();
 			}
 			
 			uploadValve.start();
@@ -60,7 +57,7 @@ public class SocketBay extends Close {
 	}
 	
 	/** Add data to upload to this Bay. */
-	public Bay upload() { if (exception != null) throw exception; soon(); return uploadBay; } // Send update to notice what the caller adds to upload
+	public Bay upload() { if (exception != null) throw exception; soon(); return uploadBay; } // Pulse soon to notice what the caller adds to upload
 	/** Get the data we've downloaded here. */
 	public Bay download() { if (exception != null) throw exception; soon(); return downloadBay; }
 	

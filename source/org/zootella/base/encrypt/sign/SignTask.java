@@ -5,18 +5,15 @@ import org.zootella.base.exception.ProgramException;
 import org.zootella.base.state.Close;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
-import org.zootella.base.state.Update;
 
 public class SignTask extends Close {
 
-	public SignTask(Update up, Data data, SignKey key) {
-		this.up = up; // We'll tell update when we're done
+	public SignTask(Data data, SignKey key) {
 		this.data = data;
 		this.key = key;
 		task = new Task(new MyTask()); // Make a separate thread call thread() below now
 	}
 	
-	private final Update up;
 	private final Data data;
 	private final SignKey key;
 	private final Task task;

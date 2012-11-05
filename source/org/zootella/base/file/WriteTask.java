@@ -7,22 +7,19 @@ import org.zootella.base.size.move.StripeMove;
 import org.zootella.base.state.Close;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
-import org.zootella.base.state.Update;
 
 public class WriteTask extends Close {
 	
 	// Make
 
 	/** Write 1 or more bytes from bin to range in file, don't look at bin until this is closed. */
-	public WriteTask(Update up, File file, Range range, Bin bin) {
-		this.up = up; // We'll tell above when we're done
+	public WriteTask(File file, Range range, Bin bin) {
 		this.file = file;
 		this.range = range;
 		this.bin = bin;
 		task = new Task(new MyTask()); // Make a separate thread call thread() below now
 	}
 	
-	private final Update up;
 	private final File file;
 	public final Range range;
 	private final Bin bin;

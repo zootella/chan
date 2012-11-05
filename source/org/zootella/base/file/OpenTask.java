@@ -4,20 +4,17 @@ import org.zootella.base.exception.ProgramException;
 import org.zootella.base.state.Close;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
-import org.zootella.base.state.Update;
 
 public class OpenTask extends Close {
 	
 	// Make
 
 	/** Open a file on the disk. */
-	public OpenTask(Update up, Open open) {
-		this.up = up; // We'll tell above when we're done
+	public OpenTask(Open open) {
 		this.open = open;
 		task = new Task(new MyTask()); // Make a separate thread call thread() below now
 	}
 	
-	private final Update up;
 	public final Open open;
 	private final Task task;
 

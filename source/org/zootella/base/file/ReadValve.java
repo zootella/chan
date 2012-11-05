@@ -4,7 +4,6 @@ import org.zootella.base.data.Bin;
 import org.zootella.base.size.Meter;
 import org.zootella.base.size.Range;
 import org.zootella.base.state.Close;
-import org.zootella.base.state.Update;
 import org.zootella.base.valve.Valve;
 
 public class ReadValve extends Close implements Valve {
@@ -12,15 +11,12 @@ public class ReadValve extends Close implements Valve {
 	// Make
 
 	/** Make a ReadValve that will read stripe from file and put data in out(). */
-	public ReadValve(Update update, File file, Range range) {
-		this.update = update;
+	public ReadValve(File file, Range range) {
 		this.file = file;
 		meter = new Meter(range);
 		out = Bin.medium();
 	}
 	
-	/** The Update for the Flow we're in. */
-	private final Update update;
 	/** The File we read from. */
 	private final File file;
 	/** Our current task, null if we don't have one right now. */
@@ -51,7 +47,7 @@ public class ReadValve extends Close implements Valve {
 	public void start() {
 		if (closed()) return;
 		if (!meter.isDone() && task == null && out.hasSpace())
-			task = new ReadTask(update, file, meter.remain(), out);
+			task = new ReadTask(file, meter.remain(), out);
 	}
 	
 	public void stop() {

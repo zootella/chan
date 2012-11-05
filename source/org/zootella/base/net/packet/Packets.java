@@ -9,7 +9,6 @@ import org.zootella.base.list.BinBin;
 import org.zootella.base.net.name.IpPort;
 import org.zootella.base.net.name.Port;
 import org.zootella.base.state.Close;
-import org.zootella.base.state.Update;
 
 /** The program's Packets object listens on a port to send and receive UDP packets. */
 public class Packets extends Close {
@@ -57,7 +56,7 @@ public class Packets extends Close {
 			bins.add(bin); // Recycle the Bin it used
 		}
 		if (no(send) && !packets.isEmpty()) // We're not sending a packet right now and we've got one to send
-			send = new SendTask(update, listen, packets.remove(0)); // Send it
+			send = new SendTask(listen, packets.remove(0)); // Send it
 		
 		// Receive
 		if (done(receive)) { // Our ReceiveTask finished waiting for and getting a packet
@@ -69,7 +68,7 @@ public class Packets extends Close {
 			bins.add(packet.bin); // That's it for packet, recycle its Bin
 		}
 		if (no(receive)) // Wait for the next packet to arrive
-			receive = new ReceiveTask(update, listen, bins.get());
+			receive = new ReceiveTask(listen, bins.get());
 	}
 	
 	// Send

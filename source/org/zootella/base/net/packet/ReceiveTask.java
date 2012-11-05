@@ -6,21 +6,18 @@ import org.zootella.base.size.move.PacketMove;
 import org.zootella.base.state.Close;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
-import org.zootella.base.state.Update;
 
 public class ReceiveTask extends Close {
 
 	// Make
 
 	/** Wait on listen until a new Packet arrives, given the empty bin or null to have us make one. */
-	public ReceiveTask(Update up, ListenPacket listen, Bin bin) {
-		this.up = up; // We'll tell above when we're done
+	public ReceiveTask(ListenPacket listen, Bin bin) {
 		this.listen = listen;
 		this.bin = bin;
 		task = new Task(new MyTask()); // Make a separate thread call thread() below now
 	}
 	
-	private final Update up;
 	private final ListenPacket listen;
 	private final Bin bin;
 	private final Task task;

@@ -5,7 +5,6 @@ import org.zootella.base.net.socket.Socket;
 import org.zootella.base.size.Meter;
 import org.zootella.base.size.Range;
 import org.zootella.base.state.Close;
-import org.zootella.base.state.Update;
 import org.zootella.base.valve.Valve;
 
 public class DownloadValve extends Close implements Valve {
@@ -13,15 +12,12 @@ public class DownloadValve extends Close implements Valve {
 	// Make
 
 	/** Make a DownloadValve that will download data from socket. */
-	public DownloadValve(Update update, Socket socket, Range range) {
-		this.update = update;
+	public DownloadValve(Socket socket, Range range) {
 		this.socket = socket;
 		meter = new Meter(range);
 		out = Bin.medium();
 	}
 	
-	/** The Update for the Flow we're in. */
-	private final Update update;
 	/** The socket we download from. */
 	private final Socket socket;
 	/** Our current DownloadTask that downloads data from socket to out, null if we don't have one right now. */
@@ -50,7 +46,7 @@ public class DownloadValve extends Close implements Valve {
 	public void start() {
 		if (closed()) return;
 		if (!meter.isDone() && no(task) && out.hasSpace())
-			task = new DownloadTask(update, socket, meter.remain(), out);
+			task = new DownloadTask(socket, meter.remain(), out);
 	}
 	
 	public void stop() {

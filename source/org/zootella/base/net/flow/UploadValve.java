@@ -5,7 +5,6 @@ import org.zootella.base.net.socket.Socket;
 import org.zootella.base.size.Meter;
 import org.zootella.base.size.Range;
 import org.zootella.base.state.Close;
-import org.zootella.base.state.Update;
 import org.zootella.base.valve.Valve;
 
 public class UploadValve extends Close implements Valve {
@@ -13,15 +12,12 @@ public class UploadValve extends Close implements Valve {
 	// Make
 
 	/** Make an UploadValve that will upload data into socket. */
-	public UploadValve(Update update, Socket socket, Range range) {
-		this.update = update;
+	public UploadValve(Socket socket, Range range) {
 		this.socket = socket;
 		meter = new Meter(range);
 		in = Bin.medium();
 	}
 	
-	/** The Update for the Flow we're in. */
-	private final Update update;
 	/** The socket we upload to. */
 	private final Socket socket;
 	/** Our current UploadTask that uploads data from in to socket, null if we don't have one right now. */
@@ -50,7 +46,7 @@ public class UploadValve extends Close implements Valve {
 	public void start() {
 		if (closed()) return;
 		if (!meter.isDone() && no(task) && in.hasData())
-			task = new UploadTask(update, socket, meter.remain(), in);
+			task = new UploadTask(socket, meter.remain(), in);
 	}
 	
 	public void stop() {

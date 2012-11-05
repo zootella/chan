@@ -9,20 +9,17 @@ import org.zootella.base.net.name.Ip;
 import org.zootella.base.state.Close;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
-import org.zootella.base.state.Update;
 
 public class DomainTask extends Close {
 	
 	// Make
 
 	/** Use DNS to resolve site like "www.site.com" to an IP address. */
-	public DomainTask(Update up, String site) {
-		this.up = up; // We'll tell above when we're done
+	public DomainTask(String site) {
 		this.site = site;
 		task = new Task(new MyTask()); // Make a separate thread call thread() below now
 	}
 	
-	private final Update up;
 	public final String site;
 	private final Task task;
 

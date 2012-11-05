@@ -11,14 +11,13 @@ import org.zootella.base.net.upnp.task.StartTask;
 import org.zootella.base.process.Mistake;
 import org.zootella.base.state.Close;
 import org.zootella.base.state.Result;
-import org.zootella.base.state.Update;
 import org.zootella.base.time.Egg;
 import org.zootella.base.time.Now;
 import org.zootella.base.time.Time;
 
 public class Router extends Close {
 	
-	public Router(Update up, Map tcp, Map udp) {
+	public Router(Map tcp, Map udp) {
 		whenMade = new Now();
 		
 		egg = new Egg(20 * Time.second);
@@ -26,8 +25,8 @@ public class Router extends Close {
 		tcpMap = tcp;
 		udpMap = udp;
 
-		listen = new Listen(update);
-		startTask = new StartTask(update, listen.listen);
+		listen = new Listen();
+		startTask = new StartTask(listen.listen);
 		log("start");
 	}
 	
@@ -92,7 +91,7 @@ public class Router extends Close {
 			}
 			
 			if (no(ipTask) && access != null)
-				ipTask = new IpTask(update, listen.access());
+				ipTask = new IpTask(listen.access());
 			if (ipResult == null && done(ipTask)) {
 				ipResult = ipTask.result();
 				soon();
@@ -100,7 +99,7 @@ public class Router extends Close {
 			}
 			
 			if (no(tcpTask) && access != null)
-				tcpTask = new AddTask(update, access, tcpMap);
+				tcpTask = new AddTask(access, tcpMap);
 			if (tcpResult == null && done(tcpTask)) {
 				tcpResult = tcpTask.result();
 				soon();
@@ -108,7 +107,7 @@ public class Router extends Close {
 			}
 			
 			if (no(udpTask) && access != null)
-				udpTask = new AddTask(update, access, udpMap);
+				udpTask = new AddTask(access, udpMap);
 			if (udpResult == null && done(udpTask)) {
 				udpResult = udpTask.result();
 				soon();

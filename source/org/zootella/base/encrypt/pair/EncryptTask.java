@@ -5,18 +5,15 @@ import org.zootella.base.exception.ProgramException;
 import org.zootella.base.state.Close;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
-import org.zootella.base.state.Update;
 
 public class EncryptTask extends Close {
 
-	public EncryptTask(Update up, Data data, PairKey key) {
-		this.up = up; // We'll tell update when we're done
+	public EncryptTask(Data data, PairKey key) {
 		this.data = data;
 		this.key = key;
 		task = new Task(new MyTask()); // Make a separate thread call thread() below now
 	}
 	
-	private final Update up;
 	private final Data data;
 	private final PairKey key;
 	private final Task task;

@@ -5,13 +5,11 @@ import javax.crypto.Cipher;
 import org.zootella.base.data.Bin;
 import org.zootella.base.size.Meter;
 import org.zootella.base.state.Close;
-import org.zootella.base.state.Update;
 import org.zootella.base.valve.Valve;
 
 public class SecretValve extends Close implements Valve {
 
-	public SecretValve(Update update, Cipher cipher, int mode) {
-		this.update = update;
+	public SecretValve(Cipher cipher, int mode) {
 		this.cipher = cipher;
 		this.mode = mode;
 		in = Bin.medium();
@@ -19,7 +17,6 @@ public class SecretValve extends Close implements Valve {
 		meter = new Meter();
 	}
 	
-	private final Update update;
 	private final Cipher cipher;
 	private final int mode;
 	private final Bin in;
@@ -40,7 +37,7 @@ public class SecretValve extends Close implements Valve {
 	public void start() {
 		if (closed()) return;
 		if (!meter.isDone() && no(task) && Secret.can(cipher, mode, in, out))
-			task = new SecretTask(update, cipher, mode, in, out);
+			task = new SecretTask(cipher, mode, in, out);
 	}
 
 	public void stop() {

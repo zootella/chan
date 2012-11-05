@@ -7,21 +7,18 @@ import org.zootella.base.size.move.Move;
 import org.zootella.base.state.Close;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
-import org.zootella.base.state.Update;
 import org.zootella.base.time.Now;
 
 public class HashTask extends Close {
 
 	/** SHA1 hash and clear bin's data with the given Hash object, don't look at hash or bin until this is closed. */
-	public HashTask(Update up, Hash hash, Bin bin, Range range) {
-		this.up = up; // We'll tell update when we're done
+	public HashTask(Hash hash, Bin bin, Range range) {
 		this.hash = hash;
 		this.bin = bin;
 		this.range = range;
 		task = new Task(new MyTask()); // Make a separate thread call thread() below now
 	}
 	
-	private final Update up;
 	private final Hash hash;
 	private final Bin bin;
 	private final Range range;

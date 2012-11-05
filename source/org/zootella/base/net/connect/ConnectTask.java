@@ -10,7 +10,6 @@ import org.zootella.base.net.socket.Socket;
 import org.zootella.base.state.Close;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
-import org.zootella.base.state.Update;
 import org.zootella.base.time.Now;
 
 public class ConnectTask extends Close {
@@ -18,13 +17,11 @@ public class ConnectTask extends Close {
 	// Make
 
 	/** Make a new outgoing TCP socket connection to ipPort. */
-	public ConnectTask(Update up, IpPort ipPort) {
-		this.up = up; // We'll tell above when we're done
+	public ConnectTask(IpPort ipPort) {
 		this.ipPort = ipPort;
 		task = new Task(new MyTask()); // Make a separate thread call thread() below now
 	}
 	
-	private final Update up;
 	public final IpPort ipPort;
 	private final Task task;
 

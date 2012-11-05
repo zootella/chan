@@ -4,16 +4,13 @@ import org.zootella.base.exception.ProgramException;
 import org.zootella.base.state.Close;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
-import org.zootella.base.state.Update;
 
 public class MakeSecretKeyTask extends Close {
 
-	public MakeSecretKeyTask(Update up) {
-		this.up = up; // We'll tell update when we're done
+	public MakeSecretKeyTask() {
 		task = new Task(new MyTask()); // Make a separate thread call thread() below now
 	}
 	
-	private final Update up;
 	private final Task task;
 
 	@Override public void close() {

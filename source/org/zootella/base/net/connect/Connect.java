@@ -9,13 +9,12 @@ import org.zootella.base.net.flow.SocketBay;
 import org.zootella.base.net.name.IpPort;
 import org.zootella.base.process.Mistake;
 import org.zootella.base.state.Close;
-import org.zootella.base.state.Update;
 import org.zootella.base.time.Egg;
 
 public class Connect extends Close {
 	
 	/** Make a new TCP socket connection to ipPort, say hello and get hash response, in 4 seconds or less. */
-	public Connect(Update up, IpPort ipPort, Data hello, Data hash) {
+	public Connect(IpPort ipPort, Data hello, Data hash) {
 		this.ipPort = ipPort;
 		this.hello = hello;
 		this.hash = hash;
@@ -46,9 +45,9 @@ public class Connect extends Close {
 			
 			// Connect and upload hello
 			if (no(connect))
-				connect = new ConnectTask(update, ipPort);
+				connect = new ConnectTask(ipPort);
 			if (done(connect) && no(socket)) {
-				socket = new SocketBay(update, connect.result());
+				socket = new SocketBay(connect.result());
 				socket.upload().add(hello);
 			}
 

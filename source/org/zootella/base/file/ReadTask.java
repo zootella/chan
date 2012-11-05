@@ -8,15 +8,13 @@ import org.zootella.base.size.move.StripeMove;
 import org.zootella.base.state.Close;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
-import org.zootella.base.state.Update;
 
 public class ReadTask extends Close {
 	
 	// Make
 
 	/** Read 1 or more bytes from stripe in file to bin, don't look at bin until this is closed. */
-	public ReadTask(Update up, File file, Range range, Bin bin) {
-		this.up = up; // We'll tell above when we're done
+	public ReadTask(File file, Range range, Bin bin) {
 		this.file = file;
 		this.pattern = file.pattern(); // Get the StripePattern that shows where file has data
 		this.range = range;
@@ -24,7 +22,6 @@ public class ReadTask extends Close {
 		task = new Task(new MyTask()); // Make a separate thread call thread() below now
 	}
 	
-	private final Update up;
 	private final File file;
 	private final StripePattern pattern;
 	public final Range range;

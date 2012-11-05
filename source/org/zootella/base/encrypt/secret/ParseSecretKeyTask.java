@@ -5,17 +5,14 @@ import org.zootella.base.exception.ProgramException;
 import org.zootella.base.state.Close;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
-import org.zootella.base.state.Update;
 
 public class ParseSecretKeyTask extends Close {
 
-	public ParseSecretKeyTask(Update up, Data data) {
-		this.up = up; // We'll tell update when we're done
+	public ParseSecretKeyTask(Data data) {
 		this.data = data;
 		task = new Task(new MyTask()); // Make a separate thread call thread() below now
 	}
 	
-	private final Update up;
 	private final Data data;
 	private final Task task;
 

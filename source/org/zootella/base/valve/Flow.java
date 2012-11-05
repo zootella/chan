@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.zootella.base.data.Bin;
 import org.zootella.base.state.Close;
-import org.zootella.base.state.Update;
 
 /** A list of Valve objects that data flows through. */
 public class Flow extends Close {
@@ -13,15 +12,11 @@ public class Flow extends Close {
 	// Make
 	
 	/** Make a new list of Valve objects that will take in and or put out data. */
-	public Flow(Update update, boolean in, boolean out) {
-		this.update = update;
+	public Flow(boolean in, boolean out) {
 		list = new LinkedList<Valve>();
 		if (in) this.in = Bin.medium(); // Make the requested bins
 		if (out) this.out = Bin.medium();
 	}
-	
-	/** The Update object above us that wants to know when we've changed. */
-	public final Update update;
 
 	/** Our list of Valve objects, data flows from the first through to the last. */
 	public final List<Valve> list;
@@ -36,11 +31,10 @@ public class Flow extends Close {
 	public Bin out;
 
 	/** Stop the data flowing through this Flow. */
-	public void close() {
+	@Override public void close() {
 		if (already()) return;
 		for (Valve valve : list)
 			close((Close)valve); // Close each Valve in our list
-		update.send();
 	}
 	
 	// Go

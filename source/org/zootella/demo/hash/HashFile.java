@@ -10,12 +10,11 @@ import org.zootella.base.file.Path;
 import org.zootella.base.file.ReadValve;
 import org.zootella.base.size.Range;
 import org.zootella.base.state.Close;
-import org.zootella.base.state.Update;
 import org.zootella.base.valve.Flow;
 
 public class HashFile extends Close {
 
-	public HashFile(Update up, String path) {
+	public HashFile(String path) {
 	}
 	
 	private OpenTask openTask;
@@ -42,7 +41,7 @@ public class HashFile extends Close {
 			
 			//open the file
 			if (no(openTask))
-				openTask = new OpenTask(update, new Open(new Path(path), null, Open.read));
+				openTask = new OpenTask(new Open(new Path(path), null, Open.read));
 			if (done(openTask) && no(file))
 				file = openTask.result();
 			
@@ -51,10 +50,10 @@ public class HashFile extends Close {
 				Range range = new Range(0, file.size());//TODO test that a 0 byte file passes through this correctly, it should
 				
 				//hash it
-				readValve = new ReadValve(update, file, range);
-				hashValve = new HashValve(update, range);
+				readValve = new ReadValve(file, range);
+				hashValve = new HashValve(range);
 				
-				flow = new Flow(update, false, false);
+				flow = new Flow(false, false);
 				flow.list.add(readValve);
 				flow.list.add(hashValve);
 			}
@@ -62,7 +61,14 @@ public class HashFile extends Close {
 			if (is(flow))
 				flow.move();
 			
-			soon();//TODO this is cheap, you should only send one when you know something has changed
+			/*
+			soon();//TODO this is cheap, you should only send one when you know something has changed.
+			
+			Actually, you can't do that at all, how would that not have caused an infinite spin.
+			You would have realized that the moment you ran it, and hadn't finished this demo to run it yet.
+			Yes, obviously, the easiest way to create an infinite spin problem is to call soon() inside pulse() without an if or anything.
+			 * 
+			 */
 			
 		} catch (ProgramException e) { exception = e; close(this); }
 	}

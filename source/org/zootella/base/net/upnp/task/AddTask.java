@@ -8,20 +8,17 @@ import org.zootella.base.state.Close;
 import org.zootella.base.state.Result;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
-import org.zootella.base.state.Update;
 
 public class AddTask extends Close {
 	
 	// Make
 
-	public AddTask(Update up, Access router, Map forward) {
-		this.up = up; // We'll tell above when we're done
+	public AddTask(Access router, Map forward) {
 		this.router = router;
 		this.forward = forward;
 		task = new Task(new MyTask()); // Make a separate thread call thread() below now
 	}
 	
-	private final Update up;
 	private final Access router;
 	private final Map forward;
 	private final Task task;

@@ -8,12 +8,10 @@ import org.zootella.base.size.move.Move;
 import org.zootella.base.state.Close;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
-import org.zootella.base.state.Update;
 
 public class SecretTask extends Close {
 
-	public SecretTask(Update up, Cipher cipher, int mode, Bin source, Bin destination) {
-		this.up = up; // We'll tell update when we're done
+	public SecretTask(Cipher cipher, int mode, Bin source, Bin destination) {
 		this.cipher = cipher;
 		this.mode = mode;
 		this.source = source;
@@ -21,7 +19,6 @@ public class SecretTask extends Close {
 		task = new Task(new MyTask()); // Make a separate thread call thread() below now
 	}
 	
-	private final Update up;
 	private final Cipher cipher;
 	private final int mode;
 	private final Bin source;

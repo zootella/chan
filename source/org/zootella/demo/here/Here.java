@@ -10,7 +10,6 @@ import org.zootella.base.net.upnp.name.Map;
 import org.zootella.base.state.Close;
 import org.zootella.base.state.Model;
 import org.zootella.base.state.Result;
-import org.zootella.base.state.Update;
 
 public class Here extends Close {
 
@@ -99,12 +98,12 @@ public class Here extends Close {
 		IpPort l = new IpPort(HereLan.ip().result(), port);
 		Map t = new Map(port, l, "TCP", "Pipe");
 		Map u = new Map(port, l, "UDP", "Pipe");
-		router = new Router(update, t, u);
+		router = new Router(t, u);
 		soon();
 	}
 	public void refreshCenter() {
 		close(centerTask);
-		centerTask = new CenterTask(update, packets);
+		centerTask = new CenterTask(packets);
 		soon();
 	}
 	

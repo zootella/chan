@@ -5,21 +5,18 @@ import org.zootella.base.exception.ProgramException;
 import org.zootella.base.state.Close;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
-import org.zootella.base.state.Update;
 
 public class SendTask extends Close {
 
 	// Make
 
 	/** Have listen send packet, don't look at packet after this. */
-	public SendTask(Update up, ListenPacket listen, Packet packet) {
-		this.up = up; // We'll tell above when we're done
+	public SendTask(ListenPacket listen, Packet packet) {
 		this.listen = listen;
 		this.packet = packet;
 		task = new Task(new MyTask()); // Make a separate thread call thread() below now
 	}
 	
-	private final Update up;
 	private final ListenPacket listen;
 	private final Packet packet;
 	private final Task task;

@@ -6,17 +6,14 @@ import org.zootella.base.exception.ProgramException;
 import org.zootella.base.state.Close;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
-import org.zootella.base.state.Update;
 
 public class ListTask extends Close {
 
-	public ListTask(Update up, Path folder) {
-		this.up = up; // We'll tell update when we're done
+	public ListTask(Path folder) {
 		this.folder = folder;
 		task = new Task(new MyTask()); // Make a separate thread call thread() below now
 	}
 	
-	private final Update up;
 	private final Path folder;
 	private final Task task;
 

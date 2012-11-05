@@ -8,22 +8,19 @@ import org.zootella.base.size.move.Move;
 import org.zootella.base.state.Close;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
-import org.zootella.base.state.Update;
 
 public class DownloadTask extends Close {
 	
 	// Make
 
 	/** Download 1 or more bytes from socket to bin limited by range, don't look at bin until this is closed. */
-	public DownloadTask(Update up, Socket socket, Range range, Bin bin) {
-		this.up = up; // We'll tell above when we're done
+	public DownloadTask(Socket socket, Range range, Bin bin) {
 		this.socket = socket;
 		this.range = range;
 		this.bin = bin;
 		task = new Task(new MyTask()); // Make a separate thread call thread() below now
 	}
 	
-	private final Update up;
 	private final Socket socket;
 	private final Range range;
 	private final Bin bin;

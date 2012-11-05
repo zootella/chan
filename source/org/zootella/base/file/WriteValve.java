@@ -4,7 +4,6 @@ import org.zootella.base.data.Bin;
 import org.zootella.base.size.Meter;
 import org.zootella.base.size.Range;
 import org.zootella.base.state.Close;
-import org.zootella.base.state.Update;
 import org.zootella.base.valve.Valve;
 
 public class WriteValve extends Close implements Valve {
@@ -12,15 +11,12 @@ public class WriteValve extends Close implements Valve {
 	// Make
 	
 	/** Make a WriteValve that will take data from in() and write it at index in file. */
-	public WriteValve(Update update, File file, Range range) {
-		this.update = update;
+	public WriteValve(File file, Range range) {
 		this.file = file;
 		meter = new Meter(range);
 		in = Bin.medium();
 	}
 	
-	/** The Update for the Flow we're in. */
-	private final Update update;
 	/** The open File we write to. */
 	private final File file;
 	/** Our current WriteLater, null if we don't have one right now. */
@@ -51,7 +47,7 @@ public class WriteValve extends Close implements Valve {
 	public void start() {
 		if (closed()) return;
 		if (!meter.isDone() && later == null && in.hasData())
-			later = new WriteTask(update, file, meter.remain(), in);
+			later = new WriteTask(file, meter.remain(), in);
 	}
 	
 	public void stop() {

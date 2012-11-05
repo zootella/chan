@@ -8,16 +8,14 @@ import org.cybergarage.upnp.Service;
 import org.cybergarage.upnp.device.DeviceChangeListener;
 import org.zootella.base.data.Outline;
 import org.zootella.base.process.Mistake;
-import org.zootella.base.state.Update;
+import org.zootella.base.state.Pulse;
 
 public class Listen {
 	
-	public Listen(Update update) {
-		this.update = update;
+	public Listen() {
 		listen = new MyDeviceChangeListener();
 	}
 	
-	private final Update update;
 	public final DeviceChangeListener listen;
 	
 	public Access access() { return access; }
@@ -63,7 +61,7 @@ public class Listen {
 											o.add("location",         gatewayDevice.getLocation());
 											
 											access = new Access(gatewayDevice, s, o);
-											update.send();
+											Pulse.pulse.soon();
 											return;
 										}
 									}

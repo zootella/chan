@@ -11,7 +11,6 @@ import org.zootella.base.net.socket.Socket;
 import org.zootella.base.state.Close;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
-import org.zootella.base.state.Update;
 import org.zootella.base.time.Now;
 
 public class AcceptTask extends Close {
@@ -19,13 +18,11 @@ public class AcceptTask extends Close {
 	// Make
 
 	/** Wait for a peer to make a TCP socket connection to listen. */
-	public AcceptTask(Update up, ListenSocket listen) {
-		this.up = up; // We'll tell above when we're done
+	public AcceptTask(ListenSocket listen) {
 		this.listen = listen;
 		task = new Task(new MyTask()); // Make a separate thread call thread() below now
 	}
 	
-	private final Update up;
 	private final ListenSocket listen;
 	private final Task task;
 

@@ -5,19 +5,16 @@ import org.zootella.base.exception.ProgramException;
 import org.zootella.base.state.Close;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
-import org.zootella.base.state.Update;
 
 public class VerifyTask extends Close {
 
-	public VerifyTask(Update up, Data data, Data signature, SignKey key) {
-		this.up = up; // We'll tell update when we're done
+	public VerifyTask(Data data, Data signature, SignKey key) {
 		this.data = data;
 		this.signature = signature;
 		this.key = key;
 		task = new Task(new MyTask()); // Make a separate thread call thread() below now
 	}
 	
-	private final Update up;
 	private final Data data;
 	private final Data signature;
 	private final SignKey key;

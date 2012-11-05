@@ -4,7 +4,6 @@ import org.zootella.base.data.Bin;
 import org.zootella.base.size.Meter;
 import org.zootella.base.size.Range;
 import org.zootella.base.state.Close;
-import org.zootella.base.state.Update;
 import org.zootella.base.valve.Valve;
 
 public class HashValve extends Close implements Valve {
@@ -12,15 +11,12 @@ public class HashValve extends Close implements Valve {
 	// Make
 
 	/** Make a HashValve that will take data from in() and hash it. */
-	public HashValve(Update update, Range range) {
-		this.update = update;
+	public HashValve(Range range) {
 		this.hash = new Hash();
 		meter = new Meter(range);
 		in = Bin.medium();
 	}
 	
-	/** The Update for the Flow we're in. */
-	private final Update update;
 	/** The Hash that hashes the data. */
 	public final Hash hash;
 	/** Our current task, null if we don't have one right now. */
@@ -51,7 +47,7 @@ public class HashValve extends Close implements Valve {
 	public void start() {
 		if (closed()) return;
 		if (!meter.isDone() && task == null && in.hasData())
-			task = new HashTask(update, hash, in, meter.remain());
+			task = new HashTask(hash, in, meter.remain());
 	}
 
 	public void stop() {

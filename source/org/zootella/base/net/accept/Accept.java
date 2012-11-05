@@ -7,7 +7,6 @@ import org.zootella.base.list.TwoBoots;
 import org.zootella.base.net.flow.SocketBay;
 import org.zootella.base.net.name.Port;
 import org.zootella.base.state.Close;
-import org.zootella.base.state.Update;
 import org.zootella.base.time.Time;
 
 /** The program's Accept object listens on a port to accept new incoming TCP socket connections. */
@@ -37,11 +36,11 @@ public class Accept extends Close {
 		
 		// Wait for new sockets to connect
 		if (done(acceptTask)) {
-			sockets.add(new SocketBay(update, acceptTask.result()));
+			sockets.add(new SocketBay(acceptTask.result()));
 			acceptTask = null;
 		}
 		if (no(acceptTask))
-			acceptTask = new AcceptTask(update, listenSocket);
+			acceptTask = new AcceptTask(listenSocket);
 
 		// Show each AcceptReceive object above each socket that has connected in
 		for (AcceptReceive r : new HashSet<AcceptReceive>(receivers))

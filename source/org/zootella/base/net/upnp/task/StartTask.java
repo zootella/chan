@@ -7,19 +7,16 @@ import org.zootella.base.net.upnp.Do;
 import org.zootella.base.state.Close;
 import org.zootella.base.state.Task;
 import org.zootella.base.state.TaskBody;
-import org.zootella.base.state.Update;
 
 public class StartTask extends Close {
 	
 	// Make
 
-	public StartTask(Update up, DeviceChangeListener listen) {
-		this.up = up; // We'll tell above when we're done
+	public StartTask(DeviceChangeListener listen) {
 		this.listen = listen;
 		task = new Task(new MyTask()); // Make a separate thread call thread() below now
 	}
 	
-	private final Update up;
 	private final DeviceChangeListener listen;
 	private final Task task;
 
