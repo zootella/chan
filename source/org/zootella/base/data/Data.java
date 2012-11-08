@@ -104,22 +104,22 @@ public class Data implements Comparable<Data> {
 
 	// Change
 
-	/** Remove size bytes from the start of the data this Data object views. */
-	@Deprecated public void remove(int size) { //TODO remove to make immutable
-		if (size == 0) return; // Nothing to remove
-		if (size > size()) throw new ChopException(); // Asked to remove more than we have
-		buffer.position(buffer.position() + size); // Move our ByteBuffer's position forward size bytes
+	/** Remove n bytes from the start of the data this Data object views. */
+	@Deprecated public void remove(int n) { //TODO remove to make immutable
+		if (n == 0) return; // Nothing to remove
+		if (n > size()) throw new ChopException(); // Asked to remove more than we have
+		buffer.position(buffer.position() + n); // Move our ByteBuffer's position forward n bytes
 	}
 
-	/** Remove data from the start of this Data object, keeping only the last size bytes. */
-	@Deprecated public void keep(int size) { //TODO remove to make immutable
-		remove(size() - size); // Remove everything but size bytes
+	/** Remove data from the start of this Data object, keeping only the last n bytes. */
+	@Deprecated public void keep(int n) { //TODO remove to make immutable
+		remove(size() - n); // Remove everything but n bytes
 	}
 	
-	/** Remove size bytes from the start of this Data object, and return a new Data object that views them. */
-	@Deprecated public Data cut(int size) { //TODO remove to make immutable
-		Data d = start(size); // Make a new Data d to return that clips out size bytes at the start
-		remove(size); // Remove size bytes from the start of this Data object
+	/** Remove n bytes from the start of this Data object, and return a new Data object that views them. */
+	@Deprecated public Data cut(int n) { //TODO remove to make immutable
+		Data d = start(n); // Make a new Data d to return that clips out n bytes at the start
+		remove(n); // Remove n bytes from the start of this Data object
 		return d;
 	}
 
@@ -133,29 +133,29 @@ public class Data implements Comparable<Data> {
 
 	// Clip
 
-	/** Clip out up to size bytes from the start of this Data. */
-	@Deprecated public Data begin(int size) { //TODO remove because weird and not exact
-		return start(Math.min(size, size())); // Don't try to clip out more data than we have
+	/** Clip out up to n bytes from the start of this Data. */
+	@Deprecated public Data begin(int n) { //TODO remove because weird and not exact
+		return start(Math.min(n, size())); // Don't try to clip out more data than we have
 	}
 
-	/** Clip out the first size bytes of this Data, start(3) is DDDddddddd. */
-	public Data start(int size) { return clip(0, size); }
-	/** Clip out the last size bytes of this Data, end(3) is dddddddDDD. */
-	public Data end(int size) { return clip(size() - size, size); }
+	/** Clip out the first n bytes of this Data, start(3) is DDDddddddd. */
+	public Data start(int n) { return clip(0, n); }
+	/** Clip out the last n bytes of this Data, end(3) is dddddddDDD. */
+	public Data end(int n) { return clip(size() - n, n); }
 	/** Clip out the bytes after index i in this Data, after(3) is dddDDDDDDD. */
 	public Data after(int i) { return clip(i, size() - i); }
-	/** Chop the last size bytes off the end of this Data, returning the start before them, chop(3) is DDDDDDDddd. */
-	public Data chop(int size) { return clip(0, size() - size); }
+	/** Chop the last n bytes off the end of this Data, returning the start before them, chop(3) is DDDDDDDddd. */
+	public Data chop(int n) { return clip(0, size() - n); }
 	/** Clip out part this Data, clip(5, 3) is dddddDDDdd. */
-	public Data clip(int i, int size) {
+	public Data clip(int i, int n) {
 
-		// Make sure the requested index and size fits inside this Data
-		if (i < 0 || size < 0 || i + size > size()) throw new ChopException();
+		// Make sure the requested index and number of bytes fits inside this Data
+		if (i < 0 || n < 0 || i + n > size()) throw new ChopException();
 
 		// Make and return a new Data that clips around the requested part of this one
 		ByteBuffer b = toByteBuffer(); // Make a new ByteBuffer b that looks at our data too
 		b.position(b.position() + i);  // Move its position and limit inwards to clip out the requested part
-		b.limit(b.position() + size);
+		b.limit(b.position() + n);
 		return new Data(b);            // Wrap a new Data object around it, and return it
 	}
 
@@ -332,10 +332,10 @@ public class Data implements Comparable<Data> {
 
 	/** A new globally unique 20 bytes of random data. */
 	public static Data unique() { return random(Hash.size); }
-	/** Make size bytes of random data. */
-	public static Data random(int size) {
+	/** Make n bytes of random data. */
+	public static Data random(int n) {
 		if (random == null) random = new Random(); // Make our random number generator if we don't have it yet
-		byte[] a = new byte[size];                 // Make an empty byte array size bytes long
+		byte[] a = new byte[n];                    // Make an empty byte array n bytes long
 		random.nextBytes(a);                       // Fill it with random data
 		return new Data(a);                        // Wrap a new Data object around it and return it
 	}
