@@ -172,11 +172,11 @@ public class Data implements Comparable<Data> {
 	/** true if this Data object views a single byte, y. */
 	public boolean same(byte y) { return same(new Data(y)); }
 	/** true if this Data object views the same data as the given byte array. */
-	public boolean same(byte[] a) { return same(new Data(a)); }
+	@Deprecated public boolean same(byte[] a) { return same(new Data(a)); }
 	/** true if this Data object views the same data as of the given String. */
-	public boolean same(String s) { return same(new Data(s)); }
+	@Deprecated public boolean same(String s) { return same(new Data(s)); }
 	/** true if this Data object views the same data as the data between b's position and limit, doesn't change b. */
-	public boolean same(ByteBuffer b) { return same(new Data(b)); }
+	@Deprecated public boolean same(ByteBuffer b) { return same(new Data(b)); }
 	/** true if this Data object views the same data as the given one. */
 	public boolean same(Data d) {
 		if (size() != d.size()) return false; // Make sure this Data and d are the same size
@@ -189,33 +189,33 @@ public class Data implements Comparable<Data> {
 	/** true if this Data starts with the byte y. */
 	public boolean starts(byte y) { return starts(new Data(y)); }
 	/** true if this Data starts with the given byte array. */
-	public boolean starts(byte[] a) { return starts(new Data(a)); }
+	@Deprecated public boolean starts(byte[] a) { return starts(new Data(a)); }
 	/** true if this Data starts with the data of the given String. */
-	public boolean starts(String s) { return starts(new Data(s)); }
+	@Deprecated public boolean starts(String s) { return starts(new Data(s)); }
 	/** true if this Data starts with the data between b's position and limit, doesn't change b. */
-	public boolean starts(ByteBuffer b) { return starts(new Data(b)); }
+	@Deprecated public boolean starts(ByteBuffer b) { return starts(new Data(b)); }
 	/** true if this Data starts with d. */
 	public boolean starts(Data d) { return search(d, true, false) != -1; }
 
 	/** true if this Data ends with the byte y. */
 	public boolean ends(byte y) { return ends(new Data(y)); }
 	/** true if this Data ends with the given byte array. */
-	public boolean ends(byte[] a) { return ends(new Data(a)); }
+	@Deprecated public boolean ends(byte[] a) { return ends(new Data(a)); }
 	/** true if this Data ends with the data of the given String. */
-	public boolean ends(String s) { return ends(new Data(s)); }
+	@Deprecated public boolean ends(String s) { return ends(new Data(s)); }
 	/** true if this Data ends with the data between b's positon and limit, doesn't change b. */
-	public boolean ends(ByteBuffer b) { return ends(new Data(b)); }
+	@Deprecated public boolean ends(ByteBuffer b) { return ends(new Data(b)); }
 	/** true if this Data ends with d. */
 	public boolean ends(Data d) { return search(d, false, false) != -1; }
 
 	/** true if this Data contains the byte y. */
 	public boolean has(byte y) { return has(new Data(y)); }
 	/** true if this Data contains the given byte array. */
-	public boolean has(byte[] a) { return has(new Data(a)); }
+	@Deprecated public boolean has(byte[] a) { return has(new Data(a)); }
 	/** true if this Data contains the data of the given String. */
-	public boolean has(String s) { return has(new Data(s)); }
+	@Deprecated public boolean has(String s) { return has(new Data(s)); }
 	/** true if this Data contains the data between b's position and limit, doesn't change b. */
-	public boolean has(ByteBuffer b) { return has(new Data(b)); }
+	@Deprecated public boolean has(ByteBuffer b) { return has(new Data(b)); }
 	/** true if this Data contains d. */
 	public boolean has(Data d) { return search(d, true, true) != -1; }
 
@@ -224,22 +224,22 @@ public class Data implements Comparable<Data> {
 	/** Find the distance in bytes from the start of this Data to where the byte y first appears, -1 if not found. */
 	public int find(byte y) { return find(new Data(y)); }
 	/** Find the distance in bytes from the start of this Data to where the given byte array first appears, -1 if not found. */
-	public int find(byte[] a) { return find(new Data(a)); }
+	@Deprecated public int find(byte[] a) { return find(new Data(a)); }
 	/** Find the distance in bytes from the start of this Data to where the data of the given String first appears, -1 if not found. */
-	public int find(String s) { return find(new Data(s)); }
+	@Deprecated public int find(String s) { return find(new Data(s)); }
 	/** Find the distance in bytes from the start of this Data to where the data between b's position and limit first appears, -1 if not found, doesn't change b. */
-	public int find(ByteBuffer b) { return find(new Data(b)); }
+	@Deprecated public int find(ByteBuffer b) { return find(new Data(b)); }
 	/** Find the distance in bytes from the start of this Data to where d first appears, -1 if not found. */
 	public int find(Data d) { return search(d, true, true); }
 
 	/** Find the distance in bytes from the start of this Data to where the byte y last appears, -1 if not found. */
 	public int last(byte y) { return last(new Data(y)); }
 	/** Find the distance in bytes from the start of this Data to where the given byte array last appears, -1 if not found. */
-	public int last(byte[] a) { return last(new Data(a)); }
+	@Deprecated public int last(byte[] a) { return last(new Data(a)); }
 	/** Find the distance in bytes from the start of this Data to where the data of the given String last appears, -1 if not found. */
-	public int last(String s) { return last(new Data(s)); }
+	@Deprecated public int last(String s) { return last(new Data(s)); }
 	/** Find the distance in bytes from the start of this Data to where the data between b's position and limit last appears, -1 if not found, doesn't change b. */
-	public int last(ByteBuffer b) { return last(new Data(b)); }
+	@Deprecated public int last(ByteBuffer b) { return last(new Data(b)); }
 	/** Find the distance in bytes from the start of this Data to where d last appears, -1 if not found. */
 	public int last(Data d) { return search(d, false, true); }
 
@@ -291,22 +291,22 @@ public class Data implements Comparable<Data> {
 	/** Split this Data around the given byte y, clipping out the parts before and after it. */
 	public Split split(byte y) { return split(new Data(y)); }
 	/** Split this Data around the given byte array, clipping out the parts before and after it. */
-	public Split split(byte[] a) { return split(new Data(a)); }
+	@Deprecated public Split split(byte[] a) { return split(new Data(a)); }
 	/** Split this Data around the data of the given String, clipping out the parts before and after it. */
-	public Split split(String s) { return split(new Data(s)); }
+	@Deprecated public Split split(String s) { return split(new Data(s)); }
 	/** Split this Data around the data between b's position and limit, clipping out the parts before and after it, doesn't change b. */
-	public Split split(ByteBuffer b) { return split(new Data(b)); }
+	@Deprecated public Split split(ByteBuffer b) { return split(new Data(b)); }
 	/** Split this Data around d, clipping out the parts before and after it. */
 	public Split split(Data d) { return split(d, true); }
 
 	/** Split this Data around the place the given byte y last appears, clipping out the parts before and after it. */
 	public Split splitLast(byte y) { return splitLast(new Data(y)); }
 	/** Split this Data around the the place the given byte array last appears, clipping out the parts before and after it. */
-	public Split splitLast(byte[] a) { return splitLast(new Data(a)); }
+	@Deprecated public Split splitLast(byte[] a) { return splitLast(new Data(a)); }
 	/** Split this Data around the place the data of the given String last appears, clipping out the parts before and after it. */
-	public Split splitLast(String s) { return splitLast(new Data(s)); }
+	@Deprecated public Split splitLast(String s) { return splitLast(new Data(s)); }
 	/** Split this Data around the place the data between b's position and limit last appears, clipping out the parts before and after it, doesn't change b. */
-	public Split splitLast(ByteBuffer b) { return splitLast(new Data(b)); }
+	@Deprecated public Split splitLast(ByteBuffer b) { return splitLast(new Data(b)); }
 	/** Split this Data around the place d last appears, clipping out the parts before and after it. */
 	public Split splitLast(Data d) { return split(d, false); }
 	
