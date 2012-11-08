@@ -116,11 +116,6 @@ public class Data implements Comparable<Data> {
 
 	// Clip
 
-	/** Clip out up to n bytes from the start of this Data. */
-	@Deprecated public Data begin(int n) { //TODO remove because weird and not exact
-		return start(Math.min(n, size())); // Don't try to clip out more data than we have
-	}
-
 	/** Clip out the first n bytes of this Data, start(3) is DDDddddddd. */
 	public Data start(int n) { return clip(0, n); }
 	/** Clip out the last n bytes of this Data, end(3) is dddddddDDD. */

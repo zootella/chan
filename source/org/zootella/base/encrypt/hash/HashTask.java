@@ -44,7 +44,7 @@ public class HashTask extends Close {
 			// Hash data from bin and remove it
 			Now start = new Now();
 			int ask = range.ask(bin.size());
-			hash.add(bin.data().begin(ask));
+			hash.add(bin.data().start(ask));
 			bin.remove(ask);
 			taskMove = new Move(start, ask);
 		}
