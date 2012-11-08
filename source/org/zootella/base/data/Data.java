@@ -49,7 +49,7 @@ public class Data implements Comparable<Data> {
 	
 	// Big
 
-	/** Covert the given BigInteger into a new Data object. */
+	/** Convert the given BigInteger into a new Data object. */
 	public Data(BigInteger b) {
 		this(b.toByteArray());
 	}
@@ -68,7 +68,7 @@ public class Data implements Comparable<Data> {
 
 	/**
 	 * If you know this Data has text bytes, look at them all as a String using UTF-8 encoding.
-	 * Use base16() for binary data, this turns it into lines of gobbledygook but doesn't throw an exception.
+	 * On binary data, toString() produces lines of gobbledygook but doesn't throw an exception, you may want base16() instead.
 	 */
 	@Override public String toString() { return Convert.toString(toByteBuffer()); }
 
@@ -98,8 +98,8 @@ public class Data implements Comparable<Data> {
 	
 	/**
 	 * Make a new Clip object around this Data.
-	 * You can remove bytes from the start of it to keep track of what you've processed.
-	 * Data is immutable, while Clip you can change.
+	 * You can remove bytes from the start of the Clip to keep track of what you've processed.
+	 * The size of a Data object cannot change, while Clip can.
 	 */
 	public Clip clip() {
 		return new Clip(this);
@@ -110,6 +110,7 @@ public class Data implements Comparable<Data> {
 	/**
 	 * A Data object has a ByteBuffer buffer that clips out the data it views.
 	 * The data is between buffer's position and limit.
+	 * A ByteBuffer's position can move and its size can change, but Data is immutable because buffer is private and we never do that.
 	 */
 	private final ByteBuffer buffer;
 
