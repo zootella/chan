@@ -116,26 +116,26 @@ public class Bin {
 			bin.buffer = buffer;
 			buffer = b;
 		} else { // Move some data in
-			Data data = bin.data();
-			add(data);
-			bin.keep(data.size()); // Have bin keep only what add didn't take
+			Clip clip = bin.data().clip();
+			add(clip);
+			bin.keep(clip.size()); // Have bin keep only what add didn't take
 		}
 	}
 
 	/** Move as much data as fits from bay to this Bin, removing what we take from bay. */
 	public void add(Bay bay) {
-		Data data = bay.data();
-		add(data);
-		bay.keep(data.size()); // Have bay keep only what add didn't take
+		Clip clip = bay.data().clip();
+		add(clip);
+		bay.keep(clip.size()); // Have bay keep only what add didn't take
 	}
 
 	/** Move as much data as fits from data to this Bin, removing what we take from data. */
-	public void add(Data data) {
-		if (data.isEmpty() || isFull()) return;   // Nothing given or no space here
-		int did = Math.min(data.size(), space()); // Figure out how many bytes we can move
-		Data d = data.start(did);                 // Clip d around that size
+	public void add(Clip clip) {
+		if (clip.isEmpty() || isFull()) return;   // Nothing given or no space here
+		int did = Math.min(clip.size(), space()); // Figure out how many bytes we can move
+		Data d = clip.data().start(did);          // Clip d around that size
 		buffer.put(d.toByteBuffer());             // Copy in the data
-		data.remove(did);                         // Remove what we took from the given Data object
+		clip.remove(did);                         // Remove what we took from the given Clip object
 	}
 
 	/** Remove size bytes from the start of the data in this Bin. */

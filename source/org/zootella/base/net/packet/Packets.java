@@ -77,7 +77,7 @@ public class Packets extends Close {
 	public void send(Data data, IpPort ipPort) {
 		confirmOpen();
 		Bin bin = bin();
-		bin.add(data);
+		bin.add(data.clip());
 		send(bin, ipPort);
 	}
 	

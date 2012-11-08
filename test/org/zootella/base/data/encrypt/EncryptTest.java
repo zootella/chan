@@ -69,7 +69,7 @@ public class EncryptTest {
 		Bin b = Bin.medium();
 		Bin c = Bin.medium();
 		
-		a.add(Data.random(size));
+		a.add(Data.random(size).clip());
 //		a.add(Encrypt.padding(encrypt).toData());
 
 		say(a, b, c);

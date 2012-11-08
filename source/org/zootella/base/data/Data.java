@@ -20,15 +20,7 @@ public class Data implements Comparable<Data> {
 	public Data(String s) { this(Convert.toByteBuffer(s)); }
 	/** Make a new Data object that views the data between b's position and limit, doesn't change b. */
 	public Data(ByteBuffer b) {
-		buffer = b.asReadOnlyBuffer(); // Save a copy of b so if b's position moves, buffer's position won't
-	}
-
-	/**
-	 * Make a copy of this Data object.
-	 * Afterwards, you can remove some data from one, and the other will still view it.
-	 */
-	@Deprecated public Data copy() { //TODO won't need when data is immutable
-		return new Data(buffer); // Return a new Data object that has a copy of our ByteBuffer
+		buffer = b.duplicate(); // Save a copy of b so if b's position moves, buffer's position won't
 	}
 
 	/**
@@ -81,7 +73,7 @@ public class Data implements Comparable<Data> {
 	@Override public String toString() { return Convert.toString(toByteBuffer()); }
 
 	/**
-	 * Make a read-only ByteBuffer with position and limit clipped around the data this Data object views.
+	 * Make a ByteBuffer with position and limit clipped around the data this Data object views.
 	 * You can move the position without changing this Data object.
 	 */
 	public ByteBuffer toByteBuffer() {
@@ -106,30 +98,11 @@ public class Data implements Comparable<Data> {
 	
 	/**
 	 * Make a new Clip object around this Data.
-	 * You can remove bytes from the start of to keep track of what you've processed.
+	 * You can remove bytes from the start of it to keep track of what you've processed.
 	 * Data is immutable, while Clip you can change.
 	 */
 	public Clip clip() {
 		return new Clip(this);
-	}
-
-	/** Remove n bytes from the start of the data this Data object views. */
-	@Deprecated public void remove(int n) { //TODO remove to make immutable
-		if (n == 0) return; // Nothing to remove
-		if (n > size()) throw new ChopException(); // Asked to remove more than we have
-		buffer.position(buffer.position() + n); // Move our ByteBuffer's position forward n bytes
-	}
-
-	/** Remove data from the start of this Data object, keeping only the last n bytes. */
-	@Deprecated public void keep(int n) { //TODO remove to make immutable
-		remove(size() - n); // Remove everything but n bytes
-	}
-	
-	/** Remove n bytes from the start of this Data object, and return a new Data object that views them. */
-	@Deprecated public Data cut(int n) { //TODO remove to make immutable
-		Data d = start(n); // Make a new Data d to return that clips out n bytes at the start
-		remove(n); // Remove n bytes from the start of this Data object
-		return d;
 	}
 
 	// Inside
@@ -289,8 +262,8 @@ public class Data implements Comparable<Data> {
 		int i = search(d, forward, true);
 		if (i == -1) { // Not found
 			split.found  = false;
-			split.before = copy();  // Make before a new Data that clips out everything we have
-			split.tag    = empty(); // Make tag and after to empty Data objects
+			split.before = this;
+			split.tag    = empty();
 			split.after  = empty();
 		} else {       // We found d at i, clip out the parts before and after it
 			split.found  = true;

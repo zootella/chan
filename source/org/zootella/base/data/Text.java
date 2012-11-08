@@ -299,33 +299,33 @@ public class Text {
 	// Parse
 
 	/**
-	 * Remove a group of lines of text from the start of d, and parse them into a List of String objects.
+	 * Remove a group of lines of text from the start of c, and parse them into a List of String objects.
 	 * Lines end "\n" or "\r\n", and a blank line marks the end of the group.
-	 * Removes the terminating blank line from d, but doesn't include it in the return List.
-	 * If d doesn't have a blank line, throws a ChopException without changing d.
+	 * Removes the terminating blank line from c, but doesn't include it in the return List.
+	 * If c doesn't have a blank line, throws a ChopException without changing c.
 	 */
-	public static List<String> group(Data d) {
-		Data data = d.copy(); // Make a copy to throw an exception with d unchanged
+	public static List<String> group(Clip c) {
+		Clip clip = c.copy(); // Make a copy to throw an exception with c unchanged
 		List<String> list = new ArrayList<String>();
 		while (true) {
-			String line = line(data); // Parse a line from data
+			String line = line(clip); // Parse a line from data
 			if (Text.isBlank(line)) break; // We got the blank line that ends the group, done
 			list.add(line); // We got a line, add it to the list we'll return
 		}
-		d.keep(data.size()); // That worked without an exception, remove the data we parsed from d
+		c.keep(clip.size()); // That worked without an exception, remove the data we parsed from c
 		return list;
 	}
 
 	/**
-	 * Remove one line of text from the start of d, and parse it into a String.
-	 * If d doesn't have a "\n", throws a ChopException and doesn't change d.
+	 * Remove one line of text from the start of c, and parse it into a String.
+	 * If c doesn't have a "\n", throws a ChopException and doesn't change c.
 	 * Works with lines that end with both "\r\n" and just "\n", removes both without trimming the String.
 	 */
-	public static String line(Data d) {
-		Split split = d.split((byte)'\n'); // The line ends "\r\n" or just "\n", split around "\n"
+	public static String line(Clip c) {
+		Split split = c.data().split((byte)'\n'); // The line ends "\r\n" or just "\n", split around "\n"
 		if (!split.found) throw new ChopException(); // A whole line hasn't arrived yet
 		if (split.before.ends((byte)'\r')) split.before = split.before.chop(1); // Remove the "\r"
-		d.keep(split.after.size()); // That all worked, remove the data of the line from d
+		c.keep(split.after.size()); // That all worked, remove the data of the line from c
 		return split.before.toString();
 	}
 	

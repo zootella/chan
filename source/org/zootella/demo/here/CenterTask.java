@@ -86,7 +86,7 @@ public class CenterTask extends Close {
 			try {
 				
 				// Look for the packet response
-				Outline o = new Outline(packet.bin.data()); // Parse the UDP payload into an Outline
+				Outline o = new Outline(packet.bin.data().clip()); // Parse the UDP payload into an Outline
 				if (o.name.equals("ap")) { // Address response
 					if (o.has("hash") && !o.value("hash").equals(o.value().hash())) // Hash check
 						throw new DataException("received corrupted ap");

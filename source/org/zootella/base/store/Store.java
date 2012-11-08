@@ -19,14 +19,14 @@ public class Store {
 	public Store() {
 
 		// Read point.txt in the present working directory to find where the store folder is
-		Outline p = Outline.fromText(File.data(Path.work(point)));
+		Outline p = Outline.fromText(File.data(Path.work(point)).clip());
 		folder = Path.work(p.value("point").toString()); // The value is a relative path
 		folder.folderWrite(); // Make it and make sure we can write to it
 
 		// Load the store Outline
 		o = new Outline(""); // Make a blank Outline object so o is never null
 		try {
-			o = Outline.fromText(File.data(folder.add(store))); // Open the store file and parse the text outline inside
+			o = Outline.fromText(File.data(folder.add(store)).clip()); // Open the store file and parse the text outline inside
 		}
 		catch (DataException e) { Mistake.log(e); } // That didn't work, o will be the blank empty Outline
 		catch (DiskException e) { Mistake.log(e); }

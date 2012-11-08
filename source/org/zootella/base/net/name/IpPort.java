@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.zootella.base.data.Bay;
+import org.zootella.base.data.Clip;
 import org.zootella.base.data.Data;
 import org.zootella.base.data.Number;
 import org.zootella.base.data.Text;
@@ -128,9 +129,9 @@ public class IpPort implements Comparable<IpPort> {
 	/** Parse data like "123405123405123405", with each IP address and port number in 6 bytes, into a List of IpPort objects. */
 	public static List<IpPort> list(Data d) {
 		if (d.size() % 6 != 0) throw new DataException("size");
-		Data data = d.copy(); // Make a copy to not change d
+		Clip clip = d.clip(); // Clip around the given data
 		List<IpPort> list = new ArrayList<IpPort>();
-		while (data.hasData()) list.add(new IpPort(data.cut(6))); // Cut 6 bytes from the start of data until it runs out
+		while (clip.hasData()) list.add(new IpPort(clip.cut(6))); // Cut 6 bytes from the start of clip until it runs out
 		return list;
 	}
 

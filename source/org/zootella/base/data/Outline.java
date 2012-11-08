@@ -145,13 +145,13 @@ public class Outline {
 	// Parse from text
 
 	/**
-	 * Parse the data of a text outline at the start of d into a new Outline object.
+	 * Parse the data of a text outline at the start of c into a new Outline object.
 	 * There must be a blank line marking the end of the text outline, throws a ChopException if it hasn't arrived yet.
 	 * Returns a new Outline object, and removes the data it parsed from d.
 	 * If the text outline is invalid, removes it from d and throws a DataException.
 	 */
-	public static Outline fromText(Data d) {
-		List<String> lines = Text.group(d); // Remove a group of lines that end with a blank line from the start of d
+	public static Outline fromText(Clip c) {
+		List<String> lines = Text.group(c); // Remove a group of lines that end with a blank line from the start of c
 		List<Outline> list = new ArrayList<Outline>();
 		for (String line : lines) list.add(parse(line)); // Parse each text line into an Outline object
 		if (list.isEmpty()) throw new DataException(); // Make sure we got at least one line
@@ -245,23 +245,23 @@ public class Outline {
 
 	// Parse from data
 	
-	/** Parse data at the start of d into this new Outline object, and remove it from d. */
-	public Outline(Data d) {
+	/** Parse data at the start of c into this new Outline object, and remove it from d. */
+	public Outline(Clip c) {
 		this.contents = new ArrayList<Outline>();
-		Data data = d.copy();                           // Copy d so if we throw an exception, it won't be changed
-		name = data.cut(numberParse(data)).toString();  // Parse the name size, and then the name
-		value = data.cut(numberParse(data)).copyData(); // Copy the value data into this new Outline object
-		Data c = data.cut(numberParse(data));           // Clip c around the data of the contents
-		while (c.hasData())                             // Loop until c runs out of data
-			contents.add(new Outline(c));               // Parse the Outline at the start of c, and add it to our list
-		d.keep(data.size());                            // Done without an exception, remove what we parsed from d
+		Clip clip = c.copy();                           // Copy d so if we throw an exception, it won't be changed
+		name = clip.cut(numberParse(clip)).toString();  // Parse the name size, and then the name
+		value = clip.cut(numberParse(clip)).copyData(); // Copy the value data into this new Outline object
+		Clip d = clip.cut(numberParse(clip)).clip();    // Clip c around the data of the contents
+		while (d.hasData())                             // Loop until c runs out of data
+			contents.add(new Outline(d));               // Parse the Outline at the start of c, and add it to our list
+		c.keep(clip.size());                            // Done without an exception, remove what we parsed from d
 	}
 	
 	/** Parse 1 or more bytes at the start of d into a number, remove them from d, and return the number. */
-	private static int numberParse(Data d) {
+	private static int numberParse(Clip c) {
 		int n = 0;
 		while (true) {
-			byte y = d.cut(1).first();  // Cut one byte from the start of d
+			byte y = c.cut(1).first();  // Cut one byte from the start of d
 			n = (n << 7) | (y & 0x7f);  // Move 7 bits into the bottom of n
 			if ((y & 0x80) == 0) break; // If the leading bit is 0, we're done
 		}

@@ -54,7 +54,7 @@ public class Connect extends Close {
 			// Download and check the peer's response
 			if (is(socket)) {
 				try {
-					Outline o = new Outline(socket.download().data());
+					Outline o = new Outline(socket.download().data().clip());
 					if (o.toData().hash().start(6).equals(hash))
 						close(Connect.this);
 					else

@@ -54,7 +54,7 @@ public class Center extends Close {
 			try {
 				
 				// Receive packets and send responses
-				Outline q = new Outline(packet.bin.data()); // Parse the UDP payload into an Outline
+				Outline q = new Outline(packet.bin.data().clip()); // Parse the UDP payload into an Outline
 				if (q.name.equals("aq")) { // Address request
 					
 					Data data = packet.move.ipPort.data();
@@ -62,7 +62,7 @@ public class Center extends Close {
 					p.add("hash", Hash.hash(data)); // Optional integrity check
 
 					Bin bin = packets.bin();
-					bin.add(p.toData());
+					bin.add(p.toData().clip());
 					packets.send(bin, packet.move.ipPort);
 					return true;
 				}

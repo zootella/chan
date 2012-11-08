@@ -149,7 +149,7 @@ public class OutlineTest {
 		
 		Data asText = new Data(l.toString());
 		int sizeAsText = asText.size();
-		Outline o = Outline.fromText(asText);
+		Outline o = Outline.fromText(asText.clip());
 		int sizeAsData = o.toData().size();
 		System.out.println(sizeAsText + " " + sizeAsData); // 165 to 104
 	}
@@ -162,16 +162,16 @@ public class OutlineTest {
 	}
 
 	public void test(String s) throws Exception {
-			
+
 		// text > outline > data > outline > text
-		Outline o = Outline.fromText(new Data(s)); // text to outline
+		Outline o = Outline.fromText(new Data(s).clip()); // text to outline
 		System.out.println(o.toString());
-		Data d = o.toData(); // outline to data
-		Data d1 = d.copy();
-		Outline o2 = new Outline(d); // data to outline
-		assertFalse(d.hasData()); // some data left over
+		Clip c = o.toData().clip(); // outline to data
+		Data d = c.data();
+		Outline o2 = new Outline(c); // data to outline
+		assertFalse(c.hasData()); // some data left over
 		String s2 = o2.toString(); // outline to text
 		Data d2 = o2.toData(); // outline to data
-		assertTrue(d1.equals(d2)); // corrupted
+		assertTrue(d.equals(d2)); // corrupted
 	}
 }

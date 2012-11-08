@@ -14,6 +14,11 @@ public class Clip {
 	public Data data() { return data; }
 	private Data data; // Not final because we remove bytes by switching to a new Data object
 	
+	/** Make a copy of this Clip object so you can change it without changing this one. */
+	public Clip copy() {
+		return new Clip(data);
+	}
+	
 	// Size
 
 	/** true if this Clip object is empty, it has a size of 0 bytes. */
