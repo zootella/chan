@@ -6,26 +6,26 @@ import java.util.Set;
 import org.zootella.base.state.Close;
 import org.zootella.base.time.Now;
 
-public class TwoBoots<T> extends Close {
+public class TwoBoots<Type> extends Close {
 	
 	// Make
 
 	/**
-	 * Make a new TwoBoots<T>() to hold objects of type T.
+	 * Make a new TwoBoots<Type>() to hold objects of type Type.
 	 * It will keep an object you add for at least delay milliseconds but not twice that long.
 	 * If the objects inside extend Close, we'll call close() on them before throwing them out.
 	 */
 	public TwoBoots(long delay) {
 		this.delay = delay;
 		age = new Now();
-		current = new HashSet<T>();
-		previous = new HashSet<T>();
+		current = new HashSet<Type>();
+		previous = new HashSet<Type>();
 	}
 	
-	private final long delay; // Every delay milliseconds, we cycle the boots
-	private Now age;          // When we last cycled the boots
-	private Set<T> current;   // The current boot we add objects to
-	private Set<T> previous;  // The previous boot we just keep around
+	private final long delay;   // Every delay milliseconds, we cycle the boots
+	private Now age;            // When we last cycled the boots
+	private Set<Type> current;  // The current boot we add objects to
+	private Set<Type> previous; // The previous boot we just keep around
 
 	@Override public void close() {
 		if (already()) return;
@@ -36,7 +36,7 @@ public class TwoBoots<T> extends Close {
 	// Keep
 
 	/** Add t to this TwoBoots, we'll keep it for awhile, then close and discard it. */
-	public void add(T t) {
+	public void add(Type t) {
 		confirmOpen();
 		cycle();
 		if (!current.contains(t) && !previous.contains(t))
@@ -44,7 +44,7 @@ public class TwoBoots<T> extends Close {
 	}
 
 	/** Remove t from this TwoBoots, does not close it. */
-	public void remove(T t) {
+	public void remove(Type t) {
 		confirmOpen();
 		cycle();
 		current.remove(t);
@@ -52,10 +52,10 @@ public class TwoBoots<T> extends Close {
 	}
 
 	/** All the objects currently in this TwoBoots. */
-	public Set<T> list() {
+	public Set<Type> list() {
 		confirmOpen();
 		cycle();
-		Set<T> set = new HashSet<T>();
+		Set<Type> set = new HashSet<Type>();
 		set.addAll(current);
 		set.addAll(previous);
 		return set;
@@ -69,13 +69,13 @@ public class TwoBoots<T> extends Close {
 			age = new Now();
 			closeContents(previous);
 			previous = current;
-			current = new HashSet<T>();
+			current = new HashSet<Type>();
 		}//TODO and if it's doubly expired, you need to toss out *both* boots, right?
 	}
 	
 	/** If we're holding objects that extend Close, call close() on all of them in set. */
-	private void closeContents(Set<T> set) {
-		for (T t : set)
+	private void closeContents(Set<Type> set) {
+		for (Type t : set)
 			if (t instanceof Close)
 				close((Close)t);
 	}
