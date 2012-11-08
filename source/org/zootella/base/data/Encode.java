@@ -33,6 +33,9 @@ public class Encode {
 	public static String quote(Data d) { StringBuffer b = new StringBuffer(); quote(b, d); return b.toString(); }
 	/** Turn quoted text back into the data it was made from. */
 	public static Data unquote(String s) { Bay bay = new Bay(); unquote(bay, s); return bay.data(); }
+
+	/** Turn data into text like "hello--", striking out non-text bytes with hyphens. */
+	public static String strike(Data d) { StringBuffer b = new StringBuffer(); strike(b, d); return b.toString(); }
 	
 	// Base 16, 32, and 62
 
@@ -278,5 +281,16 @@ public class Encode {
 	/** true if byte y is a text character " " through "~" but not the double quote character. */
 	private static boolean isText(byte y) {
 		return (y >= ' ' && y <= '~') && y != '\"'; // Otherwise we'll have to encode y as data
+	}
+	
+	// Strike
+	
+	/** Turn data into text like "hello--", striking out non-text bytes with hyphens. */
+	public static void strike(StringBuffer b, Data d) {
+		for (int i = 0; i < d.size(); i++) {
+			byte y = d.get(i);                           // Loop for each byte of data y in d
+			if (y >= ' ' && y <= '~') b.append((char)y); // If it's " " through "~", include it in the text
+			else                      b.append('-');     // Otherwise, show a "-" in its place
+		}
 	}
 }

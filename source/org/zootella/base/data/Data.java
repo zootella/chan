@@ -365,6 +365,8 @@ public class Data implements Comparable<Data> {
 	public String base62() { return Encode.toBase62(this); }
 	/** Encode this Data into text like --"hello"0d0a-- base 16 with text in quotes. */
 	public String quote() { return Encode.quote(this); }
+	/** Turn this Data into text like "hello--" striking out non-text bytes with hyphens. */
+	public String strike() { return Encode.strike(this); }
 
 	/** Compute the SHA1 hash of this Data, return the 20-byte, 160-bit hash value. */
 	public Data hash() { return Hash.hash(this); }
