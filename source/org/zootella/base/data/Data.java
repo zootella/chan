@@ -103,6 +103,15 @@ public class Data implements Comparable<Data> {
 	}
 
 	// Change
+	
+	/**
+	 * Make a new Clip object around this Data.
+	 * You can remove bytes from the start of to keep track of what you've processed.
+	 * Data is immutable, while Clip you can change.
+	 */
+	public Clip clip() {
+		return new Clip(this);
+	}
 
 	/** Remove n bytes from the start of the data this Data object views. */
 	@Deprecated public void remove(int n) { //TODO remove to make immutable

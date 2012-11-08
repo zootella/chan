@@ -1,11 +1,11 @@
 package org.zootella.base.data;
 
-/** Put a Clip on some data to remove bytes you're done with from the start. */
+/** Clip around some data to remove bytes you're done with from the start until it's empty. */
 public class Clip {
 	
 	// Object
 	
-	/** Make a new Clip object that clips out all of the given data. */
+	/** Clip this new object around all of the given Data. */
 	public Clip(Data d) {
 		data = d;
 	}
@@ -31,7 +31,7 @@ public class Clip {
 	// Change
 
 	/** Remove data from the start of this Clip object, keeping only the last n bytes. */
-	@Deprecated public void keep(int n) { //TODO ideally just use remove
+	public void keep(int n) { //TODO ideally just use remove
 		remove(size() - n); // Remove everything but size bytes
 	}
 
@@ -41,7 +41,7 @@ public class Clip {
 	}
 	
 	/** Remove n bytes from the start of this Clip object, and return a new Data object that views them. */
-	@Deprecated public Data cut(int n) { //TODO ideally just use remove
+	public Data cut(int n) { //TODO ideally just use remove
 		Data start = data.start(n);
 		remove(n);
 		return start;

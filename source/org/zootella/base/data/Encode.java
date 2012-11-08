@@ -219,15 +219,15 @@ public class Encode {
 			return;
 		}
 		
-		Data data = d.copy();    // Copy d to remove what we've encoded from data
-		while (data.hasData()) { // Loop until data is empty
-			if (isText(data.first())) {
+		Clip clip = d.clip();    // Clip around d to remove what we've encoded
+		while (clip.hasData()) { // Loop until clip is empty
+			if (isText(clip.data().first())) {
 				b.append('\"');
-				b.append(data.cut(count(data, true)).toString()); // Surround bytes that are text characters with quotes				
+				b.append(clip.cut(count(clip.data(), true)).toString()); // Surround bytes that are text characters with quotes				
 				b.append('\"');
 				
 			} else {
-				Encode.toBase16(b, data.cut(count(data, false))); // Encode other bytes into base 16 outside the quotes
+				Encode.toBase16(b, clip.cut(count(clip.data(), false))); // Encode other bytes into base 16 outside the quotes
 			}
 		}
 	}
