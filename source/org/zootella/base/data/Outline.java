@@ -178,7 +178,7 @@ public class Outline {
 			s = Text.after(s, indent); // Move beyond them, making s like "name:value"
 			
 			// Split s around ":" to get the name and value
-			TextSplit text = Text.split(s, ":");
+			Split<String> text = Text.split(s, ":");
 			if (!text.found) throw new DataException(); // Make sure there is a ":"
 			String name = text.before;
 			Data value = Encode.unquote(text.after); // Turn the quoted text back into the data it was made from

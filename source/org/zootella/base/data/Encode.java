@@ -236,9 +236,9 @@ public class Encode {
 	public static void unquote(Bay bay, String s) {
 		while (Text.is(s)) { // Loop until we're out of source text
 			
-			TextSplit q1 = Text.split(s, "\""); // Split on the first opening quote to look for bytes before text
+			Split<String> q1 = Text.split(s, "\""); // Split on the first opening quote to look for bytes before text
 
-			TextSplit c = Text.split(q1.before, "#");        // Look for a comment outside the quotes
+			Split<String> c = Text.split(q1.before, "#");        // Look for a comment outside the quotes
 			if (c.found) {                                   // Found a comment
 				bay.add(Encode.fromBase16(c.before.trim())); // Only bytes and spaces can be before the comment
 				return;                                      // Hitting a comment means we're done with the line
@@ -247,7 +247,7 @@ public class Encode {
 			bay.add(Encode.fromBase16(q1.before)); // Only bytes can be before the opening quote
 			if (!q1.found) return;                 // No opening quote, so we got it all
 			
-			TextSplit q2 = Text.split(q1.after, "\""); // Split on the closing quote
+			Split<String> q2 = Text.split(q1.after, "\""); // Split on the closing quote
 			if (!q2.found) throw new DataException();  // Must have closing quote
 			
 			bay.add(q2.before); // Copy the quoted text across

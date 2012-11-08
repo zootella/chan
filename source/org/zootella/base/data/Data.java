@@ -231,14 +231,14 @@ public class Data implements Comparable<Data> {
 	// Split
 
 	/** Split this Data around the given byte y, clipping out the parts before and after it. */
-	public Split split(byte y) { return split(new Data(y)); }
+	public Split<Data> split(byte y) { return split(new Data(y)); }
 	/** Split this Data around d, clipping out the parts before and after it. */
-	public Split split(Data d) { return split(d, true); }
+	public Split<Data> split(Data d) { return split(d, true); }
 
 	/** Split this Data around the place the given byte y last appears, clipping out the parts before and after it. */
-	public Split splitLast(byte y) { return splitLast(new Data(y)); }
+	public Split<Data> splitLast(byte y) { return splitLast(new Data(y)); }
 	/** Split this Data around the place d last appears, clipping out the parts before and after it. */
-	public Split splitLast(Data d) { return split(d, false); }
+	public Split<Data> splitLast(Data d) { return split(d, false); }
 	
 	/**
 	 * Split this Data around d, clipping out the parts before and after it.
@@ -249,25 +249,13 @@ public class Data implements Comparable<Data> {
 	 * @return        A Split object that tells if d was found, and clips out the parts of this Data before and after it.
 	 *                If d is not found, split.before will clip out all our data, and split.after will be empty.
 	 */
-	private Split split(Data d, boolean forward) {
-			
-		// Make a Split object to fill with answers and return
-		Split split = new Split();
-		
-		// Search this Data for d
-		int i = search(d, forward, true);
-		if (i == -1) { // Not found
-			split.found  = false;
-			split.before = this;
-			split.tag    = empty();
-			split.after  = empty();
-		} else {       // We found d at i, clip out the parts before and after it
-			split.found  = true;
-			split.before = start(i);
-			split.tag    = clip(i, d.size());
-			split.after  = after(i + d.size());
-		}
-		return split;
+	private Split<Data> split(Data d, boolean forward) {
+
+		int i = search(d, forward, true); // Search this Data for d
+		if (i == -1)
+			return new Split<Data>(false, this, empty(), empty()); // Not found
+		else
+			return new Split<Data>(true, start(i), clip(i, d.size()), after(i + d.size())); // We found d at i, clip out the parts before and after it
 	}
 	
 	// Compare

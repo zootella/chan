@@ -1,8 +1,8 @@
 package org.zootella.base.file;
 
 import org.zootella.base.data.Data;
+import org.zootella.base.data.Split;
 import org.zootella.base.data.Text;
-import org.zootella.base.data.TextSplit;
 
 /** A file name and extension, like "name.ext". */
 public class Name implements Comparable<Name> {
@@ -23,7 +23,7 @@ public class Name implements Comparable<Name> {
 	
 	/** Parse a String like "name.ext" into a Name object. */
 	public Name(String s) {
-		TextSplit split = Text.splitLast(s, "."); // Split around the last "." to separate the file name from the extension
+		Split<String> split = Text.splitLast(s, "."); // Split around the last "." to separate the file name from the extension
 		name = split.before.trim(); // Remove any space from their edges
 		extension = split.after.trim();
 	}

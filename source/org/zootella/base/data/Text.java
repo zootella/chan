@@ -136,36 +136,36 @@ public class Text {
 	
 	/** Clip the part of s that is before a tag, returns s if not found. */
 	public static String before(String s, String tag) {
-		TextSplit split = split(s, tag);
+		Split<String> split = split(s, tag);
 		return split.before;
 	}
 	
 	/** Clip the part of s that is after a tag, returns "" if not found. */
 	public static String after(String s, String tag) {
-		TextSplit split = split(s, tag);
+		Split<String> split = split(s, tag);
 		return split.after;
 	}
 
 	/** Clip the part of s that is before the last place a tag appears, returns s if not found. */
 	public static String beforeLast(String s, String tag) {
-		TextSplit split = splitLast(s, tag);
+		Split<String> split = splitLast(s, tag);
 		return split.before;
 	}
 	
 	/** Clip the part of s that is after the last place a tag appears, returns "" if not found. */
 	public static String afterLast(String s, String tag) {
-		TextSplit split = splitLast(s, tag);
+		Split<String> split = splitLast(s, tag);
 		return split.after;
 	}
 
 	/** Split s around tag to get what's before and after. */
-	public static TextSplit split(String s, String tag) { return split(s, tag, true, true); }
+	public static Split<String> split(String s, String tag) { return split(s, tag, true, true); }
 	/** Split s around tag to get what's before and after, matching cases. */
-	public static TextSplit splitCase(String s, String tag) { return split(s, tag, true, false); }
+	public static Split<String> splitCase(String s, String tag) { return split(s, tag, true, false); }
 	/** Split s around where a tag last appears to get what's before and after. */ 
-	public static TextSplit splitLast(String s, String tag) { return split(s, tag, false, true); }
+	public static Split<String> splitLast(String s, String tag) { return split(s, tag, false, true); }
 	/** Split s around where a tag last appears to get what's before and after, matching cases. */
-	public static TextSplit splitLastCase(String s, String tag) { return split(s, tag, false, false); }
+	public static Split<String> splitLastCase(String s, String tag) { return split(s, tag, false, false); }
 
 	/**
 	 * Split a String around a tag, finding the parts before and after it.
@@ -179,23 +179,13 @@ public class Text {
 	 * @return        A TextSplit object that tells if the tag was found, and clips out the strings before and after it.
 	 *                If the tag is not found, textSplit.before will be s, and textSplit.after will be blank.
 	 */
-	private static TextSplit split(String s, String tag, boolean forward, boolean match) {
-		
-		// Make a TextSplit object to fill with answers and return
-		TextSplit split = new TextSplit();
+	private static Split<String> split(String s, String tag, boolean forward, boolean match) {
 
-		// Search s for the tag
-		int i = search(s, tag, forward, true, match);
-		if (i == -1) { // Not found, make before s and after blank
-			split.found  = false;
-			split.before = s;
-			split.after  = "";
-		} else {       // We found the tag at i, clip out the text before and after it
-			split.found  = true;
-			split.before = start(s, i);
-			split.after  = after(s, i + tag.length());
-		}
-		return split;
+		int i = search(s, tag, forward, true, match); // Search s for the tag
+		if (i == -1)
+			return new Split<String>(false, s, "", ""); // Not found, make before s and after blank
+		else
+			return new Split<String>(true, start(s, i), tag, after(s, i + tag.length())); // We found the tag at i, clip out the text before and after it
 	}
 
 	/** Clip out size characters starting at i in the given String s, clip(s, 5, 3) is cccccCCCcc. */
@@ -227,10 +217,10 @@ public class Text {
 
 		// Loop until s is blank
 		while (is(s)) {
-			TextSplit split = Text.split(s, tag); // Split s around the first instance of the tag in it
-			String word = split.before.trim();    // Trim spaces from around the word we found before the tag, and save it
-			s = split.after;                      // Next time, we'll split the part that came after
-			if (is(word)) list.add(word);    // If the word isn't blank, add it to the List we're making
+			Split<String> split = Text.split(s, tag); // Split s around the first instance of the tag in it
+			String word = split.before.trim();        // Trim spaces from around the word we found before the tag, and save it
+			s = split.after;                          // Next time, we'll split the part that came after
+			if (is(word)) list.add(word);             // If the word isn't blank, add it to the List we're making
 		}
 		return list;
 	}
@@ -246,7 +236,7 @@ public class Text {
 		
 		// Loop until s is blank
 		while (is(s)) {
-			TextSplit split = split(s, tag);       // Split s around the first instance of the tag in it
+			Split<String> split = split(s, tag);   // Split s around the first instance of the tag in it
 			done.append(split.before);             // Move the part before from s to done
 			if (split.found) done.append(replace);
 			s = split.after;
@@ -322,11 +312,12 @@ public class Text {
 	 * Works with lines that end with both "\r\n" and just "\n", removes both without trimming the String.
 	 */
 	public static String line(Clip c) {
-		Split split = c.data().split((byte)'\n'); // The line ends "\r\n" or just "\n", split around "\n"
+		Split<Data> split = c.data().split((byte)'\n'); // The line ends "\r\n" or just "\n", split around "\n"
 		if (!split.found) throw new ChopException(); // A whole line hasn't arrived yet
-		if (split.before.ends((byte)'\r')) split.before = split.before.chop(1); // Remove the "\r"
+		Data before = split.before;
+		if (before.ends((byte)'\r')) before = before.chop(1); // Remove the "\r"
 		c.keep(split.after.size()); // That all worked, remove the data of the line from c
-		return split.before.toString();
+		return before.toString();
 	}
 	
 	// Character

@@ -8,8 +8,8 @@ import org.zootella.base.data.Bay;
 import org.zootella.base.data.Clip;
 import org.zootella.base.data.Data;
 import org.zootella.base.data.Number;
+import org.zootella.base.data.Split;
 import org.zootella.base.data.Text;
-import org.zootella.base.data.TextSplit;
 import org.zootella.base.exception.DataException;
 
 public class IpPort implements Comparable<IpPort> {
@@ -41,7 +41,7 @@ public class IpPort implements Comparable<IpPort> {
 
 	/** Make a new IpPort from a String like "1.2.3.4:5". */
 	public IpPort(String s) {
-		TextSplit split = Text.split(s, ":");
+		Split<String> split = Text.split(s, ":");
 		if (!split.found) throw new DataException();
 		ip = new Ip(split.before);
 		port = new Port(Number.toInt(split.after, 0, 65535)); // Make sure the port number is 0 through 65535

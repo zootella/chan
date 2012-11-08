@@ -1,26 +1,34 @@
 package org.zootella.base.data;
 
-/** The method Data.split() returns a DataSplit object to hold all the different parts of its answer. */
-public class Split {
+/** A Split object holds the results of looking for a tag in text or data. */
+public class Split<Type> {
+	
+	/** Package the result of a split search. */
+	public Split(boolean found, Type before, Type tag, Type after) {
+		this.found = found;
+		this.before = before;
+		this.tag = tag;
+		this.after = after;
+	}
 
-	/** true if Data.split() found the tag in the data. */
-	public boolean found;
+	/** true if we found the tag. */
+	public final boolean found;
 	
 	/**
-	 * The data that is before the tag.
-	 * If the tag was not found, before is all the data.
+	 * The text or data that is before the tag.
+	 * If the tag was not found, before is all the text or data.
 	 */
-	public Data before;
+	public final Type before;
 	
 	/**
-	 * The tag in the data.
-	 * If the tag was not found, tag is empty.
+	 * The tag in the text or data.
+	 * If the tag was not found, tag is blank or empty.
 	 */
-	public Data tag;
+	public final Type tag;
 
 	/**
 	 * The data that is after the tag.
-	 * If the tag was not found, after is empty.
+	 * If the tag was not found, after is blank or empty.
 	 */
-	public Data after;
+	public final Type after;
 }
