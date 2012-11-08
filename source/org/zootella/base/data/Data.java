@@ -27,7 +27,7 @@ public class Data implements Comparable<Data> {
 	 * Make a copy of this Data object.
 	 * Afterwards, you can remove some data from one, and the other will still view it.
 	 */
-	public Data copy() {
+	@Deprecated public Data copy() { //TODO won't need when data is immutable
 		return new Data(buffer); // Return a new Data object that has a copy of our ByteBuffer
 	}
 
@@ -105,19 +105,19 @@ public class Data implements Comparable<Data> {
 	// Change
 
 	/** Remove size bytes from the start of the data this Data object views. */
-	public void remove(int size) {
+	@Deprecated public void remove(int size) { //TODO remove to make immutable
 		if (size == 0) return; // Nothing to remove
 		if (size > size()) throw new ChopException(); // Asked to remove more than we have
 		buffer.position(buffer.position() + size); // Move our ByteBuffer's position forward size bytes
 	}
 
 	/** Remove data from the start of this Data object, keeping only the last size bytes. */
-	public void keep(int size) {
+	@Deprecated public void keep(int size) { //TODO remove to make immutable
 		remove(size() - size); // Remove everything but size bytes
 	}
 	
 	/** Remove size bytes from the start of this Data object, and return a new Data object that views them. */
-	public Data cut(int size) {
+	@Deprecated public Data cut(int size) { //TODO remove to make immutable
 		Data d = start(size); // Make a new Data d to return that clips out size bytes at the start
 		remove(size); // Remove size bytes from the start of this Data object
 		return d;

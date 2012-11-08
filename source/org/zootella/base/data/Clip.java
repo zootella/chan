@@ -10,7 +10,8 @@ public class Clip {
 		data = d;
 	}
 
-	/** The data we currently clip out. */
+	/** The data we have left. */
+	public Data data() { return data; }
 	private Data data; // Not final because we remove bytes by switching to a new Data object
 	
 	// Size
