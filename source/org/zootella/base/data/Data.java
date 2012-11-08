@@ -134,7 +134,7 @@ public class Data implements Comparable<Data> {
 	// Clip
 
 	/** Clip out up to size bytes from the start of this Data. */
-	public Data begin(int size) {
+	@Deprecated public Data begin(int size) { //TODO remove because weird and not exact
 		return start(Math.min(size, size())); // Don't try to clip out more data than we have
 	}
 
