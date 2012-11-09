@@ -84,11 +84,11 @@ public class Pulse {
 		while (again) {
 			again = false; // Don't loop again unless an object we pulse below calls soon() above
 			
+			countLoops++;
 			if (now.expired(Time.delay / 2)) { countHitLimit++; break; } // Quit early if we're over the time limit
 			
 			// Pulse up the list in a single pass
 			for (int i = list.size() - 1; i >= 0; i--) { // Loop backwards to pulse contained objects before the older objects that made them
-				countLoops++;
 				Close c = list.get(i);
 				if (Close.open(c)) { // Skip closed objects
 					countObjects++;
@@ -163,6 +163,15 @@ public class Pulse {
 		
 		StringBuffer s = new StringBuffer();
 		s.append("pulse efficiency:\r\n");
+
+		s.append(maximumSpeed + " maximum speed\r\n");
+		s.append(countPulses + " pulses\r\n");
+		s.append(countLoops + " loops\r\n");
+		s.append(countObjects + " objects pulsed\r\n");
+		s.append(countHitLimit + " pulses hit the time limit\r\n");
+		s.append(countTimeInside + " milliseconds inside pulse\r\n");
+		s.append(countTimeOutside + " milliseconds outside pulse\r\n");
+		
 		s.append("The average pulse looped up a list of [" + Describe.average(countLoops, countObjects) + "] objects [" + Describe.average(countPulses, countLoops) + "] times.\r\n");
 		s.append("The average pulse took [" + Describe.average(countPulses, countTimeInside) + "] milliseconds, and [" + Describe.percent(countHitLimit, countPulses) + "] hit the time limit.\r\n");
 		s.append("The program spent [" + Describe.percent(countTimeInside, countTimeInside + countTimeOutside) + "] of its time pulsing.\r\n");
