@@ -162,10 +162,11 @@ public class Pulse {
 	public String composeEfficiency() {
 		
 		StringBuffer s = new StringBuffer();
-		s.append("The average pulse looped up a list of [" + Describe.average(countLoops, countObjects) + "] objects [" + Describe.average(countPulses, countLoops) + "] times.");
-		s.append("The average pulse took [" + Describe.average(countPulses, countTimeInside) + "] milliseconds, and [" + Describe.percent(countHitLimit, countPulses) + "] hit the time limit.");
-		s.append("The program spent [" + Describe.percent(countTimeInside, countTimeInside + countTimeOutside) + "] of its time pulsing.");
-		s.append("The fastest the program pulsed was [" + Describe.commas(maximumSpeed) + "] pulses per second");
+		s.append("pulse efficiency:\r\n");
+		s.append("The average pulse looped up a list of [" + Describe.average(countLoops, countObjects) + "] objects [" + Describe.average(countPulses, countLoops) + "] times.\r\n");
+		s.append("The average pulse took [" + Describe.average(countPulses, countTimeInside) + "] milliseconds, and [" + Describe.percent(countHitLimit, countPulses) + "] hit the time limit.\r\n");
+		s.append("The program spent [" + Describe.percent(countTimeInside, countTimeInside + countTimeOutside) + "] of its time pulsing.\r\n");
+		s.append("The fastest the program pulsed was [" + Describe.commas(maximumSpeed) + "] pulses per second.\r\n");
 		return s.toString();
 	}
 	
