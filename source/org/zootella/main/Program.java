@@ -19,11 +19,13 @@ public class Program extends Close {
 		
 		ding = new Ding();
 		
+		/*
 		unit1 = new NullUnit();
 		unit2 = new NullUnit();
 		unit3 = new NullUnit();
 		unit4 = new NullUnit();
 		unit5 = new NullUnit();
+		*/
 	}
 	
 	public final Store store;
@@ -41,11 +43,13 @@ public class Program extends Close {
 		close(user);
 		close(core);
 		
+		/*
 		close(unit1);
 		close(unit2);
 		close(unit3);
 		close(unit4);
 		close(unit5);
+		*/
 		
 		store.save();
 		

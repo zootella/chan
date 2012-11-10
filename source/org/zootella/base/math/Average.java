@@ -20,16 +20,25 @@ public class Average {
 	}
 
 	public long average() {
-		//what if n is zero
+		if (n == 0) return 0;
 		return total / n;
 	}
-	public float average() {
+	public float averageFloat() {
+		if (n == 0) return 0;
 		return (float)total / (float)n;
 	}
 	public long averageThousandths() {
-		return 1000 * total / n;
+		return averageMultiply(1000);
+	}
+	public long averageMultiply(int multiply) {
+		if (n == 0) return 0;
+		return multiply * total / n;
 	}
 	public String averageText() {
+		if (n == 0) return "Undefined";
+		
+		//TODO
+		return "";
 		
 	}
 
