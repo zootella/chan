@@ -174,24 +174,25 @@ public class Describe {
 	
 	//more
 
-	/** Turn n in thousandths into text like "0.012" or "1,234.567" */
-	public static String thosandths(long n) {
-
+	
+	
+	/** Turn n in into text like "0.012" or "1,234.567" with 3 decimals, for instance. */
+	public static String decimal(long n, int decimals) {
+		
 		long negative = 1; // Detect negative
 		if (n < 0) {
 			negative *= -1;
 			n *= -1;
 		}
 		
-		String s = n + ""; // Make s like "0001" or "1234" or "1234567"
-		while (s.length() < 4) {
-			s = "0" + s; // Add leading 0s after the decimal
+		String s = n + ""; // Turn into text
+		
+		while (s.length() < decimals) { // Add leading 0s after the decimal
+			s = "0" + s;
 		}
 		
-		s = commas(s); // Make s like "0,001" or "1,234" or "1,234,567"
-		Split<String> split = Text.splitLast(s, ","); // Turn the last comma into a period
-		s = split.before + "." + split.after;
-
+		s = commas(Text.chop(s, decimals)) + "." + Text.end(s, decimals); // Assemble parts
+		if (Text.starts(s, ".")) s = "0" + s; // Add 0 before decimal
 		if (negative == -1) s = "-" + s; // Put the negative back
 		return s;
 	}

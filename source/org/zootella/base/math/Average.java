@@ -52,6 +52,6 @@ public class Average {
 	/** Text that describes the current average, like "5.000", "Undefined" before we have any values. */
 	public String averageText() {
 		if (n == 0) return "Undefined";
-		return Describe.thosandths(averageThousandths());
+		return Describe.decimal(averageThousandths(), 3);
 	}
 }
