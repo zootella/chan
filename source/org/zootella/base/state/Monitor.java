@@ -36,7 +36,8 @@ public class Monitor {
 	}
 
 	
-	
+
+	//TODO change some of these to your new Average object
 
 	/** The time when we last entered or left the pulse function. */
 	private Now now = new Now();
@@ -61,6 +62,10 @@ public class Monitor {
 
 	/** Compose text about how efficiently the program has been running. */
 	public String composeEfficiency() {
+
+		//TODO add
+		//longest pulse
+		//longest list
 		
 		StringBuffer s = new StringBuffer();
 		s.append("pulse efficiency:\r\n");
