@@ -54,6 +54,6 @@ public class Program extends Close {
 		store.save();
 		
 		Mistake.closeCheck();
-		log(Pulse.pulse.composeEfficiency());
+		log(Pulse.pulse.monitor.composeEfficiency());
 	}
 }

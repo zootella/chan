@@ -3,10 +3,6 @@ package org.zootella.base.state;
 import javax.swing.SwingUtilities;
 
 import org.zootella.base.process.Mistake;
-import org.zootella.base.time.Now;
-import org.zootella.base.time.Speed;
-import org.zootella.base.time.Time;
-import org.zootella.base.user.Describe;
 
 /** The program's single pulse object lists and pulses all the open objects in the program to move things forward. */
 public class Pulse {
@@ -25,9 +21,9 @@ public class Pulse {
 	
 	/** Pulse soon if we haven't pulsed in a while. */
 	public void ding() {
-		if (!start &&                // If the program isn't already pulsing or set to start, and
-			now.expired(Time.delay)) // It's been longer than the delay since the last pulse finished
-			soon();                  // Have the program pulse soon to notice things that have timed out
+		if (!start &&       // If the program isn't already pulsing or set to start, and
+			monitor.ding()) // It's been longer than the delay since the last pulse finished
+			soon();         // Have the program pulse soon to notice things that have timed out
 	}
 
 	/**
@@ -73,25 +69,18 @@ public class Pulse {
 	
 	/** Pulse all the open objects in the program until none request another pulse soon. */
 	private void pulseAll() {
-		
-		long currentSpeed = speed.add(1, Time.second); // 1 event, get speed in events per second
-		if (maximumSpeed < currentSpeed) maximumSpeed = currentSpeed; //TODO maybe skip middle if current speed is too high?
-		countPulses++;
-		countTimeOutside += now.age(); // Measure how long we were outside
-		now = new Now();
+		monitor.start();
 		
 		// Pulse up the list in many passes until no object requests another pulse soon
 		while (again) {
 			again = false; // Don't loop again unless an object we pulse below calls soon() above
-			
-			countLoops++;
-			if (now.expired(Time.delay / 2)) { countHitLimit++; break; } // Quit early if we're over the time limit
+			if (monitor.loop()) break; // Quit early this pulse goes over the time limit
 			
 			// Pulse up the list in a single pass
 			for (int i = list.size() - 1; i >= 0; i--) { // Loop backwards to pulse contained objects before the older objects that made them
 				Close c = list.get(i);
 				if (Close.open(c)) { // Skip closed objects
-					countObjects++;
+					monitor.object();
 					try {
 						c.pulse(); // Pulse the object so it notices things that have finished and moves to the next step
 					} catch (Throwable t) { Mistake.stop(t); } // Stop the program for an exception we didn't expect
@@ -110,10 +99,8 @@ public class Pulse {
 		}
 		
 		clear(); // Remove closed objects from the list all at once at the end
+		monitor.end(list.size());
 		start = false; // Allow the next call to soon to start a new pulse
-		
-		countTimeInside += now.age(); // Measure how long we were inside
-		now = new Now();
 	}
 	
 	// List
@@ -135,49 +122,7 @@ public class Pulse {
 	/** The program's list of all objects that extend Close, and aren't closed yet. */
 	private final CloseList list = new CloseList();
 	
-	// Monitor
 
-	/** The time when we last entered or left the pulse function. */
-	private Now now = new Now();
-	
-	/** The speed at which pulses are happening right now. */
-	private final Speed speed = new Speed(Time.second); // Keep the most recent 1 second of data
-	/** The maximum speed we recorded as the program ran. */
-	private long maximumSpeed;
-	
-	/** How many pulses have happened. */
-	private long countPulses;
-	/** How many loops have happened within all the pulses. */
-	private long countLoops;
-	/** How many objects we've pulsed within all the loops and pulses. */
-	private long countObjects;
-	/** How many pulses have gone over the time limit and quit early. */
-	private long countHitLimit;
-	/** How long the program has spent inside the pulse function, in milliseconds. */
-	private long countTimeInside;
-	/** How long the program has spent outside the pulse function, in milliseconds. */
-	private long countTimeOutside;
-
-	/** Compose text about how efficiently the program has been running. */
-	public String composeEfficiency() {
-		
-		StringBuffer s = new StringBuffer();
-		s.append("pulse efficiency:\r\n");
-
-		s.append(maximumSpeed + " maximum speed\r\n");
-		s.append(countPulses + " pulses\r\n");
-		s.append(countLoops + " loops\r\n");
-		s.append(countObjects + " objects pulsed\r\n");
-		s.append(countHitLimit + " pulses hit the time limit\r\n");
-		s.append(countTimeInside + " milliseconds inside pulse\r\n");
-		s.append(countTimeOutside + " milliseconds outside pulse\r\n");
-		
-		s.append("The average pulse looped up a list of [" + Describe.average(countLoops, countObjects) + "] objects [" + Describe.average(countPulses, countLoops) + "] times.\r\n");
-		s.append("The average pulse took [" + Describe.average(countPulses, countTimeInside) + "] milliseconds, and [" + Describe.percent(countHitLimit, countPulses) + "] hit the time limit.\r\n");
-		s.append("The program spent [" + Describe.percent(countTimeInside, countTimeInside + countTimeOutside) + "] of its time pulsing.\r\n");
-		s.append("The fastest the program pulsed was [" + Describe.commas(maximumSpeed) + "] pulses per second.\r\n");
-		return s.toString();
-	}
 	
 	/**
 	 * Call before the program exits to make sure we've closed every object.
@@ -200,4 +145,12 @@ public class Pulse {
 		}
 		return s.toString();
 	}
+	
+	
+	
+	//monitor
+	public final Monitor monitor = new Monitor();
+	
+	
+	
 }

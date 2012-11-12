@@ -3,7 +3,7 @@ package org.zootella.base.state;
 import org.zootella.base.time.Time;
 
 /** A Spin object detects when an Update is sending events so quickly it must be broken. */
-public class Spin {
+public class OldSpin {
 
 	/** Count another event this second, and throw an IllegalStateException if there are too many. */
 	public void count() {
