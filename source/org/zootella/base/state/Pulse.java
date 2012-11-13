@@ -80,7 +80,6 @@ public class Pulse {
 			for (int i = list.size() - 1; i >= 0; i--) { // Loop backwards to pulse contained objects before the older objects that made them
 				Close c = list.get(i);
 				if (Close.open(c)) { // Skip closed objects
-					monitor.object();
 					try {
 						c.pulse(); // Pulse the object so it notices things that have finished and moves to the next step
 					} catch (Throwable t) { Mistake.stop(t); } // Stop the program for an exception we didn't expect

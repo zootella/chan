@@ -4,7 +4,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.zootella.base.data.Number;
-import org.zootella.base.data.Split;
 import org.zootella.base.data.Text;
 import org.zootella.base.exception.ProgramException;
 import org.zootella.base.state.Result;
@@ -31,21 +30,6 @@ public class Describe {
 			s = Text.chop(s, 3);
 		}
 		return s + done;
-	}
-	
-	// Math
-	
-	/** Given a number of items and the total of all their values, describe the average like "25 average value of 3 items". */
-	public static String average(long numberOfItems, long totalValues) {
-		if (numberOfItems == 0) return "no average value of 0 items";
-		else return (totalValues / numberOfItems) + " average value of " + commas(numberOfItems) + " items";
-	}
-
-	/** Given a portion and the total that it's a part of, describe a percentage like "81% 912/1,123". */
-	public static String percent(long portion, long total) {
-		String s = commas(portion) + "/" + commas(total);
-		if (total != 0) s = (100 * portion / total) + "% " + s;
-		return s;
 	}
 	
 	// Size
