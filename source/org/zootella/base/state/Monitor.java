@@ -18,6 +18,9 @@ public class Monitor {
 	private Average loopsInPulse = new Average();
 	private Average timeInPulse = new Average();
 	
+	private Speed denseSpeed = new Speed(4 * Time.second);
+	private Average denseAverage = new Average();
+	
 	
 	
 	
@@ -51,7 +54,7 @@ public class Monitor {
 	
 	/** A pulse started. */
 	public void start() {
-		long currentSpeed = speed.add(1, Time.second); // 1 event, get speed in events per second
+		long currentSpeed = speed.add(1, Time.second * 1000); // 1 event, get speed in events per second
 		if (maximumSpeed < currentSpeed) maximumSpeed = currentSpeed;
 		countPulses++;
 		countTimeOutside += now.age(); // Measure how long we were outside
@@ -83,6 +86,7 @@ public class Monitor {
 		long inside = now.age();
 		countTimeInside += inside; // Measure how long we were inside
 		timeInPulse.add(inside);
+		denseAverage.add(denseSpeed.add(inside, Time.second));
 		
 		now = new Now();
 	}
@@ -106,12 +110,12 @@ public class Monitor {
 		s.append(countTimeInside + " milliseconds inside pulse\r\n");
 		s.append(countTimeOutside + " milliseconds outside pulse\r\n");
 		
-		String a = Describe.average(countLoops, countObjects);
-		String b = Describe.average(countPulses, countLoops);
-		String c = Describe.average(countPulses, countTimeInside);
-		String d = Describe.percent(countHitLimit, countPulses);
-		String e = Describe.percent(countTimeInside, countTimeInside + countTimeOutside);
-		String f = Describe.commas(maximumSpeed);
+		String a = Describe.average(countLoops, countObjects); //a, old
+		String b = Describe.average(countPulses, countLoops); //b, old
+		String c = Describe.average(countPulses, countTimeInside); //c, old
+		String d = Describe.percent(countHitLimit, countPulses); //d
+		String e = Describe.percent(countTimeInside, countTimeInside + countTimeOutside); //e
+		String f = Describe.commas(maximumSpeed); //f
 		
 		s.append("\r\n");
 		s.append("The average pulse looped up a list of [" + a + "] objects [" + b + "] times.\r\n");
@@ -121,21 +125,35 @@ public class Monitor {
 		
 		s.append("\r\n");
 		s.append("List size: " +
-				listSize.averageText() + " average, " +
-				Describe.commas(listSize.maximum()) + " longest.\r\n");
+				listSize.averageText() + " average, " + //a, new
+				Describe.commas(listSize.maximum()) + " longest.\r\n"); //new G
 		s.append("Loops in pulse: " +
-				loopsInPulse.averageText() + " average, " +
-				Describe.commas(loopsInPulse.maximum()) + " most.\r\n");
+				loopsInPulse.averageText() + " average, " + //b, new
+				Describe.commas(loopsInPulse.maximum()) + " most.\r\n"); //new H
 		s.append("Pulse frequency: " +
-				-1 + " pulse/s average, " +
-				-1 + " fastest.\r\n");
+				average(Time.second * countPulses, countTimeInside + countTimeOutside) + " pulse/second average, " + //new I
+				Describe.decimal(maximumSpeed, 3) + " fastest.\r\n"); //f
 		s.append("Pulse duration: " +
-				timeInPulse.averageText() + "ms average, " +
-				Describe.commas(timeInPulse.maximum()) + "ms longest, " +
-				percent(countHitLimit, countPulses) + " pulses hit time limit.\r\n");
+				timeInPulse.averageText() + "ms average, " + //c, new
+				Describe.commas(timeInPulse.maximum()) + "ms longest, " + //new J
+				percent(countHitLimit, countPulses) + " pulses hit time limit.\r\n"); //d
 		s.append("Time pulsing: " +
-				percent(countTimeInside, countTimeInside + countTimeOutside) + "ms total, " +
-				-1 + " greatest density.\r\n");
+				percent(countTimeInside, countTimeInside + countTimeOutside) + "ms total, " + //e
+				Describe.commas(denseAverage.maximum()) + " most dense.\r\n"); //new K
+		
+		
+		
+		
+		
+		s.append("\r\n");
+		s.append("most  | average\r\n");
+		s.append(Describe.commas(listSize.maximum())     + "    | " + listSize.averageText()                                                 + " objects/list\r\n");
+		s.append(Describe.commas(loopsInPulse.maximum()) + "    | " + loopsInPulse.averageText()                                             + " loops/pulse\r\n");
+		s.append(Describe.decimal(maximumSpeed, 3)       +    " | " + average(Time.second * countPulses, countTimeInside + countTimeOutside) + " pulses/second\r\n");
+		s.append(Describe.commas(timeInPulse.maximum())  + "    | " + timeInPulse.averageText()                                              + " ms/pulse\r\n");
+		s.append("\r\n");
+		s.append(percent(countHitLimit, countPulses) + " pulses hit time limit.\r\n");
+		s.append(percent(countTimeInside, countTimeInside + countTimeOutside) + " ms time spent pulsing\r\n");
 				
 		return s.toString();
 	}
@@ -143,9 +161,9 @@ public class Monitor {
 	
 	
 	/** Given a number of items and the total of all their values, describe the average like "25 average value of 3 items". */
-	public static String average(long numberOfItems, long totalValues) {
-		if (numberOfItems == 0) return "no average value of 0 items";
-		else return (totalValues / numberOfItems) + " average value of " + Describe.commas(numberOfItems) + " items";
+	public static String average(long totalValues, long numberOfItems) {
+		if (numberOfItems == 0) return "Undefined";
+		else return Describe.decimal(1000 * totalValues / numberOfItems, 3);
 	}
 
 	/** Given a portion and the total that it's a part of, describe a percentage like "81% 912/1,123". */
