@@ -1,9 +1,9 @@
 package org.zootella.main;
 
 import org.zootella.base.process.Mistake;
+import org.zootella.base.pulse.Ding;
+import org.zootella.base.pulse.Pulse;
 import org.zootella.base.state.Close;
-import org.zootella.base.state.Ding;
-import org.zootella.base.state.Pulse;
 import org.zootella.base.store.Store;
 import org.zootella.base.user.Face;
 
@@ -36,6 +36,6 @@ public class Program extends Close {
 		store.save();
 		
 		Mistake.closeCheck();
-		log(Pulse.pulse.monitor.describeEfficiency());
+		log(Pulse.pulse.monitor.userEfficiency());
 	}
 }

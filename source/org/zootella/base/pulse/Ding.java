@@ -1,4 +1,4 @@
-package org.zootella.base.state;
+package org.zootella.base.pulse;
 
 import java.awt.event.ActionEvent;
 
@@ -6,6 +6,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Timer;
 
 import org.zootella.base.process.Mistake;
+import org.zootella.base.state.Close;
 import org.zootella.base.time.Time;
 
 /** The program's single Ding object requests a pulse every 200 milliseconds just in case nothing is happening. */

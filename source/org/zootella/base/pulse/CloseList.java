@@ -1,9 +1,10 @@
-package org.zootella.base.state;
+package org.zootella.base.pulse;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.zootella.base.process.Mistake;
+import org.zootella.base.state.Close;
 
 /** The program's list of objects that extend Close. */
 public class CloseList {

@@ -3,6 +3,7 @@ package org.zootella.base.state;
 import org.zootella.base.exception.ProgramException;
 import org.zootella.base.process.Log;
 import org.zootella.base.process.Mistake;
+import org.zootella.base.pulse.Pulse;
 
 /** Have your object extend Close so the program will pulse it, and notice if you forget to later call its close() method. */
 public abstract class Close {

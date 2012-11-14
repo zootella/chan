@@ -8,7 +8,7 @@ import org.cybergarage.upnp.Service;
 import org.cybergarage.upnp.device.DeviceChangeListener;
 import org.zootella.base.data.Outline;
 import org.zootella.base.process.Mistake;
-import org.zootella.base.state.Pulse;
+import org.zootella.base.pulse.Pulse;
 
 public class Listen {
 	

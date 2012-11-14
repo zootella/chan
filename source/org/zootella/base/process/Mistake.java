@@ -6,7 +6,7 @@ import java.io.StringWriter;
 import javax.swing.JOptionPane;
 
 import org.zootella.base.data.Text;
-import org.zootella.base.state.Pulse;
+import org.zootella.base.pulse.Pulse;
 
 public class Mistake {
 

@@ -158,6 +158,9 @@ public class Describe {
 	
 	//more
 
+	public static long tens = 10;
+	public static long hundredths = 100;
+	public static long thousandths = 1000;
 	
 	
 	/** Turn n in into text like "0.012" or "1,234.567" with 3 decimals, for instance. */

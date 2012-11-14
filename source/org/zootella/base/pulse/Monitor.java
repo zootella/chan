@@ -1,4 +1,4 @@
-package org.zootella.base.state;
+package org.zootella.base.pulse;
 
 import org.zootella.base.math.Average;
 import org.zootella.base.time.Now;
@@ -48,7 +48,7 @@ public class Monitor {
 	/** A pulse started. */
 	public void start() {
 		countPulses++;
-		pulsesPerSecond.add(pulseSpeed.add(1, Time.second * 1000)); // 1 event, get speed in events per second, to the thousandths
+		pulsesPerSecond.add(pulseSpeed.add(1, Time.second * Describe.thousandths)); // 1 event, get speed in events per second, to the thousandths
 		timeOutside += now.age(); // Measure how long we were outside
 		now = new Now();
 		loop = 0;
@@ -72,9 +72,14 @@ public class Monitor {
 	}
 	
 	// Describe
+	
+	/** Compose text for the user about how fast the program is pulsing right now. */
+	public String userSpeed() {
+		return Describe.decimal(pulseSpeed.speed(Time.second * Describe.thousandths), 3) + " pulses/second right now";
+	}
 
-	/** Compose text about how efficiently the program has been running. */
-	public String describeEfficiency() {
+	/** Compose text for the user about how efficiently the program has been running. */
+	public String userEfficiency() {
 		StringBuffer s = new StringBuffer();
 		s.append("pulse efficiency:\r\n");
 		s.append("\r\n");

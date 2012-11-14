@@ -1,8 +1,9 @@
-package org.zootella.base.state;
+package org.zootella.base.pulse;
 
 import javax.swing.SwingUtilities;
 
 import org.zootella.base.process.Mistake;
+import org.zootella.base.state.Close;
 
 /** The program's single pulse object lists and pulses all the open objects in the program to move things forward. */
 public class Pulse {
