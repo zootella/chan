@@ -89,7 +89,7 @@ public class Monitor {
 		s.append(Describe.decimal(pulsesPerSecond.maximum(), 3) +    " | " + average(Time.second * countPulses, timeInside + timeOutside) + " pulses/second\r\n");
 		s.append(Describe.commas(timePerPulse.maximum())        + "    | " + timePerPulse.averageText()                                   + " ms/pulse\r\n");
 		s.append("\r\n");
-		s.append(percent(countHitLimit, countPulses) + " pulses hit time limit.\r\n");
+		s.append(percent(countHitLimit, countPulses) + " pulses hit time limit\r\n");
 		s.append(percent(timeInside, timeInside + timeOutside) + " ms time spent pulsing\r\n");
 		return s.toString();
 	}
