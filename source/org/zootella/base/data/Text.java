@@ -338,4 +338,55 @@ public class Text {
 	public static String quote(String s) {
 		return replace(s, "|", "\"");
 	}
+	
+	
+	
+	
+
+	/** Add all the given strings together. */
+	public static String add(String... strings) {
+		StringBuffer b = new StringBuffer();
+		for (String s : strings)
+			b.append(s);
+		return b.toString();
+	}
+
+	/** Add all the given strings together, and put a "\r\n" on the end. */
+	public static String line(String... strings) {
+		StringBuffer b = new StringBuffer();
+		for (String s : strings)
+			b.append(s);
+		b.append("\r\n"); // End the line
+		return b.toString();
+	}
+	
+	/** Format the given list of strings into a fixed width text table with the given number of columns. */
+	public static String table(int columns, String... cells) {
+		
+		int[] widths = new int[columns]; // Loop to determine how wide each column needs to be
+		for (int i = 0; i < cells.length; i++) {
+			if (widths[i % columns] < cells[i].length())
+				widths[i % columns] = cells[i].length();
+		}
+		
+		StringBuffer b = new StringBuffer();
+		for (int i = 0; i < cells.length; i++) {
+			
+			String s = cells[i];
+			while (s.length() < widths[i % columns]) // Make this cell wide enough for the column it's in
+				s += " ";
+			
+			if (i % columns == columns - 1) // Last cell in the row
+				b.append(s + "\r\n");
+			else // Not the last cell
+				b.append(s + "  ");
+		}
+		return b.toString();
+	}
+
+
+
+
+
+
 }

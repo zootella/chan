@@ -1,5 +1,6 @@
 package org.zootella.base.pulse;
 
+import org.zootella.base.data.Text;
 import org.zootella.base.math.Average;
 import org.zootella.base.time.Now;
 import org.zootella.base.time.Speed;
@@ -83,11 +84,12 @@ public class Monitor {
 		StringBuffer s = new StringBuffer();
 		s.append("pulse efficiency:\r\n");
 		s.append("\r\n");
-		s.append("most  | average\r\n");
-		s.append(Describe.commas(objectsPerList.maximum())      + "    | " + objectsPerList.averageText()                                 + " objects/list\r\n");
-		s.append(Describe.commas(loopsPerPulse.maximum())       + "    | " + loopsPerPulse.averageText()                                  + " loops/pulse\r\n");
-		s.append(Describe.decimal(pulsesPerSecond.maximum(), 3) +    " | " + average(Time.second * countPulses, timeInside + timeOutside) + " pulses/second\r\n");
-		s.append(Describe.commas(timePerPulse.maximum())        + "    | " + timePerPulse.averageText()                                   + " ms/pulse\r\n");
+		s.append(Text.table(3,
+			"most",                                         "average",                                                    "",
+			Describe.commas(objectsPerList.maximum()),      objectsPerList.averageText(),                                 "objects/list",
+			Describe.commas(loopsPerPulse.maximum()),       loopsPerPulse.averageText(),                                  "loops/pulse",
+			Describe.decimal(pulsesPerSecond.maximum(), 3), average(Time.second * countPulses, timeInside + timeOutside), "pulses/second",
+			Describe.commas(timePerPulse.maximum()),        timePerPulse.averageText(),                                   "ms/pulse"));
 		s.append("\r\n");
 		s.append(percent(countHitLimit, countPulses) + " pulses hit time limit\r\n");
 		s.append(percent(timeInside, timeInside + timeOutside) + " ms time spent pulsing\r\n");
