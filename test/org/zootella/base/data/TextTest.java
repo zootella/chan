@@ -1,9 +1,7 @@
 package org.zootella.base.data;
 
-import org.junit.Test;
 import org.junit.Assert;
-
-import org.zootella.base.data.Text;
+import org.junit.Test;
 import org.zootella.base.state.Close;
 
 public class TextTest {
@@ -40,7 +38,13 @@ public class TextTest {
 	
 	@Test public void table() {
 		
-		Assert.assertEquals("A   B \r\nCC  DD\r\n", Text.table(2, "A", "B", "CC", "DD"));
-		Assert.assertEquals("AA  B \r\nC   DD\r\n", Text.table(2, "AA", "B", "C", "DD"));
+		Assert.assertEquals("A   B\r\nCC  DD\r\n", Text.table(2, "A", "B", "CC", "DD"));
+		Assert.assertEquals("AA  B\r\nC   DD\r\n", Text.table(2, "AA", "B", "C", "DD"));
+		
+		/*
+		Close.log("\r\n" + Text.table(3,
+			"apple apricot", "", "c",
+			"dictionary", "eggs earth eager", "f"));
+			*/
 	}
 }

@@ -369,17 +369,17 @@ public class Text {
 				widths[i % columns] = cells[i].length();
 		}
 		
-		StringBuffer b = new StringBuffer();
+		StringBuffer b = new StringBuffer(); // Loop for each cell to assemble the table
 		for (int i = 0; i < cells.length; i++) {
-			
 			String s = cells[i];
-			while (s.length() < widths[i % columns]) // Make this cell wide enough for the column it's in
-				s += " ";
-			
-			if (i % columns == columns - 1) // Last cell in the row
-				b.append(s + "\r\n");
-			else // Not the last cell
+
+			if (i % columns != columns - 1) {            // Before the last column
+				while (s.length() < widths[i % columns]) // Make this cell wide enough for the column it's in
+					s += " ";
 				b.append(s + "  ");
+			} else {                                     // Last column
+				b.append(s + "\r\n");
+			}
 		}
 		return b.toString();
 	}
