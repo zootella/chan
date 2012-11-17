@@ -40,6 +40,14 @@ public class Face {
 	}
 	private static Font program;
 	
+	/** A cross-platform Font that should look good and the same everywhere. */
+	public static Font fixed() {
+		if (fixed == null)
+			fixed = new Font("Courier New", Font.PLAIN, 11);
+		return fixed;
+	}
+	private static Font fixed;
+	
 	// Image
 
 	public static Image image(String path) {

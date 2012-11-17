@@ -12,6 +12,7 @@ import org.zootella.base.process.Mistake;
 import org.zootella.base.user.skin.PlainButton;
 import org.zootella.base.user.widget.Grip;
 import org.zootella.demo.hash.HashDemo;
+import org.zootella.demo.pulse.MonitorDemo;
 
 public class WindowPanel {
 	
@@ -40,6 +41,7 @@ public class WindowPanel {
 		menu = new JPopupMenu();
 		menu.add(new JMenuItem(snippetAction));
 		menu.addSeparator();
+		menu.add(new JMenuItem(monitorAction));
 		menu.add(new JMenuItem(browserAction));
 		menu.add(new JMenuItem(connectAction));
 		menu.add(new JMenuItem(hashAction));
@@ -118,6 +120,16 @@ public class WindowPanel {
 	}
 	
 	// Demo
+
+	private final MonitorAction monitorAction = new MonitorAction();
+	private class MonitorAction extends AbstractAction {
+		public MonitorAction() { super("Monitor"); }
+		public void actionPerformed(ActionEvent a) {
+			try {
+				new MonitorDemo();
+			} catch (Throwable t) { Mistake.stop(t); }
+		}
+	}
 
 	private final BrowserAction browserAction;
 	private class BrowserAction extends AbstractAction {

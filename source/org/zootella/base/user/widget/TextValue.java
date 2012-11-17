@@ -1,5 +1,7 @@
 package org.zootella.base.user.widget;
 
+import java.awt.Font;
+
 import javax.swing.JTextArea;
 
 import org.zootella.base.user.Face;
@@ -8,16 +10,24 @@ import org.zootella.base.user.Face;
 public class TextValue {
 	
 	public TextValue() {
-		this("");
+		this(Face.font(), "");
+	}
+	
+	public TextValue(String s) {
+		this(Face.font(), s);
+	}
+	
+	public TextValue(Font font) {
+		this(font, "");
 	}
 
-	public TextValue(String s) {
+	public TextValue(Font font, String s) {
 		area = new JTextArea(s);
 		area.setLineWrap(true);
 		area.setOpaque(false);
 		area.setBorder(null);
 		area.setEditable(false);
-		area.setFont(Face.font());
+		area.setFont(font);
 		new TextMenu(area);
 	}
 	
