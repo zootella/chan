@@ -2,7 +2,6 @@ package org.zootella.base.data;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.zootella.base.state.Close;
 
 public class TextTest {
 	
