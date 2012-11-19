@@ -20,6 +20,10 @@ public class Average {
 	/** The largest value we have seen, 0 before we have any values. */
 	public long maximum() { return maximum; }
 	private long maximum;
+
+	/** The most recent value that you added, 0 before we have any values. */
+	public long recent() { return recent; }
+	private long recent;
 	
 	/** Record a new value to make it a part of this average. */
 	public void add(long value) {
@@ -27,6 +31,7 @@ public class Average {
 		total += value; // Add the value to our total
 		if (n == 1 || value < minimum) minimum = value; // First or smallest value
 		if (n == 1 || value > maximum) maximum = value; // First or largest value
+		recent = value; // Remember the most recent value
 	}
 
 	/** The current average, rounded down to a whole number, 0 before we have any values. */
@@ -50,7 +55,7 @@ public class Average {
 	}
 
 	/** Text that describes the current average, like "5.000", "Undefined" before we have any values. */
-	public String averageText() {
+	@Override public String toString() {
 		if (n == 0) return "Undefined";
 		return Describe.decimal(averageThousandths(), 3);
 	}

@@ -49,7 +49,7 @@ public class MonitorDemo extends Close {
 	
 	@Override public void pulseUser() {
 		
-		value.area.setText(Pulse.pulse.monitor.userEfficiency() + Pulse.pulse.monitor.userSpeed() + "\r\n");
+		value.area.setText(Pulse.pulse.monitor.userEfficiency() + "\r\n");
 	}
 
 	
