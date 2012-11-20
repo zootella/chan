@@ -157,10 +157,28 @@ public class Describe {
 	}
 	
 	//more
+	
+	
+	/** Describe a/b like "1.234". */
+	public static String divide(long a, long b) {
+		if (b == 0) return "undefined";
+		else return Describe.decimal(Describe.thousandths * a / b, 3);
+	}
+
+	/** Describe a/b like "81.211% 912/1,123". */
+	public static String percent(long a, long b) {
+		String s = Describe.commas(a) + "/" + Describe.commas(b);
+		if (b != 0) s = Describe.decimal(Describe.thousandths * Describe.percent * a / b, 3) + "% " + s;
+		return s;
+	}
+	
+	
 
 	public static long tens = 10;
 	public static long hundredths = 100;
 	public static long thousandths = 1000;
+	
+	public static long percent = 100;
 	
 	
 	/** Turn n in into text like "0.012" or "1,234.567" with 3 decimals, for instance. */

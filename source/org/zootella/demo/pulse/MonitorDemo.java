@@ -28,7 +28,7 @@ public class MonitorDemo extends Close {
 		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource(Guide.icon)));
 		frame.setTitle("Monitor");
-		frame.setBounds(Screen.positionSize(new Dimension(450, 250)));
+		frame.setBounds(Screen.positionSize(new Dimension(450, 200)));
 		frame.setContentPane(panel.panel);
 		
 		frame.setVisible(true);
@@ -49,7 +49,7 @@ public class MonitorDemo extends Close {
 	
 	@Override public void pulseUser() {
 		
-		value.area.setText(Pulse.pulse.monitor.userEfficiency() + "\r\n");
+		value.area.setText(Pulse.pulse.monitor.describeEfficiency() + "\r\n");
 	}
 
 	

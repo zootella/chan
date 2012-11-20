@@ -2,6 +2,7 @@ package org.zootella.base.pulse;
 
 import org.zootella.base.data.Text;
 import org.zootella.base.math.Average;
+import org.zootella.base.math.Maximum;
 import org.zootella.base.time.Now;
 import org.zootella.base.time.Speed;
 import org.zootella.base.time.Time;
@@ -20,14 +21,14 @@ public class Monitor {
 	/** The number objects in the list. */
 	private Average objectsPerList = new Average();
 	/** The number of loops in a pulse. */
-	private Speed loopsPerPulse = new Speed(Time.second);
+	private Average loopsPerPulse = new Average();
 	/** How long pulses last in milliseconds. */
 	private Average timePerPulse = new Average();
 	
 	/** The speed at which pulses are happening right now. */
 	private Speed pulseSpeed = new Speed(Time.second); // Keep the most recent 1 second of data
-	/** The speeds we measure as the program runs, including the highest speed. */
-	private Average pulsesPerSecond = new Average();
+	/** The the highest speed we measured. */
+	private Maximum pulsesPerSecond = new Maximum();
 
 	/** The time when we last entered or left the pulse function. */
 	private Now now = new Now();
@@ -65,7 +66,7 @@ public class Monitor {
 	/** The pulse ended, the list has n Close objects in it. */
 	public void end(int size) {
 		objectsPerList.add(size);
-		loopsPerPulse.distance(loop);
+		loopsPerPulse.add(loop);
 		long inside = now.age(); // Measure how long we were inside
 		now = new Now();
 		timeInside += inside;
@@ -75,32 +76,39 @@ public class Monitor {
 	// Describe
 
 	/** Compose text for the user about how efficiently the program is running. */
-	public String userEfficiency() {
+	public String describeEfficiency() {
+		
+		String mostObjectsPerList = Describe.commas(objectsPerList.maximum());
+		String averageObjectsPerList = objectsPerList.toString();
+		String nowObjectsPerList = Describe.commas(objectsPerList.recent());
+
+		String mostLoopsPerPulse = Describe.commas(loopsPerPulse.maximum());
+		String averageLoopsPerPulse = loopsPerPulse.toString();
+		String nowLoopsPerPulse = Describe.commas(loopsPerPulse.recent()); //TODO does not work, you need an average of recent values, not a total in time
+		
+		String mostPulsesPerSecond = Describe.decimal(pulsesPerSecond.maximum(), 3);
+		String averagePulsesPerSecond = Describe.divide(Time.second * countPulses, timeInside + timeOutside);
+		String nowPulsesPerSecond = Describe.decimal(pulseSpeed.speed(Time.second * Describe.thousandths), 3);
+
+		String mostTimePerPulse = Describe.commas(timePerPulse.maximum());
+		String averageTimePerPulse = timePerPulse.toString();
+		String nowTimePerPulse = Describe.commas(timePerPulse.recent());
+		
+		String pulsesHitTimeLimit = Describe.percent(countHitLimit, countPulses);
+		String timeSpentPulsing = Describe.percent(timeInside, timeInside + timeOutside);
+		
 		StringBuffer s = new StringBuffer();
 		s.append("pulse efficiency:\r\n");
 		s.append("\r\n");
 		s.append(Text.table(4,
-			"most",                                           "average",                                                    "now", "",
-			Describe.commas(objectsPerList.maximum()),        objectsPerList.toString(),                                    Describe.commas(objectsPerList.recent()), "objects/list",
-			Describe.commas(loopsPerPulse.average.maximum()), loopsPerPulse.average.toString(),                             loopsPerPulse.user(Time.second), "loops/pulse", //TODO does not work, you need a new average which averages not over time, but just the distances within recent time
-			Describe.decimal(pulsesPerSecond.maximum(), 3),   average(Time.second * countPulses, timeInside + timeOutside), Describe.decimal(pulseSpeed.speed(Time.second * Describe.thousandths), 3), "pulses/second",
-			Describe.commas(timePerPulse.maximum()),          timePerPulse.toString(),                                      "", "ms/pulse"));
+			"most",              "average",              "now",              "",
+			mostObjectsPerList,  averageObjectsPerList,  nowObjectsPerList,  "objects/list",
+			mostLoopsPerPulse,   averageLoopsPerPulse,   nowLoopsPerPulse,   "loops/pulse",
+			mostPulsesPerSecond, averagePulsesPerSecond, nowPulsesPerSecond, "pulses/second",
+			mostTimePerPulse,    averageTimePerPulse,    nowTimePerPulse,    "ms/pulse"));
 		s.append("\r\n");
-		s.append(percent(countHitLimit, countPulses) + " pulses hit time limit\r\n");
-		s.append(percent(timeInside, timeInside + timeOutside) + " ms time spent pulsing\r\n");
+		s.append(pulsesHitTimeLimit + " pulses hit time limit\r\n");
+		s.append(timeSpentPulsing   + " ms time spent pulsing\r\n");
 		return s.toString();
-	}
-	
-	/** Describe a/b like "1.234". */
-	private static String average(long a, long b) {
-		if (b == 0) return "undefined";
-		else return Describe.decimal(1000 * a / b, 3);
-	}
-
-	/** Describe a/b like "81% 912/1,123". */
-	private static String percent(long a, long b) {
-		String s = Describe.commas(a) + "/" + Describe.commas(b);
-		if (b != 0) s = Describe.decimal(100000 * a / b, 3) + "% " + s;
-		return s;
 	}
 }

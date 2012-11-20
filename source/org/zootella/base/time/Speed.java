@@ -1,8 +1,5 @@
 package org.zootella.base.time;
 
-import org.zootella.base.math.Average;
-import org.zootella.base.user.Describe;
-
 /** Make a Speed object, tell it distances traveled or counts when they happen, and get the current speed. */
 public class Speed {
 	
@@ -13,7 +10,6 @@ public class Speed {
 	public Speed(long window) {
 		created = new Now();    // Record that column 0 started now
 		width = window * 2 / 3; // Calculate the column width
-		average = new Average();
 	}
 
 	/** When this Speed object was created, and the start of column 0. */
@@ -38,8 +34,6 @@ public class Speed {
 	/** Given a distance to add, or 0 to add nothing, calculate our speed right now in the given unit of time and decimal places, like Time.second * Describe.thousandths. */
 	public long add(long distance, long multiply) {
 		
-		average.add(distance);                // Also give the distance to our Average object
-		
 		long age = Time.now() - created.time; // Age of this Speed object
 		long columnNow = age / width;         // The column index, 0 or more, the current time places us in now
 		long time = age % width;              // How long we've been in the current column
@@ -63,15 +57,4 @@ public class Speed {
 	
 	/** Don't report a speed at the very start because we don't have enough data yet. */
 	public static long required = Time.second / 10;
-	
-	
-	
-	public String user(long multiply) {
-		return Describe.decimal(speed(multiply * Describe.thousandths), 3);
-	}
-	
-	
-	
-	/** The average of all the distances added to this Speed object. */
-	public final Average average;
 }
