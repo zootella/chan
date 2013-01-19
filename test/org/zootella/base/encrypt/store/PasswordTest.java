@@ -1,8 +1,9 @@
-package org.zootella.base.encrypt.password;
+package org.zootella.base.encrypt.store;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.zootella.base.data.Data;
+import org.zootella.base.encrypt.store.Password;
 
 public class PasswordTest {
 	
@@ -13,8 +14,8 @@ public class PasswordTest {
 		
 		Data data = new Data(message);
 		
-		Data encrypted = Password.encrypt(data, password);
-		Data decrypted = Password.decrypt(encrypted, password);
+		Data encrypted = Password.scramble(data, password);
+		Data decrypted = Password.unscramble(encrypted, password);
 		
 		Assert.assertEquals(data, decrypted);
 	}
