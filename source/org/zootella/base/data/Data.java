@@ -287,7 +287,7 @@ public class Data implements Comparable<Data> {
 	public String strike() { return Encode.strike(this); }
 
 	/** Compute the SHA1 hash of this Data, return the 20-byte, 160-bit hash value. */
-	public Data hash() { return Hash.hash(this); }
+	public Value hash() { return Hash.hash(this); }
 	
 	// Supply
 	
@@ -296,8 +296,6 @@ public class Data implements Comparable<Data> {
 		return new Data(ByteBuffer.allocate(0)); // Make a new Data object from a 0-byte ByteBuffer
 	}
 
-	/** A new globally unique 20 bytes of random data. */
-	public static Data unique() { return random(Hash.size); }
 	/** Make n bytes of random data. */
 	public static Data random(int n) {
 		if (random == null) random = new Random(); // Make our random number generator if we don't have it yet

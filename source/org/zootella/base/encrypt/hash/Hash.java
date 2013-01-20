@@ -5,6 +5,7 @@ import java.security.NoSuchAlgorithmException;
 
 
 import org.zootella.base.data.Data;
+import org.zootella.base.data.Value;
 import org.zootella.base.exception.PlatformException;
 
 /** Compute the SHA1 hash of some data. */
@@ -28,21 +29,16 @@ public class Hash {
 	}
 
 	/** Get the 20 byte, 160 bit SHA1 hash value. */
-	public Data done() {
-		return new Data(digest.digest()); // Wrap a new Data object around the byte array
+	public Value done() {
+		return new Value(new Data(digest.digest())); // Wrap a new Data object around the byte array
 	}
 
 	// All
 
 	/** Compute the SHA1 hash of data. */
-	public static Data hash(Data data) {
+	public static Value hash(Data data) {
 		Hash hash = new Hash(); // Use a Hash object
 		hash.add(data);
 		return hash.done();
 	}
-
-	// Define
-	
-	/** A SHA1 hash value is 20 bytes, which is 160 bits. */
-	public static final int size = 20;
 }

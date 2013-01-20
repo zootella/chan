@@ -89,7 +89,7 @@ public class PipeConnect extends Close {
 			try {
 				
 				// See if the peer has connected to us
-				if ((new Outline(s.download().data().clip())).toData().hash().start(6).same(hash)) {
+				if ((new Outline(s.download().data().clip())).toData().hash().data.start(6).same(hash)) {
 					socket = s;
 					socket.upload().add(hello);
 					close(PipeConnect.this);

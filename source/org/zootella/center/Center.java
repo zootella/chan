@@ -59,7 +59,7 @@ public class Center extends Close {
 					
 					Data data = packet.move.ipPort.data();
 					Outline p = new Outline("ap", data); // Address response
-					p.add("hash", Hash.hash(data)); // Optional integrity check
+					p.add("hash", Hash.hash(data).data); // Optional integrity check
 
 					Bin bin = packets.bin();
 					bin.add(p.toData().clip());

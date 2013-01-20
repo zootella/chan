@@ -34,7 +34,7 @@ public class Password {
 			tray.clear();
 			tray.add(hash);
 			tray.add(password);
-			hash = tray.data().hash(); // Hash the last hash and the password
+			hash = tray.data().hash().data; // Hash the last hash and the password
 			
 			if (use) result.add(hash); // Add it to the result
 			use = true; // Don't start with the hash of the password
