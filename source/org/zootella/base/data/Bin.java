@@ -54,7 +54,11 @@ public class Bin {
 	
 	// Recycle
 	
-	/** Recycle this bin so the program can use it again instead of allocating a new one. */
+	/**
+	 * Recycle this bin so the program can use it again instead of allocating a new one.
+	 * Only recycle a bin for something that has finished successfully and as expected.
+	 * If there was an error or timeout, Java may still use the ByteBuffer in the bin.
+	 */
 	public void recycle() {
 		if (capacity() == medium)
 			recycleMedium.add(this);
