@@ -302,6 +302,7 @@ public class Data implements Comparable<Data> {
 
 	/** Make n bytes of random data. */
 	public static Data random(int n) {
+		if (n == 0) return Data.empty();           // Zero bytes requested
 		if (random == null) random = new Random(); // Make our random number generator if we don't have it yet
 		byte[] a = new byte[n];                    // Make an empty byte array n bytes long
 		random.nextBytes(a);                       // Fill it with random data

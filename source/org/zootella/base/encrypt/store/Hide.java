@@ -1,6 +1,7 @@
 package org.zootella.base.encrypt.store;
 
 import org.zootella.base.data.Bay;
+import org.zootella.base.data.Convert;
 import org.zootella.base.data.Data;
 import org.zootella.base.data.Value;
 import org.zootella.base.exception.DataException;
@@ -21,7 +22,7 @@ public class Hide {
 		if (base.size() != baseSize) throw new DataException();
 
 		// Use the first byte of plain to determine what part of base to clip out
-		int index = (int)plain.data.get(0) + -1*(int)Byte.MIN_VALUE; // The byte can be -128 through 127, so add 128 to make index 0 through 255
+		int index = Convert.byteToUnsigned(plain.data.first());
 
 		// Compose data to hash
 		Bay bay = new Bay();

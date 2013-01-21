@@ -75,4 +75,11 @@ public class Convert {
 	
 	/** ASCII with Unicode characters mixed in. */
 	public static final String encoding = "UTF-8";
+	
+	// Byte
+	
+	/** Given a byte -128 through 127, add 128 to return an int 0 through 255. */
+	public static int byteToUnsigned(byte b) {
+		return (int)b + -1*(int)Byte.MIN_VALUE;
+	}
 }
