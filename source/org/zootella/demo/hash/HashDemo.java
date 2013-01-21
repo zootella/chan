@@ -68,6 +68,8 @@ public class HashDemo extends Close {
 
 	@Override public void close() {
 		if (already()) return;
+		
+		close(hashFile);
 
 		frame.setVisible(false);
 		frame.dispose(); // Dispose the frame so the process can close
@@ -102,9 +104,14 @@ public class HashDemo extends Close {
 		public void actionPerformed(ActionEvent a) {
 			try {
 				
+				close(hashFile);
+				hashFile = new HashFile(path.getText());
+				
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
 	}
+	
+	private HashFile hashFile;
 
 	private final StopAction stopAction = new StopAction();
 	private class StopAction extends AbstractAction {
@@ -125,4 +132,18 @@ public class HashDemo extends Close {
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
 	}
+	
+	
+	
+	
+	@Override public void pulseUser() {
+		try {
+			status3.area.setText("Result: " + hashFile.hash().data.base16());
+		} catch (NullPointerException e) {}
+	}
+	
+	
+	
+	
+	
 }

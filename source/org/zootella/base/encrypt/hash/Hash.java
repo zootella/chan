@@ -32,14 +32,19 @@ public class Hash {
 
 	/** Get the 20 byte, 160 bit SHA1 hash value. */
 	public Value done() {
-		Value value = new Value(new Data(digest.digest())); // Calling digest() gets the hash value and resets the digest object
-		add(digest);   // Save the reset digest in our list to use it quickly next time
-		digest = null; // Make sure we don't have it in case we are used again
+		if (value == null) {
+			value = new Value(new Data(digest.digest())); // Calling digest() gets the hash value and resets the digest object
+			add(digest);   // Save the reset digest in our list to use it quickly next time
+			digest = null; // Make sure we don't have it in case we are used again
+		}
 		return value;  // Return the hash value answer
 	}
 	
 	/** Our MessageDigest object that hashes more data based on what has come before. */
 	private MessageDigest digest;
+	
+	/** The 20 byte hash value result, null before we're done. */
+	private Value value;
 	
 	// Recycle
 	

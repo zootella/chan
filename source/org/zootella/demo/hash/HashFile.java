@@ -1,6 +1,6 @@
 package org.zootella.demo.hash;
 
-import org.zootella.base.data.Data;
+import org.zootella.base.data.Value;
 import org.zootella.base.encrypt.hash.HashValve;
 import org.zootella.base.exception.ProgramException;
 import org.zootella.base.file.File;
@@ -15,8 +15,11 @@ import org.zootella.base.valve.Flow;
 public class HashFile extends Close {
 
 	public HashFile(String path) {
+		log("making hash file object");
+		this.path = path;
 	}
 	
+	private String path;
 	private OpenTask openTask;
 	private File file;
 	private ReadValve readValve;
@@ -39,17 +42,17 @@ public class HashFile extends Close {
 	@Override public void pulse() {
 		try {
 			
-			//open the file
-			if (no(openTask))
+			if (no(openTask)) {
 				openTask = new OpenTask(new Open(new Path(path), null, Open.read));
-			if (done(openTask) && no(file))
+			}
+			if (done(openTask) && no(file)) {
 				file = openTask.result();
+			}
 			
 			if (is(file) && no(flow)) {
 				
 				Range range = new Range(0, file.size());//TODO test that a 0 byte file passes through this correctly, it should
 				
-				//hash it
 				readValve = new ReadValve(file, range);
 				hashValve = new HashValve(range);
 				
@@ -58,31 +61,21 @@ public class HashFile extends Close {
 				flow.list.add(hashValve);
 			}
 			
-			if (is(flow))
+			if (is(flow)) {
 				flow.move();
+			}
 			
-			/*
-			soon();//TODO this is cheap, you should only send one when you know something has changed.
-			
-			Actually, you can't do that at all, how would that not have caused an infinite spin.
-			You would have realized that the moment you ran it, and hadn't finished this demo to run it yet.
-			Yes, obviously, the easiest way to create an infinite spin problem is to call soon() inside pulse() without an if or anything.
-			 * 
-			 */
+			if (flow != null && flow.isEmpty()) {
+				close(this);
+				
+				log("Done with result ", hashValve.hash.done().data.base16());
+			}
 			
 		} catch (ProgramException e) { exception = e; close(this); }
 	}
 	
-	private String path;
-	private String status1 = "status one";
-	private String status2 = "status two";
-	private String status3 = "status three";
-
+	//commands
 	
-	
-	public void open(String path) {
-		this.path = path;
-	}
 	public void start() {
 		
 	}
@@ -90,14 +83,18 @@ public class HashFile extends Close {
 		
 	}
 	
+	//status and result
+	
 	public long sizeHashed() {
 		return 0;
 	}
 	public long sizeTotal() {
 		return 0;
 	}
-	public Data hash() {
-		return Data.empty();
+	public Value hash() {
+		try {
+			return hashValve.hash.done();
+		} catch (NullPointerException e) { return null; }
 	}
 	public ProgramException exception() {
 		return exception;

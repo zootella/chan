@@ -90,5 +90,5 @@ public abstract class Close {
 	public static void soon() { Pulse.pulse.soon(); }
 
 	/** Write out diagnostic text for the programmer. */
-	public static void log(String s) { Log.log(s); }
+	public static void log(String... strings) { Log.log(strings); }
 }

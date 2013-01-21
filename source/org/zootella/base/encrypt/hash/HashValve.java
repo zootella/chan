@@ -12,7 +12,7 @@ public class HashValve extends Close implements Valve {
 
 	/** Make a HashValve that will take data from in() and hash it. */
 	public HashValve(Range range) {
-		this.hash = new Hash();
+		hash = new Hash();
 		meter = new Meter(range);
 		in = Bin.medium();
 	}
@@ -27,7 +27,7 @@ public class HashValve extends Close implements Valve {
 		if (already()) return;
 		if (task != null) {
 			close(task);
-			task = null; // Discard the closed later so in() and out() work
+			task = null; // Discard the closed task so in() and out() work
 		}
 	}
 
