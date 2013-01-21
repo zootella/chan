@@ -43,4 +43,8 @@ public class Meter {
 		range.check(done + more);
 		done += more;
 	}
+	
+	
+	
+	public Range range() { return range; }
 }

@@ -1,6 +1,5 @@
 package org.zootella.demo.hash;
 
-import org.zootella.base.data.Value;
 import org.zootella.base.encrypt.hash.HashValve;
 import org.zootella.base.exception.ProgramException;
 import org.zootella.base.file.File;
@@ -61,7 +60,6 @@ public class HashFile extends Close {
 			}
 			
 			if (flow != null && flow.isEmpty()) {
-				log("close HashFile");
 				close(this);
 			}
 			
@@ -80,15 +78,19 @@ public class HashFile extends Close {
 	//status and result
 	
 	public long sizeHashed() {
-		return 0;
+		try {
+			return hashValve.meter().done();
+		} catch (NullPointerException e) { return -1; }
 	}
 	public long sizeTotal() {
-		return 0;
-	}
-	public Value hash() {
 		try {
-			return hashValve.hash.value();
-		} catch (NullPointerException e) { return null; }
+			return hashValve.meter().range().size;
+		} catch (NullPointerException e) { return -1; }
+	}
+	public String hash() {
+		try {
+			return hashValve.hash.value().data.base16();
+		} catch (NullPointerException e) { return ""; }
 	}
 	public ProgramException exception() {
 		return exception;

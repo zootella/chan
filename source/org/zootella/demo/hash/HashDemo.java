@@ -13,7 +13,9 @@ import javax.swing.JTextField;
 
 import org.zootella.base.process.Mistake;
 import org.zootella.base.state.Close;
+import org.zootella.base.user.Describe;
 import org.zootella.base.user.Dialog;
+import org.zootella.base.user.Refresh;
 import org.zootella.base.user.Screen;
 import org.zootella.base.user.panel.Cell;
 import org.zootella.base.user.panel.Panel;
@@ -74,6 +76,11 @@ public class HashDemo extends Close {
 		frame.setVisible(false);
 		frame.dispose(); // Dispose the frame so the process can close
 	}
+	
+	public void reset() {
+		close(hashFile);
+		hashFile = null;
+	}
 
 	
 	/** The user closed the window with the corner X, or by right-clicking the taskbar button. */
@@ -129,6 +136,8 @@ public class HashDemo extends Close {
 		public void actionPerformed(ActionEvent a) {
 			try {
 				
+				reset();
+				
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
 	}
@@ -137,9 +146,16 @@ public class HashDemo extends Close {
 	
 	
 	@Override public void pulseUser() {
-		try {
-			status3.area.setText("Result: " + hashFile.hash().data.base16());
-		} catch (NullPointerException e) {}
+		if (hashFile == null) {
+			Refresh.text(status1.area, "");
+			Refresh.text(status2.area, "");
+			Refresh.text(status3.area, "");
+			
+		} else {
+			Refresh.text(status1.area, Describe.percent(hashFile.sizeHashed(), hashFile.sizeTotal()));
+			Refresh.text(status2.area, "");
+			Refresh.text(status3.area, hashFile.hash());
+		}
 	}
 	
 	
