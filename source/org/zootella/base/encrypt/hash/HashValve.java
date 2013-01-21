@@ -29,6 +29,7 @@ public class HashValve extends Close implements Valve {
 			close(task);
 			task = null; // Discard the closed task so in() and out() work
 		}
+		close(hash);
 	}
 
 	// Valve

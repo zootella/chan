@@ -69,4 +69,11 @@ public class Range {
 		if (size > know) throw new IndexOutOfBoundsException(); // Less than we expected
 		return this;                                            // Know is all we need or more, no change
 	}
+	
+	
+	
+	
+	@Override public String toString() {
+		return "i" + i + " size" + size;
+	}
 }

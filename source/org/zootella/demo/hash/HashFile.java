@@ -15,7 +15,6 @@ import org.zootella.base.valve.Flow;
 public class HashFile extends Close {
 
 	public HashFile(String path) {
-		log("making hash file object");
 		this.path = path;
 	}
 	
@@ -26,10 +25,6 @@ public class HashFile extends Close {
 	private HashValve hashValve;
 	private Flow flow;
 	private ProgramException exception;
-
-	/*
-	private CenterTask centerTask;
-	*/
 
 	@Override public void close() {
 		if (already()) return;
@@ -66,9 +61,8 @@ public class HashFile extends Close {
 			}
 			
 			if (flow != null && flow.isEmpty()) {
+				log("close HashFile");
 				close(this);
-				
-				log("Done with result ", hashValve.hash.done().data.base16());
 			}
 			
 		} catch (ProgramException e) { exception = e; close(this); }
@@ -93,7 +87,7 @@ public class HashFile extends Close {
 	}
 	public Value hash() {
 		try {
-			return hashValve.hash.done();
+			return hashValve.hash.value();
 		} catch (NullPointerException e) { return null; }
 	}
 	public ProgramException exception() {
