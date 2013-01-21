@@ -287,7 +287,11 @@ public class Data implements Comparable<Data> {
 	public String strike() { return Encode.strike(this); }
 
 	/** Compute the SHA1 hash of this Data, return the 20-byte, 160-bit hash value. */
-	public Value hash() { return Hash.hash(this); }
+	public Value hash() {
+		Hash hash = new Hash(); // Use a Hash object
+		hash.add(this);
+		return hash.done();
+	}
 	
 	// Supply
 	

@@ -3,7 +3,6 @@ package org.zootella.base.encrypt.hash;
 import org.junit.Assert;
 import org.junit.Test;
 import org.zootella.base.data.Data;
-import org.zootella.base.encrypt.hash.Hash;
 
 public class HashTest {
 	
@@ -13,13 +12,13 @@ public class HashTest {
 	
 	@Test public void testEmpty() throws Exception {
 
-		Assert.assertEquals("empty", empty, Hash.hash(Data.empty()).data.base16());
+		Assert.assertEquals("empty", empty, Data.empty().hash().data.base16());
 	}
 	
 	@Test public void testShort() throws Exception {
 	
-		Assert.assertEquals("hello", hello, Hash.hash(new Data("hello")).data.base16());
-		Assert.assertEquals("hello you", helloYou, Hash.hash(new Data("hello you")).data.base16());
+		Assert.assertEquals("hello", hello, new Data("hello").hash().data.base16());
+		Assert.assertEquals("hello you", helloYou, new Data("hello you").hash().data.base16());
 	}
 	
 	@Test public void testParts() throws Exception {

@@ -7,7 +7,6 @@ import org.zootella.base.data.Data;
 import org.zootella.base.data.Number;
 import org.zootella.base.data.Outline;
 import org.zootella.base.data.Text;
-import org.zootella.base.encrypt.hash.Hash;
 import org.zootella.base.exception.ProgramException;
 import org.zootella.base.net.name.Port;
 import org.zootella.base.net.packet.Packet;
@@ -59,7 +58,7 @@ public class Center extends Close {
 					
 					Data data = packet.move.ipPort.data();
 					Outline p = new Outline("ap", data); // Address response
-					p.add("hash", Hash.hash(data).data); // Optional integrity check
+					p.add("hash", data.hash().data); // Optional integrity check
 
 					Bin bin = packets.bin();
 					bin.add(p.toData().clip());

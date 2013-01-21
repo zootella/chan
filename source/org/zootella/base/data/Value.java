@@ -2,13 +2,17 @@ package org.zootella.base.data;
 
 import org.zootella.base.exception.DataException;
 
-/** 20 bytes of data, like a hash value. */
+/** 20 bytes of data, like a hash value or a GUID. */
 public class Value {
 	
-	/** A SHA1 hash value is 20 bytes, which is 160 bits. */
+	// Define
+	
+	/** A value is 20 bytes, which is 160 bits. */
 	public static final int size = 20;
 	
-	/** Wrap the given data in a new Value object, which makes sure it is 20 bytes. */
+	// Object
+	
+	/** Wrap the given data in this new Value object, which makes sure it is 20 bytes. */
 	public Value(Data data) {
 		if (data.size() != size) throw new DataException();
 		this.data = data;
@@ -16,11 +20,9 @@ public class Value {
 
 	/** The 20 bytes of data this Value object holds. */
 	public final Data data;
-	
-	
 
-	/** A new globally unique 20 bytes of random data. */
+	// Unique
+
+	/** Make a new globally unique value with 20 bytes of random data. */
 	public static Value unique() { return new Value(Data.random(size)); }
-	
-	
 }
