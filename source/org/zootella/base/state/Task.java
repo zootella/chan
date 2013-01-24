@@ -1,5 +1,9 @@
 package org.zootella.base.state;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 import javax.swing.SwingUtilities;
 
 import org.zootella.base.exception.ProgramException;
@@ -8,24 +12,29 @@ import org.zootella.base.process.Mistake;
 /** Make a Task to run some code in a separate thread. */
 public class Task extends Close {
 	
+	// Pool
+	
+	/** The program's thread pool. */
+	private static ExecutorService pool;
+	
 	// Make
 
 	/** Make a Task to have a separate thread run the code in body now. */
 	public Task(TaskBody body) {
+		if (pool == null) // Create the thread pool the first time this runs
+			pool = Executors.newCachedThreadPool(); // Good choice for many quick tasks
+
 		this.body = body;
-		thread = new Thread(new ThreadRun(), "Task"); // Name thread "Task"
-		thread.setDaemon(true); // Let the program close even if thread is still running
-		thread.start(); // Have the new thread call run() below now
+		future = pool.submit(new ThreadRun()); // Have a thread from the pool call run() below now
 	}
 
 	private final TaskBody body;
-	private Thread thread;
+	private final Future<?> future;
 	
 	/** Interrupt our Task thread. */
 	@Override public void close() {
 		if (already()) return;
-		if (thread != null) // If thread is running
-			thread.interrupt(); // Stop it by making it throw an exception
+		future.cancel(true); // true to interrupt if running
 	}
 	
 	// Run
@@ -49,7 +58,6 @@ public class Task extends Close {
 			if (closed()) return;                           // Do nothing once closed
 			if (throwable != null) Mistake.stop(throwable); // An exception isn't expected, stop the program
 			try {
-				thread = null;                              // thread is done and exited, null our reference to it
 				close(Task.this);                           // Mark this Task closed
 				body.done(programException);                // Call the given done() method giving it the ProgramException we got
 			} catch (Throwable t) { Mistake.stop(t); }      // Stop the program for an exception we didn't expect
