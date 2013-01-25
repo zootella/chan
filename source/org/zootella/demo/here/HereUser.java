@@ -22,10 +22,10 @@ import org.zootella.main.User;
 /** The Info window that shows advanced statistics and diagnostic information. */
 public class HereUser extends Close {
 	
-	private final Program program;
+	private final HereCore core;
 
-	public HereUser(User user) {
-		program = user.program;
+	public HereUser(HereCore core) {
+		this.core = core;
 
 		panel = new Panel();
 		panel.border();
@@ -124,7 +124,7 @@ public class HereUser extends Close {
 		public LanAction() { super("Refresh"); } // Specify the button text
 		public void actionPerformed(ActionEvent a) {
 			try {
-				program.core.here.refreshLan();
+				core.refreshLan();
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
 	}
@@ -134,7 +134,7 @@ public class HereUser extends Close {
 		public BindAction() { super("Refresh"); }
 		public void actionPerformed(ActionEvent a) {
 			try {
-				program.core.here.refreshBind();
+				core.refreshBind();
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
 	}
@@ -144,7 +144,7 @@ public class HereUser extends Close {
 		public NatAction() { super("Refresh"); }
 		public void actionPerformed(ActionEvent a) {
 			try {
-				program.core.here.refreshNat();
+				core.refreshNat();
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
 	}
@@ -154,7 +154,7 @@ public class HereUser extends Close {
 		public CenterAction() { super("Refresh"); }
 		public void actionPerformed(ActionEvent a) {
 			try {
-				program.core.here.refreshCenter();
+				core.refreshCenter();
 			} catch (Throwable t) { Mistake.stop(t); }
 		}
 	}
@@ -165,28 +165,28 @@ public class HereUser extends Close {
 	@Override public void pulseUser() {
 		if (!frame.isVisible()) return;
 		
-		Refresh.text(lanValue.area, program.core.here.userLanIp());
-		Refresh.text(bindValue.area, program.core.here.userBindPort());
-		Refresh.text(natModelValue.area, program.core.here.userNatModel());
-		Refresh.text(natIpValue.area, program.core.here.userNatIp());
-		Refresh.text(natTcpValue.area, program.core.here.userMapTcp());
-		Refresh.text(natUdpValue.area, program.core.here.userMapUdp());
-		Refresh.text(centerValue.area, program.core.here.userCenterIp());
+		Refresh.text(lanValue.area, core.userLanIp());
+		Refresh.text(bindValue.area, core.userBindPort());
+		Refresh.text(natModelValue.area, core.userNatModel());
+		Refresh.text(natIpValue.area, core.userNatIp());
+		Refresh.text(natTcpValue.area, core.userMapTcp());
+		Refresh.text(natUdpValue.area, core.userMapUdp());
+		Refresh.text(centerValue.area, core.userCenterIp());
 		
-		Refresh.text(lanTime.area, program.core.here.userLanIpTime());
-		Refresh.text(bindTime.area, program.core.here.userBindPortTime());
-		Refresh.text(natModelTime.area, program.core.here.userNatModelTime());
-		Refresh.text(natIpTime.area, program.core.here.userNatIpTime());
-		Refresh.text(natTcpTime.area, program.core.here.userMapTcpTime());
-		Refresh.text(natUdpTime.area, program.core.here.userMapUdpTime());
-		Refresh.text(centerTime.area, program.core.here.userCenterIpTime());
+		Refresh.text(lanTime.area, core.userLanIpTime());
+		Refresh.text(bindTime.area, core.userBindPortTime());
+		Refresh.text(natModelTime.area, core.userNatModelTime());
+		Refresh.text(natIpTime.area, core.userNatIpTime());
+		Refresh.text(natTcpTime.area, core.userMapTcpTime());
+		Refresh.text(natUdpTime.area, core.userMapUdpTime());
+		Refresh.text(centerTime.area, core.userCenterIpTime());
 		
-		Refresh.text(lanError.area, program.core.here.userLanIpError());
-		Refresh.text(bindError.area, program.core.here.userBindPortError());
-		Refresh.text(natModelError.area, program.core.here.userNatModelError());
-		Refresh.text(natIpError.area, program.core.here.userNatIpError());
-		Refresh.text(natTcpError.area, program.core.here.userMapTcpError());
-		Refresh.text(natUdpError.area, program.core.here.userMapUdpError());
-		Refresh.text(centerError.area, program.core.here.userCenterIpError());
+		Refresh.text(lanError.area, core.userLanIpError());
+		Refresh.text(bindError.area, core.userBindPortError());
+		Refresh.text(natModelError.area, core.userNatModelError());
+		Refresh.text(natIpError.area, core.userNatIpError());
+		Refresh.text(natTcpError.area, core.userMapTcpError());
+		Refresh.text(natUdpError.area, core.userMapUdpError());
+		Refresh.text(centerError.area, core.userCenterIpError());
 	}
 }

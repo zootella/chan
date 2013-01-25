@@ -167,7 +167,7 @@ public class WindowPanel {
 		public void actionPerformed(ActionEvent a) {
 			try {
 
-				program.user.here.frame.setVisible(true);
+//				program.user.here.frame.setVisible(true);
 
 			} catch (Throwable t) { Mistake.stop(t); }
 		}

@@ -10,6 +10,7 @@ import org.zootella.base.state.Close;
 import org.zootella.base.user.CornerIcon;
 import org.zootella.base.user.Face;
 import org.zootella.base.user.skin.Skin;
+import org.zootella.demo.here.HereCore;
 import org.zootella.demo.here.HereUser;
 
 public class User extends Close {
@@ -23,7 +24,7 @@ public class User extends Close {
 		skin = new Skin(program.store.folder.add("skin.png"), Guide.skinSize);
 
 		window = new Window(this);
-		here = new HereUser(this);
+//		here = new HereUser(new HereCore(program.core.packets, program.core.port));
 
 		if (!Desktop.isMac()) // On Mac, we've already got the icon on the dock
 			icon = new CornerIcon(Main.name, Face.image(Guide.icon), restoreAction, exitAction);
@@ -34,14 +35,14 @@ public class User extends Close {
 	public final Program program;
 	public final Skin skin;
 	public final Window window;
-	public final HereUser here;
+//	public final HereUser here;
 	public CornerIcon icon;
 	
 	@Override public void close() {
 		if (already()) return;
 		
 		close(window);
-		close(here);
+//		close(here);
 		close(icon);
 	}
 

@@ -27,21 +27,21 @@ public class Core extends Close {
 
 		accept = new Accept(port);
 		packets = new Packets(port);
-		here = new HereCore(packets, port);
+//		here = new HereCore(packets, port);
 	}
 
 	private final Program program;
 	public final Accept accept;
 	public final Packets packets;
 
-	private final Port port;
-	public final HereCore here;
+	public final Port port;
+//	public final HereCore here;
 	
 	@Override public void close() {
 		if (already()) return;
 		
 		close(accept);
 		close(packets);
-		close(here);
+//		close(here);
 	}
 }

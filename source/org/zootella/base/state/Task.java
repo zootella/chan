@@ -1,37 +1,29 @@
 package org.zootella.base.state;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import javax.swing.SwingUtilities;
 
+import org.zootella.base.exception.PlatformException;
 import org.zootella.base.exception.ProgramException;
 import org.zootella.base.process.Mistake;
+import org.zootella.main.Main;
 
 /** Make a Task to run some code in a separate thread. */
 public class Task extends Close {
-	
-	// Pool
-	
-	/** The program's thread pool. */
-	private static ExecutorService pool;
 	
 	// Make
 
 	/** Make a Task to have a separate thread run the code in body now. */
 	public Task(TaskBody body) {
-		if (pool == null) // Create the thread pool the first time this runs
-			pool = Executors.newCachedThreadPool(); // Good choice for many quick tasks
-
 		this.body = body;
-		future = pool.submit(new ThreadRun()); // Have a thread from the pool call run() below now
+		future = Pool.pool.service().submit(new ThreadRun()); // Have a thread from the pool call run() below now
 	}
 
 	private final TaskBody body;
 	private final Future<?> future;
 	
-	/** Interrupt our Task thread. */
+	/** Interrupt our pool thread. */
 	@Override public void close() {
 		if (already()) return;
 		future.cancel(true); // true to interrupt if running
@@ -39,20 +31,21 @@ public class Task extends Close {
 	
 	// Run
 	
-	// When the constructor makes thread above, thread calls the run() method here
+	// When the constructor submits us above, a thread from the pool calls the run() method here
 	private class ThreadRun implements Runnable {
 		public void run() {
+			if (!Main.release && SwingUtilities.isEventDispatchThread()) Mistake.stop(new PlatformException("pool used event thread"));
 			try { body.thread(); } // Call the code we were given
 			catch (ProgramException e) { programException = e; } // A ProgramException we expect and save
 			catch (Throwable t) { throwable = t; } // An exception isn't expected, and stops the program
 			SwingUtilities.invokeLater(new EventRun()); // We're done, send an event
-		} // When thread exits run(), it closes
+		} // When the thread exits run(), it returns to the pool
 	}	
 	
 	private ProgramException programException;
 	private Throwable throwable;
 
-	// Soon after thread calls invokeLater() above, the normal event thread calls run() here
+	// Soon after the pool thread calls invokeLater() above, the event thread calls run() here
 	private class EventRun implements Runnable {
 		public void run() {
 			if (closed()) return;                           // Do nothing once closed
