@@ -4,6 +4,8 @@ import javax.swing.SwingUtilities;
 
 import org.zootella.base.process.Mistake;
 import org.zootella.base.state.Close;
+import org.zootella.base.time.Ago;
+import org.zootella.base.time.Time;
 
 /** The program's single pulse object lists and pulses all the open objects in the program to move things forward. */
 public class Pulse {
@@ -87,14 +89,16 @@ public class Pulse {
 				}
 			}
 		}
-
+		
 		// In a single pass after that, pulse up the list to have objects compose information for the user
-		for (int i = list.size() - 1; i >= 0; i--) {
-			Close c = list.get(i);
-			if (Close.open(c)) { // Skip closed objects
-				try {
-					c.pulseUser(); // Pulse the object to have it compose text for the user to show current information
-				} catch (Throwable t) { Mistake.stop(t); } // Stop the program for an exception we didn't expect
+		if (screen.enough()) { // Only update the screen 5 times a second
+			for (int i = list.size() - 1; i >= 0; i--) {
+				Close c = list.get(i);
+				if (Close.open(c)) { // Skip closed objects
+					try {
+						c.pulseUser(); // Pulse the object to have it compose text for the user to show current information
+					} catch (Throwable t) { Mistake.stop(t); } // Stop the program for an exception we didn't expect
+				}
 			}
 		}
 		
@@ -150,6 +154,9 @@ public class Pulse {
 	
 	//monitor
 	public final Monitor monitor = new Monitor();
+	
+	
+	private Ago screen = new Ago(Time.delay);
 	
 	
 	
