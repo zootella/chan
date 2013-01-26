@@ -7,6 +7,7 @@ import javax.swing.SwingUtilities;
 import org.zootella.base.exception.PlatformException;
 import org.zootella.base.exception.ProgramException;
 import org.zootella.base.process.Mistake;
+import org.zootella.base.pulse.Pool;
 import org.zootella.main.Main;
 
 /** Make a Task to run some code in a separate thread. */

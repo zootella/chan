@@ -1,7 +1,9 @@
-package org.zootella.base.state;
+package org.zootella.base.pulse;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import org.zootella.base.state.Close;
 
 public class Pool extends Close {
 	
