@@ -2,6 +2,7 @@ package org.zootella.base.pulse;
 
 import javax.swing.SwingUtilities;
 
+import org.zootella.base.process.Log;
 import org.zootella.base.process.Mistake;
 import org.zootella.base.state.Close;
 import org.zootella.base.time.Ago;
@@ -14,6 +15,7 @@ public class Pulse {
 	
 	/** The program's single Pulse object. */
 	public static final Pulse pulse = new Pulse();
+	private Pulse() {} // Make sure the program only has this one static Pulse object
 
 	// Start
 	
@@ -157,6 +159,32 @@ public class Pulse {
 	
 	
 	private Ago screen = new Ago(Time.delay);
+	
+	
+	
+	
+	public final Pool pool = new Pool();
+	public final Ding ding = new Ding();
+	
+	
+	
+	
+	
+	//stop
+	
+	public void stop() {
+		
+		Log.log("pulse stop");
+		
+		pool.stop();
+		ding.stop();
+		Mistake.closeCheck();//TODO factor this right back into here, it calls back here, after all
+		Log.log(Pulse.pulse.monitor.describeEfficiency());
+		
+		
+		
+		
+	}
 	
 	
 	

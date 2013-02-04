@@ -7,7 +7,7 @@ import javax.swing.SwingUtilities;
 import org.zootella.base.exception.PlatformException;
 import org.zootella.base.exception.ProgramException;
 import org.zootella.base.process.Mistake;
-import org.zootella.base.pulse.Pool;
+import org.zootella.base.pulse.Pulse;
 import org.zootella.main.Main;
 
 /** Make a Task to run some code in a separate thread. */
@@ -18,7 +18,7 @@ public class Task extends Close {
 	/** Make a Task to have a separate thread run the code in body now. */
 	public Task(TaskBody body) {
 		this.body = body;
-		future = Pool.pool.service().submit(new ThreadRun()); // Have a thread from the pool call run() below now
+		future = Pulse.pulse.pool.get().submit(new ThreadRun()); // Have a thread from the pool call run() below now
 	}
 
 	private final TaskBody body;

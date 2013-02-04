@@ -41,7 +41,7 @@ public class TextTest {
 		Assert.assertEquals("AA  B\r\nC   DD\r\n", Text.table(2, "AA", "B", "C", "DD"));
 		
 		/*
-		Close.log("\r\n" + Text.table(3,
+		Log.log("\r\n" + Text.table(3,
 			"apple apricot", "", "c",
 			"dictionary", "eggs earth eager", "f"));
 			*/

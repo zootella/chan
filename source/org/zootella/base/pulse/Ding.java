@@ -6,34 +6,43 @@ import javax.swing.AbstractAction;
 import javax.swing.Timer;
 
 import org.zootella.base.process.Mistake;
-import org.zootella.base.state.Close;
 import org.zootella.base.time.Time;
 
 /** The program's single Ding object requests a pulse every 200 milliseconds just in case nothing is happening. */
-public class Ding extends Close {
+public class Ding {
 	
-	/** Make a Ding that will pulse the program so timeouts get noticed. */
-	public Ding() {
-		timer = new Timer((int)Time.delay / 2, new MyActionListener()); // Check every half delay to catch nothing happening sooner
-		timer.setRepeats(true);
-		timer.start();
+
+	
+	/** Start our Ding that will pulse the program so timeouts get noticed. */
+	public void start() {
+		if (timer == null) {
+			timer = new Timer((int)Time.delay / 2, new MyActionListener()); // Check every half delay to catch nothing happening sooner
+			timer.setRepeats(true);
+			timer.start();
+			
+		}
+		
 	}
+	
+	/** Stop our Ding so it won't pulse the program again. */
+	public void stop() {
+		if (timer != null) {
+			timer.stop(); // Stop and discard timer, keeping it might prevent the program from closing
+			timer = null;
+		}
+	}
+	
+	
 	
 	/** Our Timer set to repeat. */
 	private Timer timer;
 
-	/** Close our Ding so it never pulses the program again. */
-	@Override public void close() {
-		if (already()) return;
-		timer.stop(); // Stop and discard timer, keeping it might prevent the program from closing
-		timer = null;
-	}
 
 	// When the timer goes off, Java calls this method
 	private class MyActionListener extends AbstractAction {
 		public void actionPerformed(ActionEvent a) {
 			try {
-				if (closed()) return; // Don't do anything if we're closed
+				if (timer == null) return; // Don't do anything if we're stopped
 				
 				Pulse.pulse.ding(); // Pulse soon if we haven't pulsed in a while
 
