@@ -114,6 +114,7 @@ public class Pulse {
 	/** Add a new object that extends Close to the program's list of open objects. */
 	public void add(Close c) {
 		list.add(c); // It's safe to add to the end even during a pulse because we loop by index number
+		ding.start(); // Start the ding if it's not started already
 	}
 
 	/** Remove objects that got closed from our list. */

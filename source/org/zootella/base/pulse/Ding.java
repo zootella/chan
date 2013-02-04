@@ -19,9 +19,7 @@ public class Ding {
 			timer = new Timer((int)Time.delay / 2, new MyActionListener()); // Check every half delay to catch nothing happening sooner
 			timer.setRepeats(true);
 			timer.start();
-			
 		}
-		
 	}
 	
 	/** Stop our Ding so it won't pulse the program again. */
