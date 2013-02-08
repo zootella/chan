@@ -162,7 +162,7 @@ public class HereUser extends Close {
 	
 	// View
 	
-	@Override public void pulseUser() {
+	@Override public void pulseScreen() {
 		if (!frame.isVisible()) return;
 		
 		Refresh.text(lanValue.area, core.userLanIp());

@@ -145,7 +145,7 @@ public class HashDemo extends Close {
 	
 	
 	
-	@Override public void pulseUser() {
+	@Override public void pulseScreen() {
 		if (hashFile == null) {
 			Refresh.text(status1.area, "");
 			Refresh.text(status2.area, "");

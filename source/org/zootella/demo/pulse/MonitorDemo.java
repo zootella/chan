@@ -47,7 +47,7 @@ public class MonitorDemo extends Close {
 		frame.dispose(); // Dispose the frame so the process can close
 	}
 	
-	@Override public void pulseUser() {
+	@Override public void pulseScreen() {
 		
 		value.area.setText(Pulse.pulse.monitor.describeEfficiency() + "\r\n");
 	}

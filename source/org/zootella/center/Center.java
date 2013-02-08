@@ -14,6 +14,7 @@ import org.zootella.base.net.packet.PacketReceive;
 import org.zootella.base.net.packet.Packets;
 import org.zootella.base.process.Alive;
 import org.zootella.base.process.Mistake;
+import org.zootella.base.pulse.Pulse;
 import org.zootella.base.state.Close;
 
 public class Center extends Close {
@@ -44,7 +45,7 @@ public class Center extends Close {
 
 		close(packets);
 		
-		Mistake.closeCheck();
+		Pulse.pulse.stop();
 	}
 	
 	private class MyPacketReceive implements PacketReceive {

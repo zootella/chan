@@ -11,8 +11,6 @@ import org.zootella.base.time.Time;
 /** The program's single Ding object requests a pulse every 200 milliseconds just in case nothing is happening. */
 public class Ding {
 	
-
-	
 	/** Start our Ding that will pulse the program so timeouts get noticed. */
 	public void start() {
 		if (timer == null) {
@@ -26,15 +24,12 @@ public class Ding {
 	public void stop() {
 		if (timer != null) {
 			timer.stop(); // Stop and discard timer, keeping it might prevent the program from closing
-			timer = null;
+			timer = null; // Discard the timer object so a future call to start() can start things again
 		}
 	}
 	
-	
-	
 	/** Our Timer set to repeat. */
 	private Timer timer;
-
 
 	// When the timer goes off, Java calls this method
 	private class MyActionListener extends AbstractAction {

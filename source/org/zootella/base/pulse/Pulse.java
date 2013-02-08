@@ -8,14 +8,55 @@ import org.zootella.base.state.Close;
 import org.zootella.base.time.Ago;
 import org.zootella.base.time.Time;
 
-/** The program's single pulse object lists and pulses all the open objects in the program to move things forward. */
+/** The program's single pulse object pulses all the open objects in the program to move things forward. */
 public class Pulse {
 	
 	// Instance
 	
 	/** The program's single Pulse object. */
 	public static final Pulse pulse = new Pulse();
-	private Pulse() {} // Make sure the program only has this one static Pulse object
+	private Pulse() {} // Make sure the program only has one static Pulse object
+	
+	// Contents
+
+	/** A thread pool to run tasks. */
+	public final Pool pool = new Pool();
+	
+	/** A timer that will cause a pulse to happen even if nothing else does. */
+	private final Ding ding = new Ding();
+
+	/** Record efficiency and performance statistics. */
+	public final Monitor monitor = new Monitor();
+	
+	// Stop
+	
+	/** When the program or test is done, make sure you closed every object, and stop things so the process can exit. */
+	public void stop() {
+		
+		// Stop things so the process will be able to exit
+		pool.stop(); // Shut down the thread pool
+		ding.stop(); // Stop and discard the timer
+
+		// Make sure the program closed every object before trying to exit
+		clear();                // Remove closed objects from the list
+		int size = list.size(); // See how many are left
+		if (size != 0) {        // We should have closed them all, but didn't
+		
+			StringBuffer s = new StringBuffer(); // Compose and return text about the objects still open by mistake
+			s.append(size + " objects open:\n");
+			for (int i = 0; i < size; i++) {
+				Close c = list.get(i);
+				if (Close.open(c)) { // Skip closed objects
+					s.append(c.toString() + "\n");
+				}
+			}
+			
+			Mistake.close(s.toString()); // Log the list of objects and exit the process
+		}
+		
+		// Log performance and efficiency statistics
+		Log.log(monitor.describeEfficiency());
+	}
 
 	// Start
 	
@@ -98,7 +139,7 @@ public class Pulse {
 				Close c = list.get(i);
 				if (Close.open(c)) { // Skip closed objects
 					try {
-						c.pulseUser(); // Pulse the object to have it compose text for the user to show current information
+						c.pulseScreen(); // Pulse the object to have it compose text for the user to show current information
 					} catch (Throwable t) { Mistake.stop(t); } // Stop the program for an exception we didn't expect
 				}
 			}
@@ -108,6 +149,9 @@ public class Pulse {
 		monitor.end(list.size());
 		start = false; // Allow the next call to soon to start a new pulse
 	}
+	
+	/** Make sure we don't update the screen too frequently. */
+	private Ago screen = new Ago(Time.delay);
 	
 	// List
 
@@ -125,68 +169,7 @@ public class Pulse {
 				list.remove(i);
 		}
 	}
-
-	/** The program's list of all objects that extend Close, and aren't closed yet. */
+	
+	/** A list of all the objects in the program right now that extend Close, and aren't closed yet. */
 	private final CloseList list = new CloseList();
-	
-
-	
-	/**
-	 * Call before the program exits to make sure we've closed every object.
-	 * @return Text about objects still open by mistake, or blank if there's no problem
-	 */
-	public String confirmAllClosed() {
-		
-		clear(); // Remove closed objects from the list
-		
-		int size = list.size();
-		if (size == 0) return ""; // Good, we had closed them all already
-		
-		StringBuffer s = new StringBuffer(); // Compose and return text about the objects still open by mistake
-		s.append(size + " objects open:\n");
-		for (int i = 0; i < size; i++) {
-			Close c = list.get(i);
-			if (Close.open(c)) { // Skip closed objects
-				s.append(c.toString() + "\n");
-			}
-		}
-		return s.toString();
-	}
-	
-	
-	
-	//monitor
-	public final Monitor monitor = new Monitor();
-	
-	
-	private Ago screen = new Ago(Time.delay);
-	
-	
-	
-	
-	public final Pool pool = new Pool();
-	public final Ding ding = new Ding();
-	
-	
-	
-	
-	
-	//stop
-	
-	public void stop() {
-		
-		Log.log("pulse stop");
-		
-		pool.stop();
-		ding.stop();
-		Mistake.closeCheck();//TODO factor this right back into here, it calls back here, after all
-		Log.log(Pulse.pulse.monitor.describeEfficiency());
-		
-		
-		
-		
-	}
-	
-	
-	
 }

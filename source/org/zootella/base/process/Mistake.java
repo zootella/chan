@@ -5,9 +5,6 @@ import java.io.StringWriter;
 
 import javax.swing.JOptionPane;
 
-import org.zootella.base.data.Text;
-import org.zootella.base.pulse.Pulse;
-
 public class Mistake {
 
 	/** Ignore t. */
@@ -33,13 +30,11 @@ public class Mistake {
 		System.exit(0); // Terminate the process right here without closing the program properly
 	}
 
-	/** Make sure the program closed all the objects that needed to be closed. */
-	public static void closeCheck() {
-		String s = Pulse.pulse.confirmAllClosed();
-		if (Text.isBlank(s)) return; // Check
-		
+	/** Log the given text about objects that the program didn't close, and stop the program. */
+	public static void close(String s) {
 		String title = "Mistake close:"; // Compose
 		String body = s;
+
 		log(title, body); // Report
 		send(title + "\n" + body);
 		show(title, body);

@@ -26,7 +26,7 @@ public abstract class Close {
 	 * Override this method, and the program will call it periodically.
 	 * Compose text and information for the user based on the new current state of things.
 	 */
-	public void pulseUser() {}
+	public void pulseScreen() {}
 
 	// Object
 
