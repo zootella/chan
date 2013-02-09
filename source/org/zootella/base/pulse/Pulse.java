@@ -15,7 +15,6 @@ public class Pulse {
 	
 	/** The program's single Pulse object. */
 	public static final Pulse pulse = new Pulse();
-	private Pulse() {} // Make sure the program only has one static Pulse object
 	
 	// Contents
 

@@ -12,7 +12,7 @@ import org.zootella.base.time.Time;
 public class Ding {
 	
 	/** Start our Ding that will pulse the program so timeouts get noticed. */
-	public void start() {
+	public synchronized void start() {
 		if (timer == null) {
 			timer = new Timer((int)Time.delay / 2, new MyActionListener()); // Check every half delay to catch nothing happening sooner
 			timer.setRepeats(true);
@@ -21,7 +21,7 @@ public class Ding {
 	}
 	
 	/** Stop our Ding so it won't pulse the program again. */
-	public void stop() {
+	public synchronized void stop() {
 		if (timer != null) {
 			timer.stop(); // Stop and discard timer, keeping it might prevent the program from closing
 			timer = null; // Discard the timer object so a future call to start() can start things again
@@ -29,7 +29,7 @@ public class Ding {
 	}
 	
 	/** Our Timer set to repeat. */
-	private Timer timer;
+	private volatile Timer timer;
 
 	// When the timer goes off, Java calls this method
 	private class MyActionListener extends AbstractAction {

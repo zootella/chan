@@ -7,7 +7,7 @@ import java.util.concurrent.Executors;
 public class Pool {
 	
 	/** Access the thread pool to submit a new task. */
-	public ExecutorService get() {
+	public synchronized ExecutorService get() {
 		if (service == null)
 			service = Executors.newCachedThreadPool(); // Good choice for a large number of quick asynchronous tasks
 		return service;
@@ -15,7 +15,7 @@ public class Pool {
 	private ExecutorService service;
 	
 	/** When the program or test is done, stop the thread pool so the process can exit. */
-	public void stop() {
+	public synchronized void stop() {
 		if (service != null) {
 			service.shutdownNow(); // Stop the threads in the pool so the program can exit
 			service = null;        // Discard the service so a future call to get() can start things again

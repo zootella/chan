@@ -11,6 +11,7 @@ import org.zootella.base.process.Mistake;
 import org.zootella.base.pulse.Pulse;
 import org.zootella.base.state.Close;
 import org.zootella.base.user.Face;
+import org.zootella.base.user.Refresh;
 import org.zootella.base.user.Screen;
 import org.zootella.base.user.panel.Cell;
 import org.zootella.base.user.panel.Panel;
@@ -49,7 +50,7 @@ public class MonitorDemo extends Close {
 	
 	@Override public void pulseScreen() {
 		
-		value.area.setText(Pulse.pulse.monitor.describeEfficiency() + "\r\n");
+		Refresh.text(value.area, Pulse.pulse.monitor.describeEfficiency());
 	}
 
 	
